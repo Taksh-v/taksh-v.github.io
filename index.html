@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Taksh Vadaliya — AI Agent Builder</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -34,6 +34,7 @@
       color: var(--text);
       line-height: 1.7;
       overflow-x: hidden;
+      -webkit-text-size-adjust: 100%;
     }
     body::before {
       content: '';
@@ -44,6 +45,37 @@
       opacity: .55;
       z-index: 0;
     }
+    .ambient-field,
+    .cursor-spotlight,
+    .agent-network {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .ambient-field {
+      background:
+        radial-gradient(circle at 18% 20%, rgba(79,143,255,.08), transparent 22%),
+        radial-gradient(circle at 82% 26%, rgba(29,233,182,.05), transparent 24%),
+        radial-gradient(circle at 50% 78%, rgba(240,165,0,.035), transparent 28%);
+      filter: blur(8px);
+      opacity: .75;
+      animation: ambientDrift 18s ease-in-out infinite alternate;
+    }
+    .cursor-spotlight {
+      background: radial-gradient(circle at var(--spot-x, 50%) var(--spot-y, 25%), rgba(79,143,255,.08), transparent 18%);
+      mix-blend-mode: screen;
+      opacity: .55;
+      transition: opacity .25s ease;
+    }
+    .agent-network {
+      opacity: .42;
+      mix-blend-mode: screen;
+    }
+    @keyframes ambientDrift {
+      0% { transform: translate3d(-1.5%, -1%, 0) scale(1); }
+      100% { transform: translate3d(1.5%, 1.25%, 0) scale(1.04); }
+    }
     a { color: inherit; }
     nav {
       position: fixed;
@@ -53,7 +85,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 1rem;
-      padding: 1.1rem 3rem;
+      padding: calc(1.1rem + env(safe-area-inset-top)) calc(3rem + env(safe-area-inset-right)) 1.1rem calc(3rem + env(safe-area-inset-left));
       border-bottom: 1px solid var(--border);
       background: rgba(10,10,15,.84);
       backdrop-filter: blur(14px);
@@ -83,7 +115,7 @@
       z-index: 1;
     }
     .hero {
-      min-height: 100vh;
+      min-height: 100svh;
       padding: 8.8rem 0 4rem;
       display: grid;
       align-items: center;
@@ -296,7 +328,7 @@
       font-size: .68rem;
       color: var(--muted);
     }
-    #skillCanvas { display: block; width: 100%; height: 580px; cursor: grab; }
+    #skillCanvas { display: block; width: 100%; height: 580px; cursor: grab; touch-action: none; }
     .skill-tooltip {
       position: absolute;
       z-index: 4;
@@ -365,10 +397,12 @@
       pointer-events: none;
     }
     @media (max-width: 900px) {
-      nav { padding: 1rem 1.25rem; }
+      nav { padding: calc(1rem + env(safe-area-inset-top)) calc(1.25rem + env(safe-area-inset-right)) 1rem calc(1.25rem + env(safe-area-inset-left)); }
       .hero, section, footer { width: min(100% - 2rem, 1100px); }
       .about-grid { grid-template-columns: 1fr; }
       .project-card { grid-template-columns: 1fr; }
+      .hero { padding-top: 7.8rem; }
+      .hero-inner { max-width: 680px; }
       #skillCanvas { height: 520px; }
     }
     @media (max-width: 640px) {
@@ -381,10 +415,53 @@
       .connect-link { grid-template-columns: auto 1fr; }
       .connect-arrow { display: none; }
       footer { flex-direction: column; align-items: flex-start; }
+      #skillCanvas { height: 440px; }
+    }
+    @media (max-width: 480px) {
+      nav { padding: .9rem 1rem; }
+      .hero, section, footer { width: min(100% - 1.2rem, 1100px); }
+      .hero { padding-top: 8.7rem; }
+      section { padding: 3.6rem 0; }
+      .hero-inner { max-width: none; }
+      .hero-tag { font-size: .64rem; margin-bottom: .95rem; }
+      .hero-name { font-size: clamp(2.4rem, 14vw, 4rem); line-height: .9; margin-bottom: .95rem; }
+      .hero-name span { -webkit-text-stroke: .8px rgba(255,255,255,.24); }
+      .hero-tagline { font-size: .92rem; max-width: none; margin-bottom: 1.4rem; }
+      .hero-cta { gap: .6rem; }
+      .btn { width: 100%; justify-content: center; }
+      .about-stats { grid-template-columns: 1fr; }
+      .stat { min-height: auto; }
+      .project-card { padding: 1.1rem; }
+      .project-title { font-size: 1.1rem; }
+      .project-desc, .about-text p, .building-desc { font-size: .96rem; }
+      .section-label { font-size: .62rem; }
+      .section-title { font-size: clamp(1.55rem, 8vw, 2.1rem); }
+      .skill-controls { top: .7rem; right: .7rem; gap: .25rem; padding: .25rem; }
+      .skill-control { padding: .35rem .45rem; font-size: .62rem; }
+      .skill-zoom-value { min-width: 3rem; font-size: .62rem; }
+      #skillCanvas { height: 360px; }
+      .connect-link { padding: 1rem; }
+      .connect-name { font-size: .95rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; }
+      .ambient-field { animation: none; }
+      .cursor-spotlight { display: none; }
+      .agent-network { opacity: .12; }
+      .fade-in, .btn, .nav-links a, .project-card, .connect-link, .skill-control { transition: none !important; }
+    }
+    @media (max-width: 640px), (pointer: coarse) {
+      .cursor-spotlight { display: none; }
+      .ambient-field { opacity: .26; filter: blur(12px); }
+      .agent-network { opacity: .12; }
+      .hero-glow { opacity: .55; }
     }
   </style>
 </head>
 <body>
+  <div class="ambient-field" aria-hidden="true"></div>
+  <div class="cursor-spotlight" aria-hidden="true"></div>
+  <canvas class="agent-network" aria-hidden="true"></canvas>
   <nav>
     <a href="#" class="nav-logo">tv.dev</a>
     <ul class="nav-links">
@@ -536,6 +613,138 @@
       }, { threshold: 0.1 });
       document.querySelectorAll('.fade-in').forEach((element) => observer.observe(element));
 
+      const spotlight = document.querySelector('.cursor-spotlight');
+      let spotlightTimer = 0;
+      function moveSpotlight(event) {
+        if (!spotlight) return;
+        const x = (event.clientX / window.innerWidth) * 100;
+        const y = (event.clientY / window.innerHeight) * 100;
+        spotlight.style.setProperty('--spot-x', `${x}%`);
+        spotlight.style.setProperty('--spot-y', `${y}%`);
+      }
+      window.addEventListener('pointermove', moveSpotlight, { passive: true });
+      window.addEventListener('pointerleave', () => {
+        if (!spotlight) return;
+        spotlight.style.opacity = '.28';
+        clearTimeout(spotlightTimer);
+        spotlightTimer = window.setTimeout(() => {
+          spotlight.style.opacity = '.55';
+        }, 160);
+      }, { passive: true });
+
+      const networkCanvas = document.querySelector('.agent-network');
+      const networkCtx = networkCanvas ? networkCanvas.getContext('2d') : null;
+      const network = {
+        nodes: [],
+        links: [],
+        width: 0,
+        height: 0,
+        frame: 0,
+        dpr: window.devicePixelRatio || 1,
+      };
+
+      function resizeNetwork() {
+        if (!networkCanvas || !networkCtx) return;
+        network.dpr = window.devicePixelRatio || 1;
+        network.width = window.innerWidth;
+        network.height = window.innerHeight;
+        networkCanvas.width = network.width * network.dpr;
+        networkCanvas.height = network.height * network.dpr;
+        networkCanvas.style.width = `${network.width}px`;
+        networkCanvas.style.height = `${network.height}px`;
+        networkCtx.setTransform(network.dpr, 0, 0, network.dpr, 0, 0);
+      }
+
+      function seedNetwork() {
+        const palette = ['#4f8fff', '#1de9b6', '#9d7fe8', '#f0a500'];
+        const isMobile = window.matchMedia('(max-width: 640px), (pointer: coarse)').matches;
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduceMotion) {
+          network.nodes = [];
+          network.links = [];
+          return;
+        }
+        const anchors = isMobile ? [
+          [0.22, 0.22], [0.52, 0.18], [0.80, 0.25],
+          [0.30, 0.62], [0.66, 0.56],
+        ] : [
+          [0.18, 0.24], [0.35, 0.18], [0.55, 0.26], [0.78, 0.20],
+          [0.26, 0.56], [0.48, 0.48], [0.68, 0.58], [0.86, 0.52],
+        ];
+        network.nodes = anchors.map((anchor, index) => ({
+          ax: anchor[0],
+          ay: anchor[1],
+          x: anchor[0] * network.width,
+          y: anchor[1] * network.height,
+          radius: isMobile ? (index < 1 ? 3 : 2.2) : (index < 2 ? 3.6 : 2.6),
+          driftX: (isMobile ? 0.004 : 0.008) + (index % 3) * 0.003,
+          driftY: (isMobile ? 0.0035 : 0.007) + (index % 4) * 0.002,
+          phase: Math.random() * Math.PI * 2,
+          color: palette[index % palette.length],
+        }));
+        network.links = isMobile
+          ? [[0, 1], [1, 2], [0, 3], [1, 3], [1, 4], [3, 4]]
+          : [[0, 1], [1, 2], [2, 3], [0, 4], [1, 5], [2, 5], [3, 6], [4, 5], [5, 6], [6, 7], [4, 6]];
+      }
+
+      function drawNetwork(ts) {
+        if (!networkCtx || !networkCanvas) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          networkCtx.clearRect(0, 0, network.width, network.height);
+          return;
+        }
+        const time = ts * 0.00035;
+        networkCtx.clearRect(0, 0, network.width, network.height);
+        networkCtx.save();
+        networkCtx.globalCompositeOperation = 'lighter';
+
+        network.nodes.forEach((node, index) => {
+          const driftX = Math.cos(time + node.phase) * node.driftX;
+          const driftY = Math.sin(time * 1.12 + node.phase) * node.driftY;
+          const swayX = (index % 2 === 0 ? 1 : -1) * driftX * network.width;
+          const swayY = (index % 3 === 0 ? 1 : -1) * driftY * network.height;
+          node.x = node.ax * network.width + swayX;
+          node.y = node.ay * network.height + swayY;
+        });
+
+        network.links.forEach(([a, b]) => {
+          const n1 = network.nodes[a];
+          const n2 = network.nodes[b];
+          const dx = n2.x - n1.x;
+          const dy = n2.y - n1.y;
+          const dist = Math.hypot(dx, dy);
+          const alpha = Math.max(0.04, 0.22 - dist / Math.max(network.width, network.height) * 0.22);
+          networkCtx.beginPath();
+          networkCtx.moveTo(n1.x, n1.y);
+          networkCtx.lineTo(n2.x, n2.y);
+          networkCtx.strokeStyle = `rgba(${a % 2 === 0 ? '79,143,255' : '29,233,182'},${alpha})`;
+          networkCtx.lineWidth = 1;
+          networkCtx.stroke();
+        });
+
+        network.nodes.forEach((node) => {
+          networkCtx.beginPath();
+          networkCtx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+          networkCtx.fillStyle = `${node.color}cc`;
+          networkCtx.fill();
+          networkCtx.beginPath();
+          networkCtx.arc(node.x, node.y, node.radius * 3, 0, Math.PI * 2);
+          networkCtx.fillStyle = `${node.color}12`;
+          networkCtx.fill();
+        });
+
+        networkCtx.restore();
+        network.frame = requestAnimationFrame(drawNetwork);
+      }
+
+      resizeNetwork();
+      seedNetwork();
+      network.frame = requestAnimationFrame(drawNetwork);
+      window.addEventListener('resize', () => {
+        resizeNetwork();
+        seedNetwork();
+      }, { passive: true });
+
       const canvas = document.getElementById('skillCanvas');
       const tip = document.getElementById('skillTip');
       const zoomLabel = document.getElementById('skillZoomValue');
@@ -545,9 +754,29 @@
       const COLORS = {
         text: '#eef0ff', muted: '#8a8fb3', nodeBg: '#141420', nodeHover: '#1c1c2d',
       };
-      const NODE = { w: 172, h: 42, rootW: 210, rootH: 54, gapX: 18, gapY: 98, pad: 60, radius: 6 };
+      const NODE_BASE = { w: 172, h: 42, rootW: 210, rootH: 54, gapX: 18, gapY: 98, pad: 60, radius: 6 };
+      let NODE = createNodeMetrics();
       const ANIM = 320;
       const STATE = { scale: 0.95, min: 0.75, max: 1.45 };
+
+      function createNodeMetrics() {
+        const width = window.innerWidth;
+        if (width <= 480) {
+          return { w: 132, h: 36, rootW: 172, rootH: 48, gapX: 12, gapY: 72, pad: 28, radius: 6 };
+        }
+        if (width <= 900) {
+          return { w: 150, h: 38, rootW: 190, rootH: 50, gapX: 14, gapY: 84, pad: 40, radius: 6 };
+        }
+        return { ...NODE_BASE };
+      }
+
+      function syncNodeDimensions() {
+        allNodes.forEach((node) => {
+          node.w = node.isRoot ? NODE.rootW : NODE.w;
+          node.h = node.isRoot ? NODE.rootH : NODE.h;
+          node.r = NODE.radius;
+        });
+      }
 
       const data = {
         label: 'Taksh Vadaliya', sub: 'AI Agent Builder', color: '#1de9b6', children: [
@@ -713,6 +942,8 @@
       }
 
       function layout() {
+        NODE = createNodeMetrics();
+        syncNodeDimensions();
         CW = canvas.offsetWidth;
         measure(root, 0);
         const visible = place(root, NODE.pad, 0, new Set());
@@ -724,7 +955,8 @@
           minY: Math.min(...visibleNodes.map((n) => n.targetY)),
           maxY: Math.max(...visibleNodes.map((n) => n.targetY + n.h)) + NODE.pad,
         };
-        const height = Math.min(visibleBounds.maxY + 40, 580);
+        const maxGraphHeight = Math.min(580, Math.max(320, Math.round(window.innerHeight * (window.innerWidth <= 480 ? 0.48 : window.innerWidth <= 900 ? 0.58 : 0.7))));
+        const height = Math.min(visibleBounds.maxY + 40, maxGraphHeight);
         canvas.width = CW * dpr;
         canvas.height = height * dpr;
         canvas.style.height = `${height}px`;
@@ -1039,6 +1271,8 @@
         if (!started) return;
         cancelAnimationFrame(animFrame);
         dpr = window.devicePixelRatio || 1;
+        resizeNetwork();
+        seedNetwork();
         layout();
         centerGraph();
         setInstant();
