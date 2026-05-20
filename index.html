@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Taksh Vadaliya — AI Agent Builder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a0f;
+      --bg2: #10101a;
+      --bg3: #171725;
+      --border: rgba(255,255,255,.08);
+      --border2: rgba(79,143,255,.24);
+      --accent: #4f8fff;
+      --accent2: #1de9b6;
+      --accent3: #f0a500;
+      --accent4: #ff6b6b;
+      --text: #eef0ff;
+      --muted: #8a8fb3;
+      --mono: 'Space Mono', monospace;
+      --sans: 'Syne', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--sans);
+      background:
+        radial-gradient(circle at 20% 10%, rgba(79,143,255,.15), transparent 30%),
+        radial-gradient(circle at 80% 20%, rgba(29,233,182,.08), transparent 28%),
+        linear-gradient(180deg, #07070c 0%, #0a0a0f 100%);
+      color: var(--text);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      opacity: .55;
+      z-index: 0;
+    }
+    a { color: inherit; }
+    nav {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1.1rem 3rem;
+      border-bottom: 1px solid var(--border);
+      background: rgba(10,10,15,.84);
+      backdrop-filter: blur(14px);
+    }
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: .8rem;
+      letter-spacing: .08em;
+      color: var(--accent2);
+      text-decoration: none;
+    }
+    .nav-links { list-style: none; display: flex; gap: 1.6rem; flex-wrap: wrap; }
+    .nav-links a {
+      font-family: var(--mono);
+      font-size: .74rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color .2s ease;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .hero, section, footer {
+      width: min(1100px, calc(100% - 3rem));
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+    .hero {
+      min-height: 100vh;
+      padding: 8.8rem 0 4rem;
+      display: grid;
+      align-items: center;
+    }
+    .hero-inner { max-width: 760px; }
+    .hero-tag, .section-label, .building-status, .stat-label, .project-num, .connect-platform {
+      font-family: var(--mono);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: .6rem;
+      color: var(--accent2);
+      font-size: .72rem;
+      margin-bottom: 1.2rem;
+    }
+    .hero-tag::before, .section-label::before {
+      content: '';
+      display: inline-block;
+      width: 1.2rem;
+      height: 1px;
+      background: currentColor;
+    }
+    .hero-name {
+      font-size: clamp(3.4rem, 10vw, 7rem);
+      line-height: .92;
+      letter-spacing: -.05em;
+      font-weight: 800;
+      margin-bottom: 1.2rem;
+    }
+    .hero-name span {
+      display: block;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255,255,255,.24);
+    }
+    .hero-tagline {
+      max-width: 58ch;
+      color: var(--muted);
+      font-size: 1.08rem;
+      line-height: 1.72;
+      margin-bottom: 2rem;
+    }
+    .hero-tagline strong { color: var(--text); }
+    .hero-cta { display: flex; flex-wrap: wrap; gap: .9rem; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      padding: .8rem 1.2rem;
+      border-radius: 999px;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      font-family: var(--mono);
+      font-size: .75rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      transition: transform .2s ease, border-color .2s ease, background .2s ease, color .2s ease;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .btn-primary:hover { background: transparent; color: var(--accent); }
+    .btn-ghost { background: rgba(255,255,255,.02); color: var(--text); }
+    .btn-ghost:hover { border-color: var(--border2); color: var(--accent2); }
+    section { padding: 5rem 0; }
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: .6rem;
+      color: var(--accent2);
+      font-size: .7rem;
+      margin-bottom: .8rem;
+    }
+    .section-title {
+      font-size: clamp(1.9rem, 4vw, 3rem);
+      line-height: 1.08;
+      letter-spacing: -.04em;
+      margin-bottom: 2rem;
+      font-weight: 800;
+    }
+    .about-grid, .projects-grid, .connect-grid { margin-top: 1rem; }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+    .about-text p, .building-desc, .project-desc {
+      color: var(--muted);
+      font-size: 1rem;
+    }
+    .about-text p { margin-bottom: 1rem; }
+    .about-text strong { color: var(--text); }
+    .about-stats {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1px;
+      border: 1px solid var(--border);
+      background: var(--border);
+      overflow: hidden;
+    }
+    .stat { background: var(--bg2); padding: 1.2rem; min-height: 110px; }
+    .stat-num { display: block; font-size: 1.8rem; line-height: 1; color: var(--accent); margin-bottom: .35rem; font-weight: 800; }
+    .stat-label { font-size: .68rem; color: var(--muted); }
+    .projects-grid {
+      display: grid;
+      gap: 1px;
+      border: 1px solid var(--border);
+      background: var(--border);
+      overflow: hidden;
+    }
+    .project-card {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1rem;
+      align-items: start;
+      padding: 1.6rem;
+      background: var(--bg2);
+      text-decoration: none;
+      color: inherit;
+      transition: background .2s ease;
+    }
+    .project-card:hover { background: var(--bg3); }
+    .project-num { color: var(--accent2); font-size: .68rem; margin-bottom: .6rem; }
+    .project-title { font-size: 1.25rem; line-height: 1.2; margin-bottom: .5rem; letter-spacing: -.02em; }
+    .project-desc { margin-bottom: 1rem; line-height: 1.7; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: .45rem; }
+    .tag {
+      font-family: var(--mono);
+      font-size: .64rem;
+      color: #8ebcff;
+      background: rgba(79,143,255,.1);
+      border: 1px solid rgba(79,143,255,.14);
+      border-radius: 999px;
+      padding: .28rem .58rem;
+    }
+    .project-arrow, .connect-arrow { color: var(--muted); transition: color .2s ease, transform .2s ease; }
+    .project-card:hover .project-arrow, .connect-link:hover .connect-arrow { color: var(--accent); transform: translate(2px, -2px); }
+    .building-card {
+      position: relative;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      padding: 1.5rem;
+      overflow: hidden;
+    }
+    .building-card::before {
+      content: '';
+      position: absolute;
+      inset: 0 auto auto 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent2), var(--accent), var(--accent3));
+    }
+    .building-status {
+      display: inline-flex;
+      align-items: center;
+      gap: .55rem;
+      color: var(--accent2);
+      font-size: .68rem;
+      margin-bottom: .8rem;
+    }
+    .dot {
+      width: .45rem; height: .45rem; border-radius: 50%; background: var(--accent2); animation: pulse 1.5s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1; transform:scale(1)} 50%{opacity:.35; transform:scale(.82)} }
+    .building-title { font-size: 1.35rem; margin-bottom: .7rem; letter-spacing: -.02em; }
+    .building-desc { max-width: 78ch; line-height: 1.75; }
+    .skill-graph-wrap {
+      position: relative;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.02);
+      overflow: hidden;
+    }
+    .skill-controls {
+      position: absolute;
+      top: .9rem;
+      right: .9rem;
+      z-index: 3;
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      padding: .35rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(10,10,15,.72);
+      backdrop-filter: blur(10px);
+    }
+    .skill-control {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: .68rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      padding: .45rem .6rem;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+    .skill-control:hover { background: rgba(255,255,255,.08); color: var(--accent2); }
+    .skill-zoom-value {
+      min-width: 3.5rem;
+      text-align: right;
+      padding-left: .5rem;
+      margin-left: .15rem;
+      border-left: 1px solid var(--border);
+      font-family: var(--mono);
+      font-size: .68rem;
+      color: var(--muted);
+    }
+    #skillCanvas { display: block; width: 100%; height: 580px; cursor: grab; }
+    .skill-tooltip {
+      position: absolute;
+      z-index: 4;
+      pointer-events: none;
+      opacity: 0;
+      padding: .35rem .6rem;
+      border: 1px solid rgba(29,233,182,.35);
+      border-radius: .4rem;
+      background: #12121c;
+      font-family: var(--mono);
+      font-size: .68rem;
+      color: var(--text);
+      white-space: nowrap;
+      transition: opacity .15s ease;
+    }
+    .connect-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1px;
+      border: 1px solid var(--border);
+      background: var(--border);
+      overflow: hidden;
+    }
+    .connect-link {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: .8rem;
+      align-items: center;
+      padding: 1.2rem;
+      background: var(--bg2);
+      text-decoration: none;
+      color: var(--muted);
+      transition: background .2s ease, color .2s ease;
+    }
+    .connect-link:hover { background: var(--bg3); color: var(--text); }
+    .connect-icon {
+      width: 2.35rem; height: 2.35rem; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+      border: 1px solid rgba(255,255,255,.08); background: rgba(255,255,255,.04); color: var(--accent2); flex-shrink: 0;
+    }
+    .connect-icon i { font-size: .95rem; }
+    .connect-copy { display: flex; flex-direction: column; gap: .2rem; min-width: 0; }
+    .connect-platform { color: var(--accent2); font-size: .64rem; }
+    .connect-name { color: var(--text); font-size: 1rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    footer {
+      padding: 2rem 0 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: .68rem;
+      border-top: 1px solid var(--border);
+      margin-top: 3rem;
+    }
+    .fade-in { opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+    .hero-glow {
+      position: absolute;
+      right: -6rem;
+      top: 3rem;
+      width: 26rem;
+      height: 26rem;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(79,143,255,.08), transparent 68%);
+      pointer-events: none;
+    }
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.25rem; }
+      .hero, section, footer { width: min(100% - 2rem, 1100px); }
+      .about-grid { grid-template-columns: 1fr; }
+      .project-card { grid-template-columns: 1fr; }
+      #skillCanvas { height: 520px; }
+    }
+    @media (max-width: 640px) {
+      nav { flex-direction: column; align-items: flex-start; }
+      .nav-links { gap: 1rem; }
+      .hero { padding-top: 9.8rem; }
+      .hero-name { font-size: clamp(3rem, 17vw, 5rem); }
+      .hero-tagline { font-size: 1rem; }
+      .section-title { margin-bottom: 1.4rem; }
+      .connect-link { grid-template-columns: auto 1fr; }
+      .connect-arrow { display: none; }
+      footer { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="#" class="nav-logo">tv.dev</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#building">Building</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#connect">Connect</a></li>
+    </ul>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-inner">
+      <p class="hero-tag fade-in">Available for collaboration</p>
+      <h1 class="hero-name fade-in">Taksh <span>Vadaliya</span></h1>
+      <p class="hero-tagline fade-in">
+        Building <strong>AI agents & agentic systems</strong> that think, plan, and act, from swarm orchestration to
+        RAG pipelines. Self-taught, India-based, obsessed with what LLMs can do next.
+      </p>
+      <div class="hero-cta fade-in">
+        <a href="#projects" class="btn btn-primary">View Projects ↓</a>
+        <a href="https://github.com/Taksh-v" target="_blank" rel="noreferrer" class="btn btn-ghost">GitHub ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <section id="about">
+    <p class="section-label fade-in">Who I am</p>
+    <h2 class="section-title fade-in">Self-taught builder<br>focused on agentic AI</h2>
+    <div class="about-grid">
+      <div class="about-text fade-in">
+        <p>I'm <strong>Taksh Vadaliya</strong>, a self-taught developer from India. I got hooked on AI not through a course or a degree, but by building things and breaking them until they worked.</p>
+        <p>My focus is <strong>agentic systems</strong> — AI that doesn't just respond, but plans, reasons, delegates, and executes. I build multi-agent architectures, RAG pipelines, and autonomous workflows.</p>
+        <p>Right now I'm deep in <strong>swarm-based agent systems</strong> and exploring how to make AI genuinely useful in real-world domains like compliance, finance, and research.</p>
+      </div>
+      <div class="about-stats fade-in">
+        <div class="stat"><span class="stat-num">8</span><span class="stat-label">Repos on GitHub</span></div>
+        <div class="stat"><span class="stat-num">2+</span><span class="stat-label">Agentic Systems</span></div>
+        <div class="stat"><span class="stat-num">RAG</span><span class="stat-label">Core Specialty</span></div>
+        <div class="stat"><span class="stat-num">India</span><span class="stat-label">Based</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <p class="section-label fade-in">What I've built</p>
+    <h2 class="section-title fade-in">Projects</h2>
+    <div class="projects-grid">
+      <a href="https://github.com/Taksh-v/CaaS" target="_blank" rel="noreferrer" class="project-card fade-in">
+        <div>
+          <p class="project-num">01 / Featured</p>
+          <h3 class="project-title">CaaS — Compliance as a Service</h3>
+          <p class="project-desc">A full multi-agent swarm system for fintech and tech firms. Includes planner, coder, debugger, feasibility, market researcher, production, and swarm manager agents orchestrated to handle compliance workflows autonomously.</p>
+          <div class="project-tags">
+            <span class="tag">Python</span><span class="tag">Multi-Agent</span><span class="tag">Swarm Orchestration</span><span class="tag">Fintech</span><span class="tag">Agentic AI</span>
+          </div>
+        </div>
+        <span class="project-arrow">↗</span>
+      </a>
+      <a href="https://github.com/Taksh-v/Qual" target="_blank" rel="noreferrer" class="project-card fade-in">
+        <div>
+          <p class="project-num">02 / Featured</p>
+          <h3 class="project-title">Qual — Finance Analysis System</h3>
+          <p class="project-desc">A RAG-powered finance intelligence system for global and national market trends with ingestion pipelines, embeddings, indexing, news ingestion, auditing, and an API layer for querying reports.</p>
+          <div class="project-tags">
+            <span class="tag">Python</span><span class="tag">RAG</span><span class="tag">Embeddings</span><span class="tag">Finance</span><span class="tag">LLM</span><span class="tag">Data Pipelines</span>
+          </div>
+        </div>
+        <span class="project-arrow">↗</span>
+      </a>
+      <a href="https://github.com/Taksh-v/The-DDAS-" target="_blank" rel="noreferrer" class="project-card fade-in">
+        <div>
+          <p class="project-num">03</p>
+          <h3 class="project-title">DDAS — Data Duplication Alert System</h3>
+          <p class="project-desc">A systems-level tool written in C that scans a computer for duplicate files and alerts the user. Demonstrates low-level file I/O, hashing, and systems programming fundamentals.</p>
+          <div class="project-tags">
+            <span class="tag">C</span><span class="tag">Systems Programming</span><span class="tag">File I/O</span>
+          </div>
+        </div>
+        <span class="project-arrow">↗</span>
+      </a>
+    </div>
+  </section>
+
+  <section id="building">
+    <p class="section-label fade-in">Work in progress</p>
+    <h2 class="section-title fade-in">Currently building</h2>
+    <div class="building-card fade-in">
+      <p class="building-status"><span class="dot"></span> Active development</p>
+      <h3 class="building-title">Agentic Systems & Agent Architectures</h3>
+      <p class="building-desc">Exploring how to make multi-agent systems more reliable, context-aware, and production-ready. Currently working on agent memory, tool use patterns, and how swarms can collaborate on complex real-world tasks without losing coherence.</p>
+    </div>
+  </section>
+
+  <section id="skills">
+    <p class="section-label fade-in">Tech stack</p>
+    <h2 class="section-title fade-in">Skills & Stack</h2>
+    <div class="skill-graph-wrap fade-in">
+      <div class="skill-controls" aria-label="Skills graph zoom controls">
+        <button class="skill-control" type="button" data-zoom="out">-</button>
+        <button class="skill-control" type="button" data-zoom="reset">Reset</button>
+        <button class="skill-control" type="button" data-zoom="in">+</button>
+        <span class="skill-zoom-value" id="skillZoomValue">95%</span>
+      </div>
+      <canvas id="skillCanvas"></canvas>
+      <div class="skill-tooltip" id="skillTip"></div>
+    </div>
+  </section>
+
+  <section id="connect">
+    <p class="section-label fade-in">Get in touch</p>
+    <h2 class="section-title fade-in">Let's connect</h2>
+    <div class="connect-grid fade-in">
+      <a href="https://github.com/Taksh-v" target="_blank" rel="noreferrer" class="connect-link">
+        <span class="connect-icon" aria-hidden="true"><i class="fa-brands fa-github"></i></span>
+        <span class="connect-copy"><span class="connect-platform">GitHub</span><span class="connect-name">Taksh-v</span></span>
+        <span class="connect-arrow">↗</span>
+      </a>
+      <a href="https://www.linkedin.com/in/taksh-vadaliya-b363ab272" target="_blank" rel="noreferrer" class="connect-link">
+        <span class="connect-icon" aria-hidden="true"><i class="fa-brands fa-linkedin-in"></i></span>
+        <span class="connect-copy"><span class="connect-platform">LinkedIn</span><span class="connect-name">Taksh Vadaliya</span></span>
+        <span class="connect-arrow">↗</span>
+      </a>
+      <a href="https://www.reddit.com/user/Taxinosogood/" target="_blank" rel="noreferrer" class="connect-link">
+        <span class="connect-icon" aria-hidden="true"><i class="fa-brands fa-reddit-alien"></i></span>
+        <span class="connect-copy"><span class="connect-platform">Reddit</span><span class="connect-name">Taxinosogood</span></span>
+        <span class="connect-arrow">↗</span>
+      </a>
+      <a href="mailto:vadaliyataksh06@gmail.com" class="connect-link">
+        <span class="connect-icon" aria-hidden="true"><i class="fa-solid fa-envelope"></i></span>
+        <span class="connect-copy"><span class="connect-platform">Email</span><span class="connect-name">Say hello</span></span>
+        <span class="connect-arrow">↗</span>
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2026 Taksh Vadaliya</p>
+    <p>Built with intent. Deployed with heart.</p>
+  </footer>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) entry.target.classList.add('visible');
+        });
+      }, { threshold: 0.1 });
+      document.querySelectorAll('.fade-in').forEach((element) => observer.observe(element));
+
+      const canvas = document.getElementById('skillCanvas');
+      const tip = document.getElementById('skillTip');
+      const zoomLabel = document.getElementById('skillZoomValue');
+      if (!canvas || !tip) return;
+      const ctx = canvas.getContext('2d');
+
+      const COLORS = {
+        text: '#eef0ff', muted: '#8a8fb3', nodeBg: '#141420', nodeHover: '#1c1c2d',
+      };
+      const NODE = { w: 172, h: 42, rootW: 210, rootH: 54, gapX: 18, gapY: 98, pad: 60, radius: 6 };
+      const ANIM = 320;
+      const STATE = { scale: 0.95, min: 0.75, max: 1.45 };
+
+      const data = {
+        label: 'Taksh Vadaliya', sub: 'AI Agent Builder', color: '#1de9b6', children: [
+          { label: 'Languages', color: '#4f8fff', children: [
+            { label: 'Python', color: '#4f8fff', core: true },
+            { label: 'JavaScript', color: '#4f8fff' },
+            { label: 'C', color: '#4f8fff' },
+            { label: 'Java', color: '#4f8fff' },
+          ]},
+          { label: 'AI & Agents', color: '#1de9b6', children: [
+            { label: 'Agent Swarms', color: '#1de9b6', core: true },
+            { label: 'Swarm Orchestration', color: '#1de9b6', core: true },
+            { label: 'RAG Pipelines', color: '#1de9b6', core: true },
+            { label: 'LLM APIs', color: '#1de9b6', core: true },
+            { label: 'Prompt Engineering', color: '#1de9b6' },
+            { label: 'Tool Use / MCP', color: '#1de9b6' },
+          ]},
+          { label: 'Data & ML', color: '#9d7fe8', children: [
+            { label: 'FAISS', color: '#9d7fe8', core: true },
+            { label: 'numpy / pandas', color: '#9d7fe8' },
+            { label: 'yfinance', color: '#9d7fe8' },
+            { label: 'feedparser', color: '#9d7fe8' },
+            { label: 'BeautifulSoup4', color: '#9d7fe8' },
+            { label: 'NLTK', color: '#9d7fe8' },
+          ]},
+          { label: 'Backend & Infra', color: '#f0a500', children: [
+            { label: 'FastAPI', color: '#f0a500', core: true },
+            { label: 'uvicorn', color: '#f0a500' },
+            { label: 'REST APIs', color: '#f0a500' },
+            { label: 'GitHub Actions', color: '#f0a500' },
+            { label: 'Git / CLI', color: '#f0a500' },
+          ]},
+          { label: 'Domain', color: '#ff6b6b', children: [
+            { label: 'Compliance (CaaS)', color: '#ff6b6b', core: true },
+            { label: 'DPDP Act 2023', color: '#ff6b6b' },
+            { label: 'KYC / AML', color: '#ff6b6b' },
+            { label: 'RBI Digital Lending', color: '#ff6b6b' },
+            { label: 'Finance Analysis', color: '#ff6b6b' },
+            { label: 'Reg Intelligence', color: '#ff6b6b' },
+          ]},
+        ]
+      };
+
+      let nextId = 0;
+      const collapsed = new Set();
+      const allNodes = [];
+      const allEdges = [];
+      const nodeMap = new Map();
+
+      function build(nodeData, parentId = null, depth = 0) {
+        const node = {
+          id: depth === 0 ? 'root' : `node-${nextId++}`,
+          parentId,
+          depth,
+          label: nodeData.label,
+          sub: nodeData.sub || '',
+          color: nodeData.color,
+          core: !!nodeData.core,
+          isRoot: depth === 0,
+          hasChildren: Array.isArray(nodeData.children) && nodeData.children.length > 0,
+          children: [],
+          w: depth === 0 ? NODE.rootW : NODE.w,
+          h: depth === 0 ? NODE.rootH : NODE.h,
+          r: NODE.radius,
+          subtreeWidth: 0,
+          targetX: 0, targetY: 0, targetOpacity: 0,
+          currentX: 0, currentY: 0, currentOpacity: 0,
+          fromX: 0, fromY: 0, fromOpacity: 0,
+          toX: 0, toY: 0, toOpacity: 0,
+        };
+        node.children = (nodeData.children || []).map((child) => build(child, node.id, depth + 1));
+        node.hasChildren = node.children.length > 0;
+        nodeMap.set(node.id, node);
+        allNodes.push(node);
+        node.children.forEach((child) => allEdges.push({ fromId: node.id, toId: child.id }));
+        return node;
+      }
+
+      const root = build(data);
+      let visibleBounds = { minX: 0, maxX: 0, minY: 0, maxY: 0 };
+      let pan = { x: 0, y: 0 };
+      let dpr = window.devicePixelRatio || 1;
+      let CW = 0;
+      let animFrame = 0;
+      let animStart = null;
+      let animDone = false;
+      let started = false;
+      let isDragging = false;
+      let pointerDown = false;
+      let pointerDownNode = null;
+      let dragStart = { x: 0, y: 0 };
+      let panStart = { x: 0, y: 0 };
+      let hoverNode = null;
+
+      function rgb(hex) {
+        const r = parseInt(hex.slice(1, 3), 16);
+        const g = parseInt(hex.slice(3, 5), 16);
+        const b = parseInt(hex.slice(5, 7), 16);
+        return `${r},${g},${b}`;
+      }
+      function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
+      function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+      function roundRect(x, y, w, h, r) {
+        ctx.beginPath();
+        ctx.moveTo(x + r, y);
+        ctx.lineTo(x + w - r, y);
+        ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+        ctx.lineTo(x + w, y + h - r);
+        ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+        ctx.lineTo(x + r, y + h);
+        ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+        ctx.lineTo(x, y + r);
+        ctx.quadraticCurveTo(x, y, x + r, y);
+        ctx.closePath();
+      }
+      function bezierPoint(t, x1, y1, cx1, cy1, cx2, cy2, x2, y2) {
+        const u = 1 - t;
+        return [
+          u * u * u * x1 + 3 * u * u * t * cx1 + 3 * u * t * t * cx2 + t * t * t * x2,
+          u * u * u * y1 + 3 * u * u * t * cy1 + 3 * u * t * t * cy2 + t * t * t * y2,
+        ];
+      }
+
+      function expanded(node) { return node.children.length > 0 && !collapsed.has(node.id); }
+
+      function measure(node, depth = 0) {
+        node.depth = depth;
+        if (!expanded(node)) {
+          node.subtreeWidth = node.w;
+          return node.subtreeWidth;
+        }
+        const widths = node.children.map((child) => measure(child, depth + 1));
+        node.subtreeWidth = Math.max(node.w, widths.reduce((a, b) => a + b, 0) + Math.max(0, widths.length - 1) * NODE.gapX);
+        return node.subtreeWidth;
+      }
+
+      function place(node, left = NODE.pad, depth = 0, visible = new Set()) {
+        const row = node.isRoot ? NODE.rootH + NODE.gapY : NODE.h + NODE.gapY;
+        node.targetX = left + (node.subtreeWidth - node.w) / 2;
+        node.targetY = NODE.pad + depth * row;
+        node.targetOpacity = 1;
+        visible.add(node.id);
+        if (!expanded(node)) return visible;
+        const total = node.children.reduce((a, b) => a + b.subtreeWidth, 0) + Math.max(0, node.children.length - 1) * NODE.gapX;
+        let childLeft = left + (node.subtreeWidth - total) / 2;
+        node.children.forEach((child) => {
+          place(child, childLeft, depth + 1, visible);
+          childLeft += child.subtreeWidth + NODE.gapX;
+        });
+        return visible;
+      }
+
+      function hideMissing(node, visible) {
+        if (visible.has(node.id)) {
+          node.children.forEach((child) => hideMissing(child, visible));
+          return;
+        }
+        node.targetOpacity = 0;
+        const parent = node.parentId ? nodeMap.get(node.parentId) : null;
+        node.targetX = parent ? parent.targetX : node.targetX;
+        node.targetY = parent ? parent.targetY : node.targetY;
+        node.children.forEach((child) => hideMissing(child, visible));
+      }
+
+      function layout() {
+        CW = canvas.offsetWidth;
+        measure(root, 0);
+        const visible = place(root, NODE.pad, 0, new Set());
+        hideMissing(root, visible);
+        const visibleNodes = allNodes.filter((node) => visible.has(node.id));
+        visibleBounds = {
+          minX: Math.min(...visibleNodes.map((n) => n.targetX)),
+          maxX: Math.max(...visibleNodes.map((n) => n.targetX + n.w)) + NODE.pad,
+          minY: Math.min(...visibleNodes.map((n) => n.targetY)),
+          maxY: Math.max(...visibleNodes.map((n) => n.targetY + n.h)) + NODE.pad,
+        };
+        const height = Math.min(visibleBounds.maxY + 40, 580);
+        canvas.width = CW * dpr;
+        canvas.height = height * dpr;
+        canvas.style.height = `${height}px`;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        return visible;
+      }
+
+      function centerGraph() {
+        const dispH = canvas.height / dpr;
+        const graphWidth = visibleBounds.maxX - visibleBounds.minX;
+        const graphHeight = visibleBounds.maxY - visibleBounds.minY;
+        pan.x = (CW / STATE.scale - graphWidth) / 2 - visibleBounds.minX;
+        pan.y = Math.max(0, (dispH / STATE.scale - graphHeight) / 2 - visibleBounds.minY + 10);
+      }
+
+      function updateZoom() { zoomLabel.textContent = `${Math.round(STATE.scale * 100)}%`; }
+      function setInstant() {
+        allNodes.forEach((node) => {
+          node.currentX = node.targetX;
+          node.currentY = node.targetY;
+          node.currentOpacity = node.targetOpacity;
+          node.fromX = node.targetX; node.fromY = node.targetY; node.fromOpacity = node.targetOpacity;
+          node.toX = node.targetX; node.toY = node.targetY; node.toOpacity = node.targetOpacity;
+        });
+      }
+      function snapshot() {
+        const map = new Map();
+        allNodes.forEach((node) => map.set(node.id, { x: node.currentX, y: node.currentY, opacity: node.currentOpacity }));
+        return map;
+      }
+      function applyTransition(prev) {
+        allNodes.forEach((node) => {
+          const old = prev.get(node.id) || { x: node.targetX, y: node.targetY, opacity: 0 };
+          node.fromX = old.x; node.fromY = old.y; node.fromOpacity = old.opacity;
+          node.toX = node.targetX; node.toY = node.targetY; node.toOpacity = node.targetOpacity;
+          if (node.fromOpacity <= 0.001 && node.toOpacity > 0.001) {
+            const parent = node.parentId ? nodeMap.get(node.parentId) : null;
+            const parentOld = parent ? prev.get(parent.id) : null;
+            node.fromX = parentOld ? parentOld.x : (parent ? parent.targetX : node.targetX);
+            node.fromY = parentOld ? parentOld.y : (parent ? parent.targetY : node.targetY);
+          }
+          if (node.toOpacity <= 0.001 && node.fromOpacity > 0.001) {
+            const parent = node.parentId ? nodeMap.get(node.parentId) : null;
+            node.toX = parent ? parent.targetX : node.targetX;
+            node.toY = parent ? parent.targetY : node.targetY;
+          }
+        });
+        animStart = null;
+        animDone = false;
+        cancelAnimationFrame(animFrame);
+        animFrame = requestAnimationFrame(animate);
+      }
+
+      function drawEdge(from, to) {
+        const opacity = Math.min(from.currentOpacity, to.currentOpacity);
+        if (opacity <= 0.02) return;
+        const x1 = from.currentX + from.w / 2, y1 = from.currentY + from.h;
+        const x2 = to.currentX + to.w / 2, y2 = to.currentY;
+        const c1x = x1, c1y = y1 + (y2 - y1) * 0.55;
+        const c2x = x2, c2y = y2 - (y2 - y1) * 0.55;
+        ctx.beginPath();
+        for (let i = 0; i <= 36; i++) {
+          const [bx, by] = bezierPoint(i / 36, x1, y1, c1x, c1y, c2x, c2y, x2, y2);
+          if (i === 0) ctx.moveTo(bx, by); else ctx.lineTo(bx, by);
+        }
+        ctx.setLineDash([5, 4]);
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = `rgba(${rgb(to.color)},${.35 * opacity})`;
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+
+      function drawNode(node) {
+        if (node.currentOpacity <= 0.02) return;
+        const x = node.currentX, y = node.currentY, w = node.w, h = node.h;
+        const hover = node === hoverNode;
+        ctx.save();
+        ctx.globalAlpha = node.currentOpacity;
+        if (hover || node.core || node.isRoot) {
+          ctx.shadowColor = node.color;
+          ctx.shadowBlur = hover ? 18 : node.isRoot ? 12 : 7;
+        }
+        roundRect(x, y, w, h, node.r);
+        ctx.fillStyle = hover ? COLORS.nodeHover : COLORS.nodeBg;
+        ctx.fill();
+        roundRect(x, y, w, h, node.r);
+        ctx.strokeStyle = hover ? `rgba(${rgb(node.color)},.8)` : (node.core || node.isRoot) ? `rgba(${rgb(node.color)},.55)` : 'rgba(255,255,255,.08)';
+        ctx.lineWidth = hover || node.core || node.isRoot ? 1.4 : 1;
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+
+        const dotX = x + 13, dotY = y + h / 2, dotR = node.isRoot ? 5 : 3.5;
+        ctx.beginPath(); ctx.arc(dotX, dotY, dotR, 0, Math.PI * 2);
+        ctx.strokeStyle = node.color; ctx.lineWidth = 1.5; ctx.stroke();
+        if (node.core || node.isRoot || hover) { ctx.beginPath(); ctx.arc(dotX, dotY, dotR - 1.5, 0, Math.PI * 2); ctx.fillStyle = node.color; ctx.fill(); }
+
+        const labelX = dotX + dotR + 7;
+        ctx.textBaseline = 'middle'; ctx.textAlign = 'left';
+        if (node.isRoot) {
+          ctx.font = "700 12px 'Space Mono',monospace";
+          ctx.fillStyle = COLORS.text;
+          ctx.fillText(node.label, labelX, y + h / 2 - 7);
+          ctx.font = "400 9px 'Space Mono',monospace";
+          ctx.fillStyle = node.color;
+          ctx.fillText(node.sub, labelX, y + h / 2 + 7);
+        } else {
+          ctx.font = "400 10px 'Space Mono',monospace";
+          ctx.fillStyle = hover || node.core ? COLORS.text : COLORS.muted;
+          let label = node.label;
+          const maxWidth = w - labelX + x - 10;
+          while (ctx.measureText(label).width > maxWidth && label.length > 4) label = label.slice(0, -1);
+          if (label !== node.label) label = `${label.slice(0, -1)}…`;
+          ctx.fillText(label, labelX, y + h / 2);
+        }
+
+        if (node.hasChildren) {
+          const badge = 16;
+          const bx = x + w - badge - 12;
+          const by = y + h / 2 - badge / 2;
+          ctx.beginPath();
+          ctx.arc(bx + badge / 2, by + badge / 2, badge / 2, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(255,255,255,.06)';
+          ctx.fill();
+          ctx.strokeStyle = `rgba(${rgb(node.color)},.4)`;
+          ctx.stroke();
+          ctx.font = "700 11px 'Space Mono',monospace";
+          ctx.fillStyle = node.color;
+          ctx.textAlign = 'center';
+          ctx.fillText(collapsed.has(node.id) ? '+' : '−', bx + badge / 2, by + badge / 2 + .5);
+        }
+        ctx.restore();
+      }
+
+      function drawScene() {
+        const dispH = canvas.height / dpr;
+        ctx.clearRect(0, 0, CW, dispH);
+        ctx.fillStyle = 'rgba(255,255,255,.022)';
+        const grid = 28;
+        const offX = ((pan.x * STATE.scale) % grid + grid) % grid;
+        const offY = ((pan.y * STATE.scale) % grid + grid) % grid;
+        for (let x = offX; x < CW; x += grid) {
+          for (let y = offY; y < dispH; y += grid) {
+            ctx.beginPath(); ctx.arc(x, y, 1, 0, Math.PI * 2); ctx.fill();
+          }
+        }
+        if (!isDragging && animDone) {
+          ctx.font = "400 10px 'Space Mono',monospace";
+          ctx.fillStyle = 'rgba(255,255,255,.12)';
+          ctx.textAlign = 'center';
+          ctx.fillText('drag to pan', CW / 2, dispH - 14);
+          ctx.textAlign = 'left';
+        }
+        ctx.save();
+        ctx.translate(pan.x * STATE.scale, pan.y * STATE.scale);
+        ctx.scale(STATE.scale, STATE.scale);
+        allEdges.forEach((edge) => drawEdge(nodeMap.get(edge.fromId), nodeMap.get(edge.toId)));
+        allNodes.forEach((node) => drawNode(node));
+        ctx.restore();
+      }
+
+      function animate(ts) {
+        if (!animStart) animStart = ts;
+        const t = easeOut(clamp((ts - animStart) / ANIM, 0, 1));
+        allNodes.forEach((node) => {
+          node.currentX = node.fromX + (node.toX - node.fromX) * t;
+          node.currentY = node.fromY + (node.toY - node.fromY) * t;
+          node.currentOpacity = node.fromOpacity + (node.toOpacity - node.fromOpacity) * t;
+        });
+        drawScene();
+        if (t < 1) {
+          animFrame = requestAnimationFrame(animate);
+        } else {
+          allNodes.forEach((node) => {
+            node.currentX = node.toX; node.currentY = node.toY; node.currentOpacity = node.toOpacity;
+          });
+          animDone = true;
+          drawScene();
+        }
+      }
+
+      function getPos(ev) {
+        const rect = canvas.getBoundingClientRect();
+        if (ev.touches) return { x: ev.touches[0].clientX - rect.left, y: ev.touches[0].clientY - rect.top };
+        return { x: ev.clientX - rect.left, y: ev.clientY - rect.top };
+      }
+
+      function findNodeAt(pos) {
+        const mx = pos.x / STATE.scale - pan.x;
+        const my = pos.y / STATE.scale - pan.y;
+        for (let i = allNodes.length - 1; i >= 0; i--) {
+          const node = allNodes[i];
+          if (node.currentOpacity <= .2) continue;
+          if (mx >= node.currentX && mx <= node.currentX + node.w && my >= node.currentY && my <= node.currentY + node.h) return node;
+        }
+        return null;
+      }
+
+      function toggle(node) {
+        if (!node || !node.hasChildren) return;
+        const prev = snapshot();
+        if (collapsed.has(node.id)) collapsed.delete(node.id); else collapsed.add(node.id);
+        layout();
+        applyTransition(prev);
+      }
+
+      function buildInitial() {
+        layout();
+        centerGraph();
+        setInstant();
+        animDone = true;
+        drawScene();
+        updateZoom();
+      }
+
+      function zoomTo(nextScale, anchorX = CW / 2, anchorY = canvas.height / dpr / 2) {
+        const clamped = clamp(nextScale, STATE.min, STATE.max);
+        const worldX = anchorX / STATE.scale - pan.x;
+        const worldY = anchorY / STATE.scale - pan.y;
+        STATE.scale = clamped;
+        pan.x = anchorX / STATE.scale - worldX;
+        pan.y = anchorY / STATE.scale - worldY;
+        drawScene();
+        updateZoom();
+      }
+
+      canvas.addEventListener('mousedown', (ev) => {
+        dragStart = getPos(ev);
+        panStart = { x: pan.x, y: pan.y };
+        pointerDown = true;
+        pointerDownNode = findNodeAt(dragStart);
+        isDragging = false;
+        canvas.style.cursor = 'grabbing';
+      });
+      canvas.addEventListener('touchstart', (ev) => {
+        dragStart = getPos(ev);
+        panStart = { x: pan.x, y: pan.y };
+        pointerDown = true;
+        pointerDownNode = findNodeAt(dragStart);
+        isDragging = false;
+      }, { passive: true });
+      canvas.addEventListener('mousemove', (ev) => {
+        const pos = getPos(ev);
+        if (pointerDown) {
+          const dx = pos.x - dragStart.x;
+          const dy = pos.y - dragStart.y;
+          if (!isDragging && Math.hypot(dx, dy) > 5) isDragging = true;
+        }
+        if (isDragging) {
+          const dx = pos.x - dragStart.x;
+          const dy = pos.y - dragStart.y;
+          const dispH = canvas.height / dpr;
+          const visibleW = CW / STATE.scale;
+          const visibleH = dispH / STATE.scale;
+          const graphWidth = visibleBounds.maxX - visibleBounds.minX;
+          const graphHeight = visibleBounds.maxY - visibleBounds.minY;
+          pan.x = Math.min(NODE.pad, Math.max(visibleW - graphWidth - NODE.pad, panStart.x + dx / STATE.scale));
+          pan.y = Math.min(NODE.pad, Math.max(visibleH - graphHeight - NODE.pad, panStart.y + dy / STATE.scale));
+          drawScene();
+          return;
+        }
+        const found = findNodeAt(pos);
+        if (found !== hoverNode) {
+          hoverNode = found;
+          if (hoverNode) {
+            tip.textContent = hoverNode.core ? `★ Core — ${hoverNode.label}` : hoverNode.label;
+            tip.style.left = `${((hoverNode.currentX + pan.x) * STATE.scale + hoverNode.w * STATE.scale / 2 - tip.offsetWidth / 2)}px`;
+            tip.style.top = `${((hoverNode.currentY + pan.y) * STATE.scale - 32)}px`;
+            tip.style.opacity = '1';
+            canvas.style.cursor = hoverNode.hasChildren ? 'pointer' : 'default';
+          } else {
+            tip.style.opacity = '0';
+            canvas.style.cursor = isDragging ? 'grabbing' : 'grab';
+          }
+          drawScene();
+        }
+      });
+      canvas.addEventListener('touchmove', (ev) => { ev.preventDefault(); canvas.dispatchEvent(new MouseEvent('mousemove', { clientX: ev.touches[0].clientX, clientY: ev.touches[0].clientY })); }, { passive: false });
+      canvas.addEventListener('wheel', (ev) => {
+        ev.preventDefault();
+        const rect = canvas.getBoundingClientRect();
+        zoomTo(STATE.scale * (ev.deltaY < 0 ? 1.08 : 0.92), ev.clientX - rect.left, ev.clientY - rect.top);
+      }, { passive: false });
+      function onUp() {
+        if (pointerDown && !isDragging && pointerDownNode && pointerDownNode.hasChildren) { toggle(pointerDownNode); return; }
+        pointerDown = false;
+        pointerDownNode = null;
+        isDragging = false;
+        canvas.style.cursor = hoverNode ? (hoverNode.hasChildren ? 'pointer' : 'default') : 'grab';
+      }
+      canvas.addEventListener('mouseup', onUp);
+      canvas.addEventListener('mouseleave', () => {
+        pointerDown = false; pointerDownNode = null; isDragging = false; hoverNode = null; tip.style.opacity = '0'; canvas.style.cursor = 'grab'; drawScene();
+      });
+      canvas.addEventListener('touchend', () => {
+        if (pointerDown && !isDragging && pointerDownNode && pointerDownNode.hasChildren) { toggle(pointerDownNode); return; }
+        pointerDown = false; pointerDownNode = null; isDragging = false; canvas.style.cursor = hoverNode ? (hoverNode.hasChildren ? 'pointer' : 'default') : 'grab';
+      });
+
+      document.querySelectorAll('[data-zoom]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const action = button.getAttribute('data-zoom');
+          if (action === 'in') zoomTo(STATE.scale * 1.12);
+          if (action === 'out') zoomTo(STATE.scale / 1.12);
+          if (action === 'reset') { STATE.scale = 0.95; centerGraph(); drawScene(); updateZoom(); }
+        });
+      });
+
+      buildInitial();
+      canvas.style.cursor = 'grab';
+      started = true;
+      window.addEventListener('resize', () => {
+        if (!started) return;
+        cancelAnimationFrame(animFrame);
+        dpr = window.devicePixelRatio || 1;
+        layout();
+        centerGraph();
+        setInstant();
+        drawScene();
+        updateZoom();
+      });
+    });
+  </script>
+</body>
+</html>
