@@ -1,20 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Taksh Vadaliya — AI Agent Builder</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     :root {
       --bg: #0a0a0f;
       --bg2: #10101a;
       --bg3: #171725;
-      --border: rgba(255,255,255,.08);
-      --border2: rgba(79,143,255,.24);
+      --border: rgba(255, 255, 255, .08);
+      --border2: rgba(79, 143, 255, .24);
       --accent: #4f8fff;
       --accent2: #1de9b6;
       --accent3: #f0a500;
@@ -24,18 +34,23 @@
       --mono: 'Space Mono', monospace;
       --sans: 'Syne', sans-serif;
     }
-    html { scroll-behavior: smooth; }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       font-family: var(--sans);
       background:
-        radial-gradient(circle at 20% 10%, rgba(79,143,255,.15), transparent 30%),
-        radial-gradient(circle at 80% 20%, rgba(29,233,182,.08), transparent 28%),
+        radial-gradient(circle at 20% 10%, rgba(79, 143, 255, .15), transparent 30%),
+        radial-gradient(circle at 80% 20%, rgba(29, 233, 182, .08), transparent 28%),
         linear-gradient(180deg, #07070c 0%, #0a0a0f 100%);
       color: var(--text);
       line-height: 1.7;
       overflow-x: hidden;
       -webkit-text-size-adjust: 100%;
     }
+
     body::before {
       content: '';
       position: fixed;
@@ -45,6 +60,7 @@
       opacity: .55;
       z-index: 0;
     }
+
     .ambient-field,
     .cursor-spotlight,
     .agent-network {
@@ -53,30 +69,43 @@
       pointer-events: none;
       z-index: 0;
     }
+
     .ambient-field {
       background:
-        radial-gradient(circle at 18% 20%, rgba(79,143,255,.08), transparent 22%),
-        radial-gradient(circle at 82% 26%, rgba(29,233,182,.05), transparent 24%),
-        radial-gradient(circle at 50% 78%, rgba(240,165,0,.035), transparent 28%);
+        radial-gradient(circle at 18% 20%, rgba(79, 143, 255, .08), transparent 22%),
+        radial-gradient(circle at 82% 26%, rgba(29, 233, 182, .05), transparent 24%),
+        radial-gradient(circle at 50% 78%, rgba(240, 165, 0, .035), transparent 28%);
       filter: blur(8px);
       opacity: .75;
       animation: ambientDrift 18s ease-in-out infinite alternate;
     }
+
     .cursor-spotlight {
-      background: radial-gradient(circle at var(--spot-x, 50%) var(--spot-y, 25%), rgba(79,143,255,.08), transparent 18%);
+      background: radial-gradient(circle at var(--spot-x, 50%) var(--spot-y, 25%), rgba(79, 143, 255, .08), transparent 18%);
       mix-blend-mode: screen;
       opacity: .55;
       transition: opacity .25s ease;
     }
+
     .agent-network {
       opacity: .42;
       mix-blend-mode: screen;
     }
+
     @keyframes ambientDrift {
-      0% { transform: translate3d(-1.5%, -1%, 0) scale(1); }
-      100% { transform: translate3d(1.5%, 1.25%, 0) scale(1.04); }
+      0% {
+        transform: translate3d(-1.5%, -1%, 0) scale(1);
+      }
+
+      100% {
+        transform: translate3d(1.5%, 1.25%, 0) scale(1.04);
+      }
     }
-    a { color: inherit; }
+
+    a {
+      color: inherit;
+    }
+
     nav {
       position: fixed;
       inset: 0 0 auto 0;
@@ -87,9 +116,10 @@
       gap: 1rem;
       padding: calc(1.1rem + env(safe-area-inset-top)) calc(3rem + env(safe-area-inset-right)) 1.1rem calc(3rem + env(safe-area-inset-left));
       border-bottom: 1px solid var(--border);
-      background: rgba(10,10,15,.84);
+      background: rgba(10, 10, 15, .84);
       backdrop-filter: blur(14px);
     }
+
     .nav-logo {
       font-family: var(--mono);
       font-size: .8rem;
@@ -97,7 +127,14 @@
       color: var(--accent2);
       text-decoration: none;
     }
-    .nav-links { list-style: none; display: flex; gap: 1.6rem; flex-wrap: wrap; }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 1.6rem;
+      flex-wrap: wrap;
+    }
+
     .nav-links a {
       font-family: var(--mono);
       font-size: .74rem;
@@ -107,25 +144,42 @@
       text-decoration: none;
       transition: color .2s ease;
     }
-    .nav-links a:hover { color: var(--text); }
-    .hero, section, footer {
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .hero,
+    section,
+    footer {
       width: min(1100px, calc(100% - 3rem));
       margin: 0 auto;
       position: relative;
       z-index: 1;
     }
+
     .hero {
       min-height: 100svh;
       padding: 8.8rem 0 4rem;
       display: grid;
       align-items: center;
     }
-    .hero-inner { max-width: 760px; }
-    .hero-tag, .section-label, .building-status, .stat-label, .project-num, .connect-platform {
+
+    .hero-inner {
+      max-width: 760px;
+    }
+
+    .hero-tag,
+    .section-label,
+    .building-status,
+    .stat-label,
+    .project-num,
+    .connect-platform {
       font-family: var(--mono);
       letter-spacing: .12em;
       text-transform: uppercase;
     }
+
     .hero-tag {
       display: inline-flex;
       align-items: center;
@@ -134,13 +188,16 @@
       font-size: .72rem;
       margin-bottom: 1.2rem;
     }
-    .hero-tag::before, .section-label::before {
+
+    .hero-tag::before,
+    .section-label::before {
       content: '';
       display: inline-block;
       width: 1.2rem;
       height: 1px;
       background: currentColor;
     }
+
     .hero-name {
       font-size: clamp(3.4rem, 10vw, 7rem);
       line-height: .92;
@@ -148,11 +205,13 @@
       font-weight: 800;
       margin-bottom: 1.2rem;
     }
+
     .hero-name span {
       display: block;
       color: transparent;
-      -webkit-text-stroke: 1px rgba(255,255,255,.24);
+      -webkit-text-stroke: 1px rgba(255, 255, 255, .24);
     }
+
     .hero-tagline {
       max-width: 58ch;
       color: var(--muted);
@@ -160,8 +219,17 @@
       line-height: 1.72;
       margin-bottom: 2rem;
     }
-    .hero-tagline strong { color: var(--text); }
-    .hero-cta { display: flex; flex-wrap: wrap; gap: .9rem; }
+
+    .hero-tagline strong {
+      color: var(--text);
+    }
+
+    .hero-cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .9rem;
+    }
+
     .btn {
       display: inline-flex;
       align-items: center;
@@ -176,12 +244,36 @@
       text-transform: uppercase;
       transition: transform .2s ease, border-color .2s ease, background .2s ease, color .2s ease;
     }
-    .btn:hover { transform: translateY(-1px); }
-    .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
-    .btn-primary:hover { background: transparent; color: var(--accent); }
-    .btn-ghost { background: rgba(255,255,255,.02); color: var(--text); }
-    .btn-ghost:hover { border-color: var(--border2); color: var(--accent2); }
-    section { padding: 5rem 0; }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: transparent;
+      color: var(--accent);
+    }
+
+    .btn-ghost {
+      background: rgba(255, 255, 255, .02);
+      color: var(--text);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--border2);
+      color: var(--accent2);
+    }
+
+    section {
+      padding: 5rem 0;
+    }
+
     .section-label {
       display: inline-flex;
       align-items: center;
@@ -190,6 +282,7 @@
       font-size: .7rem;
       margin-bottom: .8rem;
     }
+
     .section-title {
       font-size: clamp(1.9rem, 4vw, 3rem);
       line-height: 1.08;
@@ -197,19 +290,35 @@
       margin-bottom: 2rem;
       font-weight: 800;
     }
-    .about-grid, .projects-grid, .connect-grid { margin-top: 1rem; }
+
+    .about-grid,
+    .projects-grid,
+    .connect-grid {
+      margin-top: 1rem;
+    }
+
     .about-grid {
       display: grid;
       grid-template-columns: 1.2fr .8fr;
       gap: 1.5rem;
       align-items: start;
     }
-    .about-text p, .building-desc, .project-desc {
+
+    .about-text p,
+    .building-desc,
+    .project-desc {
       color: var(--muted);
       font-size: 1rem;
     }
-    .about-text p { margin-bottom: 1rem; }
-    .about-text strong { color: var(--text); }
+
+    .about-text p {
+      margin-bottom: 1rem;
+    }
+
+    .about-text strong {
+      color: var(--text);
+    }
+
     .about-stats {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -218,9 +327,27 @@
       background: var(--border);
       overflow: hidden;
     }
-    .stat { background: var(--bg2); padding: 1.2rem; min-height: 110px; }
-    .stat-num { display: block; font-size: 1.8rem; line-height: 1; color: var(--accent); margin-bottom: .35rem; font-weight: 800; }
-    .stat-label { font-size: .68rem; color: var(--muted); }
+
+    .stat {
+      background: var(--bg2);
+      padding: 1.2rem;
+      min-height: 110px;
+    }
+
+    .stat-num {
+      display: block;
+      font-size: 1.8rem;
+      line-height: 1;
+      color: var(--accent);
+      margin-bottom: .35rem;
+      font-weight: 800;
+    }
+
+    .stat-label {
+      font-size: .68rem;
+      color: var(--muted);
+    }
+
     .projects-grid {
       display: grid;
       gap: 1px;
@@ -228,6 +355,7 @@
       background: var(--border);
       overflow: hidden;
     }
+
     .project-card {
       display: grid;
       grid-template-columns: 1fr auto;
@@ -239,22 +367,57 @@
       color: inherit;
       transition: background .2s ease;
     }
-    .project-card:hover { background: var(--bg3); }
-    .project-num { color: var(--accent2); font-size: .68rem; margin-bottom: .6rem; }
-    .project-title { font-size: 1.25rem; line-height: 1.2; margin-bottom: .5rem; letter-spacing: -.02em; }
-    .project-desc { margin-bottom: 1rem; line-height: 1.7; }
-    .project-tags { display: flex; flex-wrap: wrap; gap: .45rem; }
+
+    .project-card:hover {
+      background: var(--bg3);
+    }
+
+    .project-num {
+      color: var(--accent2);
+      font-size: .68rem;
+      margin-bottom: .6rem;
+    }
+
+    .project-title {
+      font-size: 1.25rem;
+      line-height: 1.2;
+      margin-bottom: .5rem;
+      letter-spacing: -.02em;
+    }
+
+    .project-desc {
+      margin-bottom: 1rem;
+      line-height: 1.7;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .45rem;
+    }
+
     .tag {
       font-family: var(--mono);
       font-size: .64rem;
       color: #8ebcff;
-      background: rgba(79,143,255,.1);
-      border: 1px solid rgba(79,143,255,.14);
+      background: rgba(79, 143, 255, .1);
+      border: 1px solid rgba(79, 143, 255, .14);
       border-radius: 999px;
       padding: .28rem .58rem;
     }
-    .project-arrow, .connect-arrow { color: var(--muted); transition: color .2s ease, transform .2s ease; }
-    .project-card:hover .project-arrow, .connect-link:hover .connect-arrow { color: var(--accent); transform: translate(2px, -2px); }
+
+    .project-arrow,
+    .connect-arrow {
+      color: var(--muted);
+      transition: color .2s ease, transform .2s ease;
+    }
+
+    .project-card:hover .project-arrow,
+    .connect-link:hover .connect-arrow {
+      color: var(--accent);
+      transform: translate(2px, -2px);
+    }
+
     .building-card {
       position: relative;
       background: var(--bg2);
@@ -262,6 +425,7 @@
       padding: 1.5rem;
       overflow: hidden;
     }
+
     .building-card::before {
       content: '';
       position: absolute;
@@ -270,6 +434,7 @@
       height: 2px;
       background: linear-gradient(90deg, var(--accent2), var(--accent), var(--accent3));
     }
+
     .building-status {
       display: inline-flex;
       align-items: center;
@@ -278,18 +443,47 @@
       font-size: .68rem;
       margin-bottom: .8rem;
     }
+
     .dot {
-      width: .45rem; height: .45rem; border-radius: 50%; background: var(--accent2); animation: pulse 1.5s ease-in-out infinite;
+      width: .45rem;
+      height: .45rem;
+      border-radius: 50%;
+      background: var(--accent2);
+      animation: pulse 1.5s ease-in-out infinite;
     }
-    @keyframes pulse { 0%,100%{opacity:1; transform:scale(1)} 50%{opacity:.35; transform:scale(.82)} }
-    .building-title { font-size: 1.35rem; margin-bottom: .7rem; letter-spacing: -.02em; }
-    .building-desc { max-width: 78ch; line-height: 1.75; }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1)
+      }
+
+      50% {
+        opacity: .35;
+        transform: scale(.82)
+      }
+    }
+
+    .building-title {
+      font-size: 1.35rem;
+      margin-bottom: .7rem;
+      letter-spacing: -.02em;
+    }
+
+    .building-desc {
+      max-width: 78ch;
+      line-height: 1.75;
+    }
+
     .skill-graph-wrap {
       position: relative;
       border: 1px solid var(--border);
-      background: rgba(255,255,255,.02);
+      background: rgba(255, 255, 255, .02);
       overflow: hidden;
     }
+
     .skill-controls {
       position: absolute;
       top: .9rem;
@@ -301,9 +495,10 @@
       padding: .35rem;
       border: 1px solid var(--border);
       border-radius: 999px;
-      background: rgba(10,10,15,.72);
+      background: rgba(10, 10, 15, .72);
       backdrop-filter: blur(10px);
     }
+
     .skill-control {
       appearance: none;
       border: 0;
@@ -317,7 +512,12 @@
       border-radius: 999px;
       cursor: pointer;
     }
-    .skill-control:hover { background: rgba(255,255,255,.08); color: var(--accent2); }
+
+    .skill-control:hover {
+      background: rgba(255, 255, 255, .08);
+      color: var(--accent2);
+    }
+
     .skill-zoom-value {
       min-width: 3.5rem;
       text-align: right;
@@ -328,14 +528,22 @@
       font-size: .68rem;
       color: var(--muted);
     }
-    #skillCanvas { display: block; width: 100%; height: 580px; cursor: grab; touch-action: none; }
+
+    #skillCanvas {
+      display: block;
+      width: 100%;
+      height: 580px;
+      cursor: grab;
+      touch-action: none;
+    }
+
     .skill-tooltip {
       position: absolute;
       z-index: 4;
       pointer-events: none;
       opacity: 0;
       padding: .35rem .6rem;
-      border: 1px solid rgba(29,233,182,.35);
+      border: 1px solid rgba(29, 233, 182, .35);
       border-radius: .4rem;
       background: #12121c;
       font-family: var(--mono);
@@ -344,6 +552,7 @@
       white-space: nowrap;
       transition: opacity .15s ease;
     }
+
     .connect-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -352,6 +561,7 @@
       background: var(--border);
       overflow: hidden;
     }
+
     .connect-link {
       display: grid;
       grid-template-columns: auto 1fr auto;
@@ -363,15 +573,50 @@
       color: var(--muted);
       transition: background .2s ease, color .2s ease;
     }
-    .connect-link:hover { background: var(--bg3); color: var(--text); }
-    .connect-icon {
-      width: 2.35rem; height: 2.35rem; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
-      border: 1px solid rgba(255,255,255,.08); background: rgba(255,255,255,.04); color: var(--accent2); flex-shrink: 0;
+
+    .connect-link:hover {
+      background: var(--bg3);
+      color: var(--text);
     }
-    .connect-icon i { font-size: .95rem; }
-    .connect-copy { display: flex; flex-direction: column; gap: .2rem; min-width: 0; }
-    .connect-platform { color: var(--accent2); font-size: .64rem; }
-    .connect-name { color: var(--text); font-size: 1rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    .connect-icon {
+      width: 2.35rem;
+      height: 2.35rem;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(255, 255, 255, .08);
+      background: rgba(255, 255, 255, .04);
+      color: var(--accent2);
+      flex-shrink: 0;
+    }
+
+    .connect-icon i {
+      font-size: .95rem;
+    }
+
+    .connect-copy {
+      display: flex;
+      flex-direction: column;
+      gap: .2rem;
+      min-width: 0;
+    }
+
+    .connect-platform {
+      color: var(--accent2);
+      font-size: .64rem;
+    }
+
+    .connect-name {
+      color: var(--text);
+      font-size: 1rem;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
     footer {
       padding: 2rem 0 3rem;
       display: flex;
@@ -384,8 +629,18 @@
       border-top: 1px solid var(--border);
       margin-top: 3rem;
     }
-    .fade-in { opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease; }
-    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     .hero-glow {
       position: absolute;
       right: -6rem;
@@ -393,71 +648,251 @@
       width: 26rem;
       height: 26rem;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(79,143,255,.08), transparent 68%);
+      background: radial-gradient(circle, rgba(79, 143, 255, .08), transparent 68%);
       pointer-events: none;
     }
+
     @media (max-width: 900px) {
-      nav { padding: calc(1rem + env(safe-area-inset-top)) calc(1.25rem + env(safe-area-inset-right)) 1rem calc(1.25rem + env(safe-area-inset-left)); }
-      .hero, section, footer { width: min(100% - 2rem, 1100px); }
-      .about-grid { grid-template-columns: 1fr; }
-      .project-card { grid-template-columns: 1fr; }
-      .hero { padding-top: 7.8rem; }
-      .hero-inner { max-width: 680px; }
-      #skillCanvas { height: 520px; }
+      nav {
+        padding: calc(1rem + env(safe-area-inset-top)) calc(1.25rem + env(safe-area-inset-right)) 1rem calc(1.25rem + env(safe-area-inset-left));
+      }
+
+      .hero,
+      section,
+      footer {
+        width: min(100% - 2rem, 1100px);
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .project-card {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding-top: 7.8rem;
+      }
+
+      .hero-inner {
+        max-width: 680px;
+      }
+
+      #skillCanvas {
+        height: 520px;
+      }
     }
+
     @media (max-width: 640px) {
-      nav { flex-direction: column; align-items: flex-start; }
-      .nav-links { gap: 1rem; }
-      .hero { padding-top: 9.8rem; }
-      .hero-name { font-size: clamp(3rem, 17vw, 5rem); }
-      .hero-tagline { font-size: 1rem; }
-      .section-title { margin-bottom: 1.4rem; }
-      .connect-link { grid-template-columns: auto 1fr; }
-      .connect-arrow { display: none; }
-      footer { flex-direction: column; align-items: flex-start; }
-      #skillCanvas { height: 440px; }
+      nav {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .nav-links {
+        gap: 1rem;
+      }
+
+      .hero {
+        padding-top: 9.8rem;
+      }
+
+      .hero-name {
+        font-size: clamp(3rem, 17vw, 5rem);
+      }
+
+      .hero-tagline {
+        font-size: 1rem;
+      }
+
+      .section-title {
+        margin-bottom: 1.4rem;
+      }
+
+      .connect-link {
+        grid-template-columns: auto 1fr;
+      }
+
+      .connect-arrow {
+        display: none;
+      }
+
+      footer {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      #skillCanvas {
+        height: 440px;
+      }
     }
+
     @media (max-width: 480px) {
-      nav { padding: .9rem 1rem; }
-      .hero, section, footer { width: min(100% - 1.2rem, 1100px); }
-      .hero { padding-top: 8.7rem; }
-      section { padding: 3.6rem 0; }
-      .hero-inner { max-width: none; }
-      .hero-tag { font-size: .64rem; margin-bottom: .95rem; }
-      .hero-name { font-size: clamp(2.4rem, 14vw, 4rem); line-height: .9; margin-bottom: .95rem; }
-      .hero-name span { -webkit-text-stroke: .8px rgba(255,255,255,.24); }
-      .hero-tagline { font-size: .92rem; max-width: none; margin-bottom: 1.4rem; }
-      .hero-cta { gap: .6rem; }
-      .btn { width: 100%; justify-content: center; }
-      .about-stats { grid-template-columns: 1fr; }
-      .stat { min-height: auto; }
-      .project-card { padding: 1.1rem; }
-      .project-title { font-size: 1.1rem; }
-      .project-desc, .about-text p, .building-desc { font-size: .96rem; }
-      .section-label { font-size: .62rem; }
-      .section-title { font-size: clamp(1.55rem, 8vw, 2.1rem); }
-      .skill-controls { top: .7rem; right: .7rem; gap: .25rem; padding: .25rem; }
-      .skill-control { padding: .35rem .45rem; font-size: .62rem; }
-      .skill-zoom-value { min-width: 3rem; font-size: .62rem; }
-      #skillCanvas { height: 360px; }
-      .connect-link { padding: 1rem; }
-      .connect-name { font-size: .95rem; }
+      nav {
+        padding: .9rem 1rem;
+      }
+
+      .hero,
+      section,
+      footer {
+        width: min(100% - 1.2rem, 1100px);
+      }
+
+      .hero {
+        padding-top: 8.7rem;
+      }
+
+      section {
+        padding: 3.6rem 0;
+      }
+
+      .hero-inner {
+        max-width: none;
+      }
+
+      .hero-tag {
+        font-size: .64rem;
+        margin-bottom: .95rem;
+      }
+
+      .hero-name {
+        font-size: clamp(2.4rem, 14vw, 4rem);
+        line-height: .9;
+        margin-bottom: .95rem;
+      }
+
+      .hero-name span {
+        -webkit-text-stroke: .8px rgba(255, 255, 255, .24);
+      }
+
+      .hero-tagline {
+        font-size: .92rem;
+        max-width: none;
+        margin-bottom: 1.4rem;
+      }
+
+      .hero-cta {
+        gap: .6rem;
+      }
+
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .about-stats {
+        grid-template-columns: 1fr;
+      }
+
+      .stat {
+        min-height: auto;
+      }
+
+      .project-card {
+        padding: 1.1rem;
+      }
+
+      .project-title {
+        font-size: 1.1rem;
+      }
+
+      .project-desc,
+      .about-text p,
+      .building-desc {
+        font-size: .96rem;
+      }
+
+      .section-label {
+        font-size: .62rem;
+      }
+
+      .section-title {
+        font-size: clamp(1.55rem, 8vw, 2.1rem);
+      }
+
+      .skill-controls {
+        top: .7rem;
+        right: .7rem;
+        gap: .25rem;
+        padding: .25rem;
+      }
+
+      .skill-control {
+        padding: .35rem .45rem;
+        font-size: .62rem;
+      }
+
+      .skill-zoom-value {
+        min-width: 3rem;
+        font-size: .62rem;
+      }
+
+      #skillCanvas {
+        height: 360px;
+      }
+
+      .connect-link {
+        padding: 1rem;
+      }
+
+      .connect-name {
+        font-size: .95rem;
+      }
     }
+
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { scroll-behavior: auto !important; }
-      .ambient-field { animation: none; }
-      .cursor-spotlight { display: none; }
-      .agent-network { opacity: .12; }
-      .fade-in, .btn, .nav-links a, .project-card, .connect-link, .skill-control { transition: none !important; }
+
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+      }
+
+      .ambient-field {
+        animation: none;
+      }
+
+      .cursor-spotlight {
+        display: none;
+      }
+
+      .agent-network {
+        opacity: .12;
+      }
+
+      .fade-in,
+      .btn,
+      .nav-links a,
+      .project-card,
+      .connect-link,
+      .skill-control {
+        transition: none !important;
+      }
     }
-    @media (max-width: 640px), (pointer: coarse) {
-      .cursor-spotlight { display: none; }
-      .ambient-field { opacity: .26; filter: blur(12px); }
-      .agent-network { opacity: .12; }
-      .hero-glow { opacity: .55; }
+
+    @media (max-width: 640px),
+    (pointer: coarse) {
+      .cursor-spotlight {
+        display: none;
+      }
+
+      .ambient-field {
+        opacity: .26;
+        filter: blur(12px);
+      }
+
+      .agent-network {
+        opacity: .12;
+      }
+
+      .hero-glow {
+        opacity: .55;
+      }
     }
   </style>
 </head>
+
 <body>
   <div class="ambient-field" aria-hidden="true"></div>
   <div class="cursor-spotlight" aria-hidden="true"></div>
@@ -494,9 +929,12 @@
     <h2 class="section-title fade-in">Self-taught builder<br>focused on agentic AI</h2>
     <div class="about-grid">
       <div class="about-text fade-in">
-        <p>I'm <strong>Taksh Vadaliya</strong>, a self-taught developer from India. I got hooked on AI not through a course or a degree, but by building things and breaking them until they worked.</p>
-        <p>My focus is <strong>agentic systems</strong> — AI that doesn't just respond, but plans, reasons, delegates, and executes. I build multi-agent architectures, RAG pipelines, and autonomous workflows.</p>
-        <p>Right now I'm deep in <strong>swarm-based agent systems</strong> and exploring how to make AI genuinely useful in real-world domains like compliance, finance, and research.</p>
+        <p>I'm <strong>Taksh Vadaliya</strong>, a self-taught developer from India. I got hooked on AI not through a
+          course or a degree, but by building things and breaking them until they worked.</p>
+        <p>My focus is <strong>agentic systems</strong> — AI that doesn't just respond, but plans, reasons, delegates,
+          and executes. I build multi-agent architectures, RAG pipelines, and autonomous workflows.</p>
+        <p>Right now I'm deep in <strong>swarm-based agent systems</strong> and exploring how to make AI genuinely
+          useful in real-world domains like compliance, finance, and research.</p>
       </div>
       <div class="about-stats fade-in">
         <div class="stat"><span class="stat-num">8</span><span class="stat-label">Repos on GitHub</span></div>
@@ -515,9 +953,12 @@
         <div>
           <p class="project-num">01 / Featured</p>
           <h3 class="project-title">CaaS — Compliance as a Service</h3>
-          <p class="project-desc">A full multi-agent swarm system for fintech and tech firms. Includes planner, coder, debugger, feasibility, market researcher, production, and swarm manager agents orchestrated to handle compliance workflows autonomously.</p>
+          <p class="project-desc">A full multi-agent swarm system for fintech and tech firms. Includes planner, coder,
+            debugger, feasibility, market researcher, production, and swarm manager agents orchestrated to handle
+            compliance workflows autonomously.</p>
           <div class="project-tags">
-            <span class="tag">Python</span><span class="tag">Multi-Agent</span><span class="tag">Swarm Orchestration</span><span class="tag">Fintech</span><span class="tag">Agentic AI</span>
+            <span class="tag">Python</span><span class="tag">Multi-Agent</span><span class="tag">Swarm
+              Orchestration</span><span class="tag">Fintech</span><span class="tag">Agentic AI</span>
           </div>
         </div>
         <span class="project-arrow">↗</span>
@@ -526,9 +967,12 @@
         <div>
           <p class="project-num">02 / Featured</p>
           <h3 class="project-title">Qual — Finance Analysis System</h3>
-          <p class="project-desc">A RAG-powered finance intelligence system for global and national market trends with ingestion pipelines, embeddings, indexing, news ingestion, auditing, and an API layer for querying reports.</p>
+          <p class="project-desc">A RAG-powered finance intelligence system for global and national market trends with
+            ingestion pipelines, embeddings, indexing, news ingestion, auditing, and an API layer for querying reports.
+          </p>
           <div class="project-tags">
-            <span class="tag">Python</span><span class="tag">RAG</span><span class="tag">Embeddings</span><span class="tag">Finance</span><span class="tag">LLM</span><span class="tag">Data Pipelines</span>
+            <span class="tag">Python</span><span class="tag">RAG</span><span class="tag">Embeddings</span><span
+              class="tag">Finance</span><span class="tag">LLM</span><span class="tag">Data Pipelines</span>
           </div>
         </div>
         <span class="project-arrow">↗</span>
@@ -537,7 +981,8 @@
         <div>
           <p class="project-num">03</p>
           <h3 class="project-title">DDAS — Data Duplication Alert System</h3>
-          <p class="project-desc">A systems-level tool written in C that scans a computer for duplicate files and alerts the user. Demonstrates low-level file I/O, hashing, and systems programming fundamentals.</p>
+          <p class="project-desc">A systems-level tool written in C that scans a computer for duplicate files and alerts
+            the user. Demonstrates low-level file I/O, hashing, and systems programming fundamentals.</p>
           <div class="project-tags">
             <span class="tag">C</span><span class="tag">Systems Programming</span><span class="tag">File I/O</span>
           </div>
@@ -552,8 +997,26 @@
     <h2 class="section-title fade-in">Currently building</h2>
     <div class="building-card fade-in">
       <p class="building-status"><span class="dot"></span> Active development</p>
-      <h3 class="building-title">Agentic Systems & Agent Architectures</h3>
-      <p class="building-desc">Exploring how to make multi-agent systems more reliable, context-aware, and production-ready. Currently working on agent memory, tool use patterns, and how swarms can collaborate on complex real-world tasks without losing coherence.</p>
+      <h3 class="building-title">Assest — Agentic Company Brain</h3>
+      <p class="building-desc">A high-precision agentic knowledge ingestion and retrieval engine designed to unify
+        fragmented organizational data from Notion, Slack, and Google Drive into a version-aware "Company Brain".
+        Featuring a deep ingestion pipeline and hybrid storage architecture, it enables real-time relationship mapping,
+        temporal intelligence, and secure, expert-level reasoning across enterprise data.</p>
+      <div class="project-tags" style="margin: 0.8rem 0 1.2rem 0;">
+        <span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">Qdrant</span><span
+          class="tag">Graph Database</span><span class="tag">RAG</span><span class="tag">Agentic Memory</span><span
+          class="tag">Mastra</span>
+      </div>
+      <div class="building-links" style="display: flex; gap: 1rem; flex-wrap: wrap;">
+        <a href="https://github.com/Taksh-v/Assert/tree/hf-deploy" target="_blank" rel="noreferrer"
+          class="btn btn-ghost" style="padding: 0.5rem 1rem; font-size: 0.7rem;">
+          <i class="fa-brands fa-github"></i> Repository ↗
+        </a>
+        <a href="https://web-kappa-eight-88.vercel.app" target="_blank" rel="noreferrer" class="btn btn-primary"
+          style="padding: 0.5rem 1rem; font-size: 0.7rem;">
+          <i class="fa-solid fa-globe"></i> Assest ↗
+        </a>
+      </div>
     </div>
   </section>
 
@@ -578,22 +1041,27 @@
     <div class="connect-grid fade-in">
       <a href="https://github.com/Taksh-v" target="_blank" rel="noreferrer" class="connect-link">
         <span class="connect-icon" aria-hidden="true"><i class="fa-brands fa-github"></i></span>
-        <span class="connect-copy"><span class="connect-platform">GitHub</span><span class="connect-name">Taksh-v</span></span>
+        <span class="connect-copy"><span class="connect-platform">GitHub</span><span
+            class="connect-name">Taksh-v</span></span>
         <span class="connect-arrow">↗</span>
       </a>
-      <a href="https://www.linkedin.com/in/taksh-vadaliya-b363ab272" target="_blank" rel="noreferrer" class="connect-link">
+      <a href="https://www.linkedin.com/in/taksh-vadaliya-b363ab272" target="_blank" rel="noreferrer"
+        class="connect-link">
         <span class="connect-icon" aria-hidden="true"><i class="fa-brands fa-linkedin-in"></i></span>
-        <span class="connect-copy"><span class="connect-platform">LinkedIn</span><span class="connect-name">Taksh Vadaliya</span></span>
+        <span class="connect-copy"><span class="connect-platform">LinkedIn</span><span class="connect-name">Taksh
+            Vadaliya</span></span>
         <span class="connect-arrow">↗</span>
       </a>
       <a href="https://www.reddit.com/user/Taxinosogood/" target="_blank" rel="noreferrer" class="connect-link">
         <span class="connect-icon" aria-hidden="true"><i class="fa-brands fa-reddit-alien"></i></span>
-        <span class="connect-copy"><span class="connect-platform">Reddit</span><span class="connect-name">Taxinosogood</span></span>
+        <span class="connect-copy"><span class="connect-platform">Reddit</span><span
+            class="connect-name">Taxinosogood</span></span>
         <span class="connect-arrow">↗</span>
       </a>
       <a href="mailto:vadaliyataksh06@gmail.com" class="connect-link">
         <span class="connect-icon" aria-hidden="true"><i class="fa-solid fa-envelope"></i></span>
-        <span class="connect-copy"><span class="connect-platform">Email</span><span class="connect-name">Say hello</span></span>
+        <span class="connect-copy"><span class="connect-platform">Email</span><span class="connect-name">Say
+            hello</span></span>
         <span class="connect-arrow">↗</span>
       </a>
     </div>
@@ -780,43 +1248,53 @@
 
       const data = {
         label: 'Taksh Vadaliya', sub: 'AI Agent Builder', color: '#1de9b6', children: [
-          { label: 'Languages', color: '#4f8fff', children: [
-            { label: 'Python', color: '#4f8fff', core: true },
-            { label: 'JavaScript', color: '#4f8fff' },
-            { label: 'C', color: '#4f8fff' },
-            { label: 'Java', color: '#4f8fff' },
-          ]},
-          { label: 'AI & Agents', color: '#1de9b6', children: [
-            { label: 'Agent Swarms', color: '#1de9b6', core: true },
-            { label: 'Swarm Orchestration', color: '#1de9b6', core: true },
-            { label: 'RAG Pipelines', color: '#1de9b6', core: true },
-            { label: 'LLM APIs', color: '#1de9b6', core: true },
-            { label: 'Prompt Engineering', color: '#1de9b6' },
-            { label: 'Tool Use / MCP', color: '#1de9b6' },
-          ]},
-          { label: 'Data & ML', color: '#9d7fe8', children: [
-            { label: 'FAISS', color: '#9d7fe8', core: true },
-            { label: 'numpy / pandas', color: '#9d7fe8' },
-            { label: 'yfinance', color: '#9d7fe8' },
-            { label: 'feedparser', color: '#9d7fe8' },
-            { label: 'BeautifulSoup4', color: '#9d7fe8' },
-            { label: 'NLTK', color: '#9d7fe8' },
-          ]},
-          { label: 'Backend & Infra', color: '#f0a500', children: [
-            { label: 'FastAPI', color: '#f0a500', core: true },
-            { label: 'uvicorn', color: '#f0a500' },
-            { label: 'REST APIs', color: '#f0a500' },
-            { label: 'GitHub Actions', color: '#f0a500' },
-            { label: 'Git / CLI', color: '#f0a500' },
-          ]},
-          { label: 'Domain', color: '#ff6b6b', children: [
-            { label: 'Compliance (CaaS)', color: '#ff6b6b', core: true },
-            { label: 'DPDP Act 2023', color: '#ff6b6b' },
-            { label: 'KYC / AML', color: '#ff6b6b' },
-            { label: 'RBI Digital Lending', color: '#ff6b6b' },
-            { label: 'Finance Analysis', color: '#ff6b6b' },
-            { label: 'Reg Intelligence', color: '#ff6b6b' },
-          ]},
+          {
+            label: 'Languages', color: '#4f8fff', children: [
+              { label: 'Python', color: '#4f8fff', core: true },
+              { label: 'JavaScript', color: '#4f8fff' },
+              { label: 'C', color: '#4f8fff' },
+              { label: 'Java', color: '#4f8fff' },
+            ]
+          },
+          {
+            label: 'AI & Agents', color: '#1de9b6', children: [
+              { label: 'Agent Swarms', color: '#1de9b6', core: true },
+              { label: 'Swarm Orchestration', color: '#1de9b6', core: true },
+              { label: 'RAG Pipelines', color: '#1de9b6', core: true },
+              { label: 'LLM APIs', color: '#1de9b6', core: true },
+              { label: 'Prompt Engineering', color: '#1de9b6' },
+              { label: 'Tool Use / MCP', color: '#1de9b6' },
+            ]
+          },
+          {
+            label: 'Data & ML', color: '#9d7fe8', children: [
+              { label: 'FAISS', color: '#9d7fe8', core: true },
+              { label: 'numpy / pandas', color: '#9d7fe8' },
+              { label: 'yfinance', color: '#9d7fe8' },
+              { label: 'feedparser', color: '#9d7fe8' },
+              { label: 'BeautifulSoup4', color: '#9d7fe8' },
+              { label: 'NLTK', color: '#9d7fe8' },
+            ]
+          },
+          {
+            label: 'Backend & Infra', color: '#f0a500', children: [
+              { label: 'FastAPI', color: '#f0a500', core: true },
+              { label: 'uvicorn', color: '#f0a500' },
+              { label: 'REST APIs', color: '#f0a500' },
+              { label: 'GitHub Actions', color: '#f0a500' },
+              { label: 'Git / CLI', color: '#f0a500' },
+            ]
+          },
+          {
+            label: 'Domain', color: '#ff6b6b', children: [
+              { label: 'Compliance (CaaS)', color: '#ff6b6b', core: true },
+              { label: 'DPDP Act 2023', color: '#ff6b6b' },
+              { label: 'KYC / AML', color: '#ff6b6b' },
+              { label: 'RBI Digital Lending', color: '#ff6b6b' },
+              { label: 'Finance Analysis', color: '#ff6b6b' },
+              { label: 'Reg Intelligence', color: '#ff6b6b' },
+            ]
+          },
         ]
       };
 
@@ -1282,4 +1760,5 @@
     });
   </script>
 </body>
+
 </html>
