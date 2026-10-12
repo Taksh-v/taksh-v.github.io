@@ -1,0 +1,8 @@
+{
+  "name": "portfolio-smoke",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Headless smoke test for the departure-board portfolio",
+  "scripts": { "test": "node smoke.test.js" },
+  "devDependencies": { "jsdom": "^26.1.0" }
+}

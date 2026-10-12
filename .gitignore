@@ -1,0 +1,6 @@
+# dependencies (reinstall with: cd test && npm install)
+node_modules/
+# local drafts that must never be served
+archive/
+# OS noise
+.DS_Store
