@@ -42,6 +42,9 @@ has(home,/REAL NOTEBOOK OUTPUT/,'actual mask output distinguished from concept a
 has(home,/This diagram shows the intended product—not a working recommender/,'future product is clearly separated from current build');
 has(home,/Built now[\s\S]*?Next proof[\s\S]*?Product goal/,'current scope and future stages shown');
 has(home,/class="miniFlow"/,'voice and knowledge flows are diagrammed');
+has(home,/voice-conversation-signal\.webp/,'voice case study includes a contextual visual');
+has(home,/#voice-case \.caseActions \.btn\.secondary\{color:var\(--ink\);background:transparent;border-color:var\(--ink\)\}/,'voice secondary destination link has readable contrast');
+has(home,/#voice-case \.miniFlow\{background:var\(--dark\);color:var\(--paper\);border-color:#455148\}/,'voice pipeline labels sit on a high-contrast panel');
 has(home,/grid-template-columns:1fr;gap:7px/,'system map stacks on small screens');
 has(cv,/Research prototype/,'vision status is clear');
 has(cv,/scaled using entered height/,'vision scale limitation explained');
@@ -50,7 +53,7 @@ has(cv,/Open the shared notebook/,'Colab link available');
 has(qual,/groundedness, completeness, relevance, and numeric risk/i,'Qual rubric described');
 has(qual,/no accuracy, speed, ROI, or benchmark claim/i,'Qual claims bounded');
 has(qual,/reproducible evaluation/,'Qual next step defined');
-for (const file of ['assets/body-profile-masks.png','assets/taksh-vadaliya-resume.pdf']) ok(fs.existsSync(path.join(root,file)),file+' exists');
+for (const file of ['assets/body-profile-masks.png','assets/voice-conversation-signal.webp','assets/taksh-vadaliya-resume.pdf']) ok(fs.existsSync(path.join(root,file)),file+' exists');
 ok(fs.readFileSync(path.join(root,'assets/taksh-vadaliya-resume.pdf')).subarray(0,5).toString()==='%PDF-','résumé is a PDF');
 has(sitemap,/projects\/body-aware-shopping-compatibility\.html/,'CV page in sitemap');
 has(sitemap,/projects\/qual-market-analysis\.html/,'Qual page in sitemap');

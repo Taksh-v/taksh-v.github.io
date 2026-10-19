@@ -49,6 +49,18 @@
     @media(max-width:680px){.js-ready .navlinks.open a{color:var(--ink2)}.js-ready .navlinks.open .navcta{color:var(--ink)}}
     .hero a:focus-visible{outline-color:var(--acid)}
     @media(prefers-reduced-motion:reduce){.orbitOne,.orbitTwo,.artPath,.nodeTwo,.artHalo{animation:none!important}.heroScroll .scrollLine{transition:none}}
+  
+    /* Voice case study: keep its artwork, pipeline and outbound actions legible on the warm paper surface. */
+    #voice-case .sectionHead p{color:#3d4942;font-size:15px;line-height:1.6}
+    .voiceArtwork{margin:0 0 18px;padding:13px 18px 9px;background:#e3e8dd;border:1px solid #c9d1c0;border-radius:7px;overflow:hidden}
+    .voiceArtwork img{display:block;width:min(760px,100%);height:auto;margin:0 auto}
+    .voiceArtwork figcaption{padding-top:5px;color:#3d4942;text-align:center;font:10px var(--mono);letter-spacing:.06em}
+    #voice-case .miniFlow{background:var(--dark);color:var(--paper);border-color:#455148}
+    #voice-case .miniFlow strong{color:var(--paper)}
+    #voice-case .miniFlow span{color:#cbd4cd}
+    #voice-case .miniFlow b,#voice-case .miniFlow>i{color:var(--acid)}
+    #voice-case .caseActions .btn.secondary{color:var(--ink);background:transparent;border-color:var(--ink)}
+    #voice-case .caseActions .btn.secondary:hover{background:var(--paper2)}
   </style>
 </head>
 <body>
@@ -145,6 +157,7 @@
 
     <section class="section" id="voice-case" aria-labelledby="voice-case-title">
       <div class="wrap"><div class="sectionHead"><div><p class="sectionLabel">Case file 01 · Voice product</p><h2 id="voice-case-title">From speech pipeline to conversation.</h2></div><p>A public voice product with a full speech loop and attention to turn-taking.</p></div>
+        <figure class="voiceArtwork"><img src="./assets/voice-conversation-signal.webp" width="1600" height="539" alt="Voice signal flowing from a microphone through an interconnected reasoning network to a spoken waveform." loading="lazy" decoding="async"><figcaption>Speech input → orchestration → spoken response</figcaption></figure>
         <div class="miniFlow" aria-label="Voice product flow"><div><b>01</b><strong>Listen</strong><span>Speech input</span></div><i aria-hidden="true">→</i><div><b>02</b><strong>Understand</strong><span>STT + language model</span></div><i aria-hidden="true">→</i><div><b>03</b><strong>Respond</strong><span>Speech + turn-taking</span></div></div><p class="briefNote">Live product · multilingual conversations · accounts and credits.</p>
         <div class="caseActions"><a class="btn primary" href="https://solidexposure.com" target="_blank" rel="noopener">Try yap ↗</a><a class="btn secondary" href="https://solidexposure.com/business.html" target="_blank" rel="noopener">Business capabilities ↗</a></div>
       </div>
