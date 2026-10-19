@@ -56,7 +56,7 @@ has(sitemap,/projects\/body-aware-shopping-compatibility\.html/,'CV page in site
 has(sitemap,/projects\/qual-market-analysis\.html/,'Qual page in sitemap');
 has(notFound,/This page went off route/,'branded 404 remains');
 for (const [page,label] of [[cv,'Body-aware page'],[qual,'Qual page']]) {
-  has(page,/class="projectPage"/,'cinematic project design on '+label);
+  has(page,/class="projectPage(?: visionPage)?"/,'cinematic project design on '+label);
   has(page,/href="\.\.\/assets\/project-system\.css"/,'shared design system on '+label);
   has(page,/class="skip" href="#main"/,'skip navigation on '+label);
   has(page,/aria-label="Main navigation"/,'global navigation on '+label);
@@ -69,4 +69,8 @@ has(cv,/aria-label="On this page"[\s\S]*?href="#pipeline"[\s\S]*?href="#output"/
 has(qual,/aria-label="On this page"[\s\S]*?href="#system"[\s\S]*?href="#evaluation"/,'Qual chapters navigate to content');
 has(notFound,/class="errorPage"/,'404 uses matching dark visual system');
 has(notFound,/href="\/#work"/,'404 offers selected work recovery');
+
+has(cv,/class="projectPage visionPage"/,'vision page identifies its lime closing panel');
+has(fs.readFileSync(path.join(root,'assets/project-system.css'),'utf8'),/visionPage \.closing \.btn\.primary\{color:#f4f1e9;background:#191d1a;border-color:#191d1a\}/,'vision closing primary action contrasts with lime panel');
+has(fs.readFileSync(path.join(root,'assets/project-system.css'),'utf8'),/visionPage \.closing \.btn\{color:#191d1a;border-color:#191d1a;background:transparent\}/,'vision closing secondary action contrasts with lime panel');
 console.log('Portfolio smoke checks passed: '+checks);
