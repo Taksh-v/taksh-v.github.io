@@ -69,6 +69,7 @@ has(cv,/aria-label="On this page"[\s\S]*?href="#pipeline"[\s\S]*?href="#output"/
 has(qual,/aria-label="On this page"[\s\S]*?href="#system"[\s\S]*?href="#evaluation"/,'Qual chapters navigate to content');
 has(notFound,/class="errorPage"/,'404 uses matching dark visual system');
 has(notFound,/href="\/#work"/,'404 offers selected work recovery');
+has(notFound,/href="\/assets\/project-system\.css\?v=2"/,'404 loads styles correctly at nested missing URLs');
 
 has(cv,/class="projectPage visionPage"/,'vision page identifies its lime closing panel');
 has(fs.readFileSync(path.join(root,'assets/project-system.css'),'utf8'),/visionPage \.closing \.btn\.primary\{color:#f4f1e9;background:#191d1a;border-color:#191d1a\}/,'vision closing primary action contrasts with lime panel');
