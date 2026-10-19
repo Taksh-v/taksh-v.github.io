@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#131211">
+  <title>Body-aware shopping compatibility | Taksh Vadaliya</title>
+  <meta name="description" content="A Google Colab computer-vision prototype exploring body-profile signals for a future catalog-based apparel recommendation system.">
+  <link rel="canonical" href="https://taksh-v.github.io/projects/body-aware-shopping-compatibility.html">
+  <style>
+    :root{--void:#0c0b0a;--board:#131211;--paper:#f7f5ef;--ink:#171614;--ink2:#5c5a52;--muted:#8a877d;--line:#ded9cd;--orange:#d98324;--rust:#c4602f;--green:#637c5a;--sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;--mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;--serif:Georgia,"Times New Roman",serif}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased}a{color:inherit}a:focus-visible{outline:3px solid var(--orange);outline-offset:3px}.top{background:var(--board);color:var(--paper);padding:14px clamp(18px,5vw,64px);display:flex;align-items:center;justify-content:space-between;gap:14px;border-bottom:2px solid var(--orange)}.brand{font:12px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:#d9d4c9;text-decoration:none}.toplinks{display:flex;gap:10px;flex-wrap:wrap}.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;border:1px solid #cfc8b6;border-radius:6px;padding:9px 13px;font:11px var(--mono);letter-spacing:.07em;text-transform:uppercase;transition:transform .18s ease,background .18s ease}.btn:hover{transform:translateY(-1px)}.btn.dark{color:var(--paper);border-color:#514b42}.btn.dark:hover{background:#24211d}.btn.primary{background:var(--orange);border-color:var(--orange);color:#171614;font-weight:700}.btn.primary:hover{background:#e8912f}.wrap{max-width:1080px;margin:0 auto;padding:0 clamp(18px,5vw,64px)}.crumb{padding-top:28px;font:10px var(--mono);letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}.crumb a{text-decoration:none;border-bottom:1px solid var(--line)}.hero{padding:22px 0 40px;border-bottom:1px solid var(--line)}.eyebrow{font:10px var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--rust)}h1{font:clamp(38px,7vw,70px)/.98 var(--serif);font-weight:400;letter-spacing:-.045em;max-width:850px;margin:13px 0 18px}.dek{max-width:740px;color:var(--ink2);font-size:18px;line-height:1.55;margin:0}.badges{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0 25px}.badge{display:inline-flex;align-items:center;gap:7px;border:1px solid #cfc8b6;border-radius:99px;padding:5px 10px;font:10px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink2)}.badge i{width:6px;height:6px;border-radius:50%;background:var(--orange)}.badge.status{border-color:#e3c79e;color:#8a5416;background:#fbf3e6}.actions{display:flex;gap:10px;flex-wrap:wrap}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:24px 0 0}.stat{background:#fffdf8;border:1px solid var(--line);border-radius:8px;padding:13px 14px}.stat small{display:block;color:var(--muted);font:9px var(--mono);letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px}.stat strong{font-size:13px;font-weight:600}.section{padding:38px 0;border-bottom:1px solid var(--line)}.section:last-of-type{border:0}.section-head{display:flex;align-items:baseline;gap:12px;margin-bottom:18px}.num{color:var(--rust);font:10px var(--mono);letter-spacing:.12em}h2{font:30px/1.1 var(--serif);font-weight:400;letter-spacing:-.02em;margin:0}.section p{max-width:780px;color:var(--ink2);margin:0 0 13px}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.card{background:#fffdf8;border:1px solid var(--line);border-radius:9px;padding:18px}.card h3{font:10px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--rust);margin:0 0 8px}.card p{font-size:14px;margin:0;color:var(--ink2)}.flow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;margin:22px 0}.step{position:relative;background:#fffdf8;border:1px solid var(--line);border-radius:8px;padding:14px 12px;min-height:110px}.step b{display:block;color:var(--rust);font:10px var(--mono);letter-spacing:.1em;margin-bottom:8px}.step strong{font-size:13px;line-height:1.25;display:block}.step span{display:block;color:var(--muted);font-size:11px;line-height:1.4;margin-top:6px}.step:not(:last-child):after{content:"→";position:absolute;right:-11px;top:42%;z-index:1;color:var(--rust);font:16px var(--mono)}.visual{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(250px,.85fr);gap:22px;align-items:center}.figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:9px;overflow:hidden}.figure img{display:block;width:100%;height:auto}.figure figcaption{padding:10px 12px;border-top:1px solid var(--line);font-size:11px;line-height:1.5;color:var(--muted)}.profile{background:#1b1a17;color:var(--paper);border-radius:9px;padding:18px}.profile .label{font:10px var(--mono);letter-spacing:.15em;text-transform:uppercase;color:#c9a778;margin-bottom:12px}.profile h3{font:26px var(--serif);font-weight:400;margin:0 0 7px}.profile p{color:#c6c0b6;font-size:12px;margin:0 0 14px}.meter{margin:13px 0}.meter-top{display:flex;justify-content:space-between;gap:10px;font:10px var(--mono);color:#ded9cd}.track{height:5px;background:#454039;border-radius:5px;margin-top:6px;overflow:hidden}.fill{height:100%;background:var(--orange);border-radius:5px}.sample{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}.sample div{border-top:1px solid #454039;padding-top:8px}.sample small{display:block;font:8px var(--mono);letter-spacing:.1em;color:#aaa397;text-transform:uppercase}.sample strong{font:14px var(--mono);color:#fff;margin-top:3px;display:block}.notice{border-left:3px solid var(--rust);background:#f6ede8;padding:14px 16px;margin-top:16px;color:#603d33;font-size:13px}.limits{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.limit{padding:16px;background:#fffdf8;border:1px solid var(--line);border-radius:8px}.limit b{display:block;font:10px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--rust);margin-bottom:6px}.limit p{font-size:13px;margin:0}.roadmap{counter-reset:road;display:grid;gap:10px}.roadmap article{counter-increment:road;display:grid;grid-template-columns:34px 1fr;gap:11px;align-items:start;background:#fffdf8;border:1px solid var(--line);border-radius:8px;padding:14px}.roadmap article:before{content:"0" counter(road);color:var(--rust);font:10px var(--mono);padding-top:3px}.roadmap h3{font-size:14px;margin:0 0 3px}.roadmap p{font-size:12px;margin:0}.footer{margin-top:24px;background:var(--board);color:#aaa397;padding:18px clamp(18px,5vw,64px);font:10px var(--mono);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.footer a{color:var(--paper);text-decoration:none;border-bottom:1px solid #514b42}.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}@media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr)}.flow{grid-template-columns:1fr}.step{min-height:0;padding:12px 14px}.step:not(:last-child):after{content:"↓";right:14px;top:auto;bottom:-16px}.visual{grid-template-columns:1fr}.grid2,.limits{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}.dek{font-size:16px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}@media print{.top,.actions,.footer{display:none!important}body{background:#fff}.wrap{max-width:none}.section,.hero{break-inside:avoid}.figure,.card,.stat,.limit{break-inside:avoid}}
+  </style>
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="../" aria-label="Taksh Vadaliya portfolio home">Taksh Vadaliya <span aria-hidden="true">/</span> Project 05</a>
+    <nav class="toplinks" aria-label="Project actions">
+      <a class="btn dark" href="../?p=TKV-05">Portfolio pass</a>
+      <a class="btn primary" href="https://colab.research.google.com/drive/1RgQ3M7wpE1Lfq9xKLxJJ7y58URGxcqvB?usp=sharing" target="_blank" rel="noopener noreferrer">Open Google Colab ↗</a>
+    </nav>
+  </header>
+  <main class="wrap">
+    <div class="crumb"><a href="../">Portfolio</a> / Projects / TKV-05</div>
+    <section class="hero" aria-labelledby="project-title">
+      <p class="eyebrow">TKV-05 · Computer vision · Fashion technology</p>
+      <h1 id="project-title">Body-aware shopping compatibility</h1>
+      <p class="dek">A Colab prototype exploring how image-derived body structure could inform apparel recommendations alongside garment details and personal context.</p>
+      <div class="badges"><span class="badge status"><i></i>Research prototype</span><span class="badge">Google Colab</span><span class="badge">Not a live shopping product</span></div>
+      <div class="actions">
+        <a class="btn primary" href="https://colab.research.google.com/drive/1RgQ3M7wpE1Lfq9xKLxJJ7y58URGxcqvB?usp=sharing" target="_blank" rel="noopener noreferrer">View the notebook ↗</a>
+        <a class="btn" href="#prototype">See current prototype</a>
+        <a class="btn" href="../?p=TKV-05">Back to project pass</a>
+      </div>
+      <div class="stats" aria-label="Project overview">
+        <div class="stat"><small>Current stage</small><strong>Body-profile prototype</strong></div>
+        <div class="stat"><small>Runtime</small><strong>Colab GPU</strong></div>
+        <div class="stat"><small>Vision stack</small><strong>RTMPose + FASHN</strong></div>
+        <div class="stat"><small>Recommendation layer</small><strong>Planned, not implemented here</strong></div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="problem-title">
+      <div class="section-head"><span class="num">01</span><h2 id="problem-title">The problem I’m exploring</h2></div>
+      <p>Most shopping filters describe a product or an occasion, but rarely connect clothing to a shopper’s body structure and preferences. The larger idea is a compatibility layer that considers a user profile, real garments and context such as occasion, location, weather, budget and style.</p>
+      <div class="grid2">
+        <article class="card"><h3>Long-term product goal</h3><p>Recommend real catalog items or complete outfits, then explain why each option fits the user’s request. The system is intended to rank existing products, not generate new clothing.</p></article>
+        <article class="card"><h3>What this notebook covers</h3><p>An early computer-vision component: detect pose landmarks, inspect human-parsing masks, derive image-based body geometry and assemble a provisional profile.</p></article>
+      </div>
+    </section>
+
+    <section class="section" id="prototype" aria-labelledby="pipeline-title">
+      <div class="section-head"><span class="num">02</span><h2 id="pipeline-title">Prototype pipeline</h2></div>
+      <p>The inspected notebook is named <code>Body_profile.ipynb</code>. It uses a GPU-backed Colab runtime with RTMPose through <code>rtmlib</code>, ONNX Runtime GPU and the FASHN human parser.</p>
+      <div class="flow" aria-label="Image analysis flow">
+        <div class="step"><b>INPUT</b><strong>Full-body image</strong><span>Notebook sample image and user-entered height/weight.</span></div>
+        <div class="step"><b>01 · POSE</b><strong>17 landmarks</strong><span>RTMPose COCO keypoints for shoulders, hips, knees, ankles and more.</span></div>
+        <div class="step"><b>02 · PARSE</b><strong>Human masks</strong><span>FASHN segmentation with torso regions and pose-based arm exclusion.</span></div>
+        <div class="step"><b>03 · GEOMETRY</b><strong>Widths + ratios</strong><span>Shoulder, waist and hip widths; torso/leg references; symmetry checks.</span></div>
+        <div class="step"><b>OUTPUT</b><strong>Profile V1</strong><span>Provisional shape label, confidence fields and quality warnings as JSON.</span></div>
+      </div>
+      <p>The notebook also samples a face region, converts RGB values to CIELAB, filters outliers and estimates a skin-tone category. This is experimental and low-confidence in the saved run.</p>
+    </section>
+
+    <section class="section" aria-labelledby="outputs-title">
+      <div class="section-head"><span class="num">03</span><h2 id="outputs-title">What the prototype produces</h2></div>
+      <div class="visual">
+        <figure class="figure">
+          <img src="../assets/body-profile-masks.png" width="1191" height="1590" loading="lazy" alt="FASHN human parser mask output in a 3 by 3 grid for top, dress, skirt, pants, torso, arms, hands, legs and feet categories. The source photograph is not shown.">
+          <figcaption>One supplied notebook visualization: category masks from the FASHN human parser. This view shows intermediate segmentation output, not a fit recommendation.</figcaption>
+        </figure>
+        <aside class="profile" aria-label="Sample output from one saved run">
+          <div class="label">One saved sample · profile V1</div>
+          <h3>Rectangle</h3>
+          <p>Provisional body-shape label. One example run only; no validation set is shown in the notebook.</p>
+          <div class="meter"><div class="meter-top"><span>Shape score</span><span>0.798</span></div><div class="track"><div class="fill" style="width:79.8%"></div></div></div>
+          <div class="meter"><div class="meter-top"><span>Geometry score</span><span>0.992</span></div><div class="track"><div class="fill" style="width:99.2%"></div></div></div>
+          <div class="sample"><div><small>Shoulder*</small><strong>40.98 cm</strong></div><div><small>Waist*</small><strong>46.34 cm</strong></div><div><small>Hip*</small><strong>44.15 cm</strong></div></div>
+          <p style="margin-top:12px;font-size:10px">*Image-derived estimates scaled using entered height (178 cm); not independently measured.</p>
+          <div class="notice">The saved output warns that visible waist width is not narrower than shoulder or hip width. It also flags low skin-tone confidence (0.484).</div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="limits-title">
+      <div class="section-head"><span class="num">04</span><h2 id="limits-title">Current limits</h2></div>
+      <div class="limits">
+        <article class="limit"><b>Measurements are estimates</b><p>Pixel widths are scaled using height supplied by the user. Camera perspective, distance, pose, clothing, cropping and occlusion can shift the result.</p></article>
+        <article class="limit"><b>Confidence needs checking</b><p>The saved pose score is 1.004. Verify score semantics before calling it a probability; the notebook’s skin-tone confidence is 0.484.</p></article>
+        <article class="limit"><b>No recommendation system yet</b><p>The inspected notebook does not include a product catalog, product retrieval, outfit compatibility scoring, ranking or purchase links.</p></article>
+        <article class="limit"><b>No general validation yet</b><p>The visible outputs show one sample run, not measurement error across people, cameras, lighting conditions or body types.</p></article>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="next-title">
+      <div class="section-head"><span class="num">05</span><h2 id="next-title">Next engineering steps</h2></div>
+      <div class="roadmap">
+        <article><div><h3>Validate the profile estimates</h3><p>Compare against consented reference measurements using consistent photos; record errors and failure cases, not just successful runs.</p></div></article>
+        <article><div><h3>Build a structured apparel catalog</h3><p>Represent garment category, fit, cut, material, size information, price, color and product link.</p></div></article>
+        <article><div><h3>Connect profile and context to ranking</h3><p>Combine user-correctable profile features with occasion, weather, budget and preferences; rank only real catalog products.</p></div></article>
+        <article><div><h3>Evaluate recommendation quality</h3><p>Compare against a simple baseline and human judgments. Keep fit and body-profile claims within measured evidence.</p></div></article>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="honesty-title">
+      <div class="section-head"><span class="num">06</span><h2 id="honesty-title">Project status</h2></div>
+      <p>This is a research prototype, not a live product or a validated body-measurement tool. The Colab notebook demonstrates an image-analysis pipeline and a structured body-profile output. The shopping compatibility layer remains the intended next stage.</p>
+      <div class="actions"><a class="btn primary" href="https://colab.research.google.com/drive/1RgQ3M7wpE1Lfq9xKLxJJ7y58URGxcqvB?usp=sharing" target="_blank" rel="noopener noreferrer">Open the shared Colab notebook ↗</a><a class="btn" href="../?p=TKV-05">Return to portfolio</a></div>
+    </section>
+  </main>
+  <footer class="footer"><span>Taksh Vadaliya · Surat, Gujarat, India</span><span><a href="../">Portfolio home</a> · <a href="mailto:vadaliyataksh06@gmail.com">Contact</a></span></footer>
+</body>
+</html>

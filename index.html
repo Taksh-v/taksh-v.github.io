@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Taksh Vadaliya — Departures</title>
-<meta name="description" content="AI engineer and founder. Four projects, four statuses, every claim linked to its evidence: a live voice product, an agentic retrieval engine, an evaluation-first RAG pipeline, and a systems tool in C." />
+<meta name="description" content="AI engineer and founder. Five projects, five statuses, every claim linked to its evidence: live voice, agentic retrieval, evaluation-first RAG, systems work in C, and a body-aware shopping compatibility prototype." />
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Taksh Vadaliya — Departures" />
 <meta property="og:description" content="The board is the portfolio. Product, platform, measurement, fundamentals." />
@@ -422,7 +422,7 @@ body[data-reduced] *{transition-duration:.001ms!important}
     <div class="board" id="board">
       <div class="bhead">
         <h1 id="boardTitle">Departures</h1>
-        <span class="sub" id="boardSub">Four projects · status as of Oct 2026</span>
+        <span class="sub" id="boardSub">Five projects · status as of Oct 2026</span>
         <span class="right" id="boardRight">SUR · IND</span>
       </div>
       <p class="aboutline" id="aboutLine"></p>
@@ -461,12 +461,12 @@ body[data-reduced] *{transition-duration:.001ms!important}
   </div>
 
   <h1>Taksh Vadaliya</h1>
-  <p id="docIntro"><strong>AI engineer &amp; founder.</strong> Four systems in the open — real-time voice, agentic
-    retrieval, evaluation-first research, systems work in C — one running live in production, and every claim on
-    this page linked to the code or the live thing.</p>
+  <p id="docIntro"><strong>AI engineer &amp; founder.</strong> Five projects in the open — real-time voice, agentic retrieval,
+    evaluation-first research, systems work in C and a body-aware shopping compatibility prototype — one running live
+    in production, and every claim on this page linked to its evidence.</p>
   <p>
     A live voice product, a retrieval engine with 167 test functions beside it, an evaluation-first
-    RAG pipeline, and a duplicate-detection tool written in C — built from Surat, India.
+    RAG pipeline, a duplicate-detection tool in C and a computer-vision body-profile prototype — built from Surat, India.
     <a href="mailto:vadaliyataksh06@gmail.com">vadaliyataksh06@gmail.com</a> ·
     <a href="https://github.com/Taksh-v">github.com/Taksh-v</a> ·
     <a href="https://www.linkedin.com/in/taksh-vadaliya-b363ab272">LinkedIn</a>
@@ -630,6 +630,45 @@ body[data-reduced] *{transition-duration:.001ms!important}
     <h4>Evidence</h4>
     <ul class="p__ev">
       <li><a href="https://github.com/Taksh-v/The-DDAS-">Repository</a></li>
+    </ul>
+  </article>
+
+  <!-- ── TKV-05 ─────────────────────────────────────────────────────────── -->
+  <article data-project data-code="TKV-05" data-status="dev" data-type="Research prototype" data-gate="RTMPose · Colab"
+           data-date="2026" data-route="IMAGE → PROFILE">
+    <h3 class="p__name">Body-aware shopping compatibility</h3>
+    <p class="p__tag">A Colab computer-vision prototype exploring body-profile signals for a future catalog-based outfit recommendation system.</p>
+
+    <dl class="p__facts">
+      <dt>Status</dt><dd class="p__status">Research prototype · not live</dd>
+      <dt>Role</dt><dd>System design · computer-vision prototype</dd>
+      <dt>Stack</dt><dd>Python · RTMPose · rtmlib · ONNX Runtime GPU · FASHN Human Parser · Google Colab</dd>
+      <dt>Current scope</dt><dd>Pose landmarks, segmentation masks, body geometry and a provisional profile</dd>
+      <dt>Next layer</dt><dd>Structured product catalog, compatibility scoring and outfit ranking</dd>
+    </dl>
+
+    <h4>Why it exists</h4>
+    <p class="p__why">Shopping recommendations often filter products without representing the person wearing them. The larger goal is to connect real garments with body structure, occasion, location, weather, budget and user preferences.</p>
+
+    <h4>What's actually real</h4>
+    <ul class="p__real">
+      <li>RTMPose detects and normalizes 17 COCO body landmarks</li>
+      <li>FASHN parsing produces body and clothing-region masks; pose landmarks support arm exclusion and torso-width analysis</li>
+      <li>The notebook calculates image-based shoulder, waist and hip widths, proportions and a provisional body-shape label</li>
+      <li>A saved example emits a structured profile with quality warnings; its dimensions are image-derived estimates scaled using entered height</li>
+      <li>Face-region color analysis is experimental and flagged for low confidence in the saved run</li>
+    </ul>
+
+    <h4>What it demonstrates</h4>
+    <p class="p__does">A GPU-backed Colab pipeline that combines pretrained pose estimation, human parsing, geometry calculations and structured profile output.</p>
+
+    <h4>What I'd do differently</h4>
+    <p class="p__retro">Validate against reference measurements across consented, varied images before presenting centimetres as measurements. Then build the catalog and evaluate ranked recommendations against a baseline.</p>
+
+    <h4>Evidence</h4>
+    <ul class="p__ev">
+      <li><a href="./projects/body-aware-shopping-compatibility.html">Structured project page and prototype screenshots</a></li>
+      <li><a href="https://colab.research.google.com/drive/1RgQ3M7wpE1Lfq9xKLxJJ7y58URGxcqvB?usp=sharing">Open the shared Google Colab notebook</a></li>
     </ul>
   </article>
 
@@ -863,7 +902,7 @@ body[data-reduced] *{transition-duration:.001ms!important}
     });
 
     $("#boardStat").innerHTML =
-      "<span>4 projects</span><span><b>1</b> live</span><span><b>~55k</b> lines of my own code</span><span>updated <b>Oct 2026</b></span><span>Surat · IST</span>";
+      "<span>5 projects</span><span><b>1</b> live</span><span><b>~55k</b> lines of my own code</span><span>updated <b>Oct 2026</b></span><span>Surat · IST</span>";
   }
 
   function renderArrivals() {
@@ -939,7 +978,7 @@ body[data-reduced] *{transition-duration:.001ms!important}
 
   /* ══════════ 3 · TABS ══════════ */
   var tabCopy = {
-    dep:    ["Departures", "Four projects · status as of Oct 2026"],
+    dep:    ["Departures", "Five projects · status as of Oct 2026"],
     arr:    ["Arrivals",   "What is in flight right now"],
     rec:    ["Record",     "Where the work came from"],
     skills: ["Skills",     "No percentages — just what I've shipped with"]

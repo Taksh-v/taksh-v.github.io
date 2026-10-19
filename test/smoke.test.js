@@ -27,14 +27,14 @@ console.log('\n── 1 · board renders from #doc ──');
 {
   const { w, d } = boot('https://taksh-v.github.io/');
   const rows = d.querySelectorAll('.brow__in');
-  ok(rows.length === 4, 'four departure rows rendered (got ' + rows.length + ')');
+  ok(rows.length === 5, 'five departure rows rendered (got ' + rows.length + ')');
   const codes = [...d.querySelectorAll('.brow__in .row__code, .brow__in [data-f=code]')].map(e => e.textContent.trim());
   ok(codes.length === 0 || true, 'flight cells use flap spans (aria-hidden)');
   const flapCells = d.querySelectorAll('.brow__in .fl');
   ok(flapCells.length > 40, 'flap cells built (' + flapCells.length + ' cells)');
   ok(d.querySelectorAll('[data-view-tab]').length === 4, 'four tabs present');
   ok(d.querySelector('#boardTitle').textContent === 'Departures', 'title = Departures');
-  ok(d.querySelector('#boardStat').textContent.includes('4 projects'), 'stats line rendered');
+  ok(d.querySelector('#boardStat').textContent.includes('5 projects'), 'stats line rendered');
 }
 
 console.log('\n── 2 · deep link ?p=TKV-03 opens that pass ──');
@@ -50,6 +50,21 @@ console.log('\n── 2 · deep link ?p=TKV-03 opens that pass ──');
   ok((d.querySelector('.evlist a') || {}).href !== undefined, 'evidence links present');
   const cta = d.querySelector('.gate__cta a.go');
   ok(cta && cta.href.startsWith('mailto:') && cta.href.includes('TKV-03'), 'CTA mailto carries the flight code');
+}
+
+console.log('\n── 2b · TKV-05 project and Colab evidence ──');
+{
+  const { d } = boot('https://taksh-v.github.io/?p=TKV-05');
+  ok(d.querySelector('#gate').classList.contains('is-on'), 'body-aware project pass opens by deep link');
+  ok(d.querySelector('#gateTitle').textContent.includes('Body-aware shopping compatibility'), 'gate shows the new project');
+  const links = [...d.querySelectorAll('.evlist a')].map(a => a.href);
+  ok(links.some(h => h.includes('/projects/body-aware-shopping-compatibility.html')), 'pass links to the structured project page');
+  ok(links.some(h => h === 'https://colab.research.google.com/drive/1RgQ3M7wpE1Lfq9xKLxJJ7y58URGxcqvB?usp=sharing'), 'pass uses the requested Colab sharing link');
+  const page = fs.readFileSync(path.join(ROOT, 'projects', 'body-aware-shopping-compatibility.html'), 'utf8');
+  ok(page.includes('id=\"project-title\"') && page.includes('Prototype pipeline'), 'structured HTML project page exists');
+  ok(page.includes('assets/body-profile-masks.png') && fs.existsSync(path.join(ROOT, 'assets', 'body-profile-masks.png')), 'page includes the supplied mask visualization');
+  ok(page.includes('1RgQ3M7wpE1Lfq9xKLxJJ7y58URGxcqvB?usp=sharing'), 'page links to the shared Colab notebook');
+  ok(fs.readFileSync(path.join(ROOT, 'sitemap.xml'), 'utf8').includes('/projects/body-aware-shopping-compatibility.html'), 'project page is listed in the sitemap');
 }
 
 console.log('\n── 3 · tabs switch content ──');
@@ -72,17 +87,17 @@ console.log('\n── 4 · Readable mode is gone · the document stays ──');
   // the deep link that used to switch views is inert now — the board just loads
   const { w: w2, d: d2 } = boot('https://taksh-v.github.io/?view=plain');
   ok(!d2.body.dataset.view, 'no view state is set from the URL');
-  ok(d2.querySelectorAll('.brow').length === 4, 'board renders normally even with ?view=plain');
+  ok(d2.querySelectorAll('.brow').length === 5, 'board renders normally even with ?view=plain');
 
   // the document itself is untouched: still the single source of truth
-  ok(d.querySelectorAll('#doc article[data-project]').length === 4, '#doc holds all four projects semantically');
+  ok(d.querySelectorAll('#doc article[data-project]').length === 5, '#doc holds all five projects semantically');
   ok(/#endregion|/.test(src) && /\.doc\{display:none/.test(src), 'document is hidden while the board runs');
 
   // no JS → the document IS the site
   ok(/<noscript><style>[\s\S]*?\.doc\{display:block\}/.test(src), 'noscript rule reveals the document');
   const noJs = new JSDOM(html, { url: 'https://taksh-v.github.io/' });
   const nd = noJs.window.document;
-  ok(nd.querySelectorAll('#doc article[data-project]').length === 4, 'content present with JS disabled');
+  ok(nd.querySelectorAll('#doc article[data-project]').length === 5, 'content present with JS disabled');
   ok(nd.querySelector('#doc h1').textContent.includes('Taksh'), 'no-JS H1 renders');
   const docLinks = [...nd.querySelectorAll('#doc .doc__act a')].map(a2 => a2.getAttribute('href'));
   ok(docLinks.length === 2 && docLinks[0].includes('taksh-vadaliya-resume.pdf') && docLinks[1].startsWith('mailto:'),
