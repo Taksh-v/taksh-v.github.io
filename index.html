@@ -1,1345 +1,156 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Taksh Vadaliya — Departures</title>
-<meta name="description" content="AI engineer and founder. Five projects, five statuses, every claim linked to its evidence: live voice, agentic retrieval, evaluation-first RAG, systems work in C, and a body-aware shopping compatibility prototype." />
-<meta property="og:type" content="website" />
-<meta property="og:title" content="Taksh Vadaliya — Departures" />
-<meta property="og:description" content="The board is the portfolio. Product, platform, measurement, fundamentals." />
-<meta property="og:url" content="https://taksh-v.github.io/" />
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="theme-color" content="#131211" />
-<link rel="canonical" href="https://taksh-v.github.io/" />
-<link rel="alternate" type="application/pdf" href="./assets/taksh-vadaliya-resume.pdf" title="Taksh Vadaliya — Résumé (PDF)" />
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Person","name":"Taksh Vadaliya",
-"jobTitle":"AI engineer and founder","email":"mailto:vadaliyataksh06@gmail.com",
-"url":"https://taksh-v.github.io/",
-"address":{"@type":"PostalAddress","addressLocality":"Surat","addressRegion":"Gujarat","addressCountry":"IN"},
-"sameAs":["https://github.com/Taksh-v","https://www.linkedin.com/in/taksh-vadaliya-b363ab272","https://solidexposure.com"],
-"knowsAbout":["retrieval-augmented generation","hybrid retrieval","reciprocal rank fusion","voice AI","real-time conversation","multi-agent systems","FastAPI","PostgreSQL","evaluation harnesses"]}
-</script>
-<!-- ANALYTICS SLOT — when you're ready, paste a private/self-hosted snippet here
-     (Plausible, Umami, or a counter on your own API). Keep it cookie-less so the
-     "no tracking" line in the footer stays true. -->
-<!-- <script defer data-domain="taksh-v.github.io" src="https://plausible.io/js/script.js"></script> -->
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23131211'/%3E%3Cg fill='%23D98324'%3E%3Crect x='7' y='10' width='18' height='2.4' rx='1'/%3E%3Crect x='7' y='15' width='18' height='2.4' rx='1'/%3E%3Crect x='7' y='20' width='11' height='2.4' rx='1'/%3E%3C/g%3E%3C/svg%3E" />
-
-<!--
-  ══════════════════════════════════════════════════════════════════════════════
-  TAKSH VADALIYA — the board IS the portfolio.
-
-  Architecture
-    · All content lives once, in semantic HTML inside #doc (the plain document).
-    · JavaScript reads #doc and renders the board from it. One source of truth.
-    · No JS / crawler / screen reader → #doc renders as a clean page (see the noscript rule in <head>).
-    · The board is progressive enhancement, never a gate.
-
-  Signature mechanic
-    · Real split-flap: each character cell is two hinged halves. The old top half
-      falls forward while the new bottom half rises to meet it.
-
-  Slots to fill — search "SLOT:"
-    SLOT:4  og:url / domain
-  ══════════════════════════════════════════════════════════════════════════════
--->
-
-<style>
-/* ═══════════════════ 1 · TOKENS ═══════════════════ */
-:root{
-  /* instrument (dark, mechanical) */
-  --void:#0C0B0A;
-  --board:#131211;
-  --tile:#221E1A;
-  --tile-2:#2A251F;
-  --seam:#0A0908;
-  --rail:#1A1815;
-  --hair:rgba(247,245,239,.08);
-  --hair-2:rgba(247,245,239,.14);
-
-  /* light (ink, paper) */
-  --paper:#F7F5EF;
-  --paper-2:#EFEBE1;
-  --ink:#171614;
-  --ink-2:#5C5A52;
-  --ink-3:#8A877D;
-
-  /* ink on instrument */
-  --f-ink:#F7F5EF;
-  --f-ink-2:rgba(247,245,239,.62);
-  --f-ink-3:rgba(247,245,239,.36);
-
-  /* accents — marigold is the only action colour; moss means LIVE */
-  --mari:#D98324;
-  --mari-dim:#8A5416;
-  --moss:#7FA35F;
-  --rust:#C4602F;
-
-  --mono:ui-monospace,"SF Mono",SFMono-Regular,"Cascadia Mono",Menlo,Consolas,"Liberation Mono",monospace;
-  --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,Cambria,serif;
-
-  --cw:.64em;          /* flap cell width  */
-  --ch:1.34em;         /* flap cell height */
-  --flip:520ms;
-  --ease:cubic-bezier(.22,1,.36,1);
-  --ease-mech:cubic-bezier(.4,0,.2,1);
-  --gut:clamp(14px,3.4vw,34px);
-}
-*,*::before,*::after{box-sizing:border-box}
-html,body{height:100%}
-html{-webkit-text-size-adjust:100%}
-body{
-  margin:0;background:var(--void);color:var(--f-ink);
-  font-family:var(--mono);font-size:16px;line-height:1.4;
-  -webkit-font-smoothing:antialiased;overflow-x:hidden;
-}
-a{color:inherit;text-decoration:none}
-::selection{background:var(--mari);color:#131211}
-:focus-visible{outline:2px solid var(--mari);outline-offset:2px}
-button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
-.skip{position:absolute;left:-9999px;z-index:99;background:var(--mari);color:#131211;padding:9px 14px;font-size:13px}
-.skip:focus{left:8px;top:8px}
-.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-
-/* ═══════════════════ 2 · FLAP CELL ═══════════════════ */
-.fl{position:relative;display:inline-block;width:var(--cw);height:var(--ch);background:var(--tile);
-    border-radius:2px;perspective:260px;vertical-align:middle;overflow:hidden;
-    box-shadow:inset 0 0 0 1px rgba(0,0,0,.5)}
-.fl::after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:var(--seam);z-index:6;
-    box-shadow:0 1px 0 rgba(255,255,255,.03)}
-.fl__h{position:absolute;left:0;right:0;height:50%;overflow:hidden;z-index:2}
-.fl__h--t{top:0;background:linear-gradient(180deg,var(--tile-2),var(--tile));border-radius:2px 2px 0 0}
-.fl__h--b{bottom:0;background:linear-gradient(180deg,var(--tile),#1D1A16);border-radius:0 0 2px 2px}
-.fl__h i{position:absolute;left:0;width:100%;height:200%;display:grid;place-items:center;font-style:normal;
-    font-size:1em;line-height:1;color:var(--f-ink)}
-.fl__h--t i{top:0}
-.fl__h--b i{bottom:0}
-.fl__o{position:absolute;left:0;right:0;top:0;height:50%;overflow:hidden;z-index:5;
-    transform-origin:50% 100%;backface-visibility:hidden;
-    background:linear-gradient(180deg,var(--tile-2),var(--tile));border-radius:2px 2px 0 0;
-    animation:flipOut calc(var(--flip) * .5) var(--ease-mech) both;animation-delay:var(--d,0ms)}
-.fl__o i{position:absolute;top:0;left:0;width:100%;height:200%;display:grid;place-items:center;font-style:normal;color:var(--f-ink)}
-.fl__n{position:absolute;left:0;right:0;bottom:0;height:50%;overflow:hidden;z-index:5;
-    transform-origin:50% 0%;backface-visibility:hidden;
-    background:linear-gradient(180deg,var(--tile),#1D1A16);border-radius:0 0 2px 2px;
-    animation:flipIn calc(var(--flip) * .5) var(--ease-mech) both;
-    animation-delay:calc(var(--d,0ms) + var(--flip) * .46)}
-.fl__n i{position:absolute;bottom:0;left:0;width:100%;height:200%;display:grid;place-items:center;font-style:normal;color:var(--f-ink)}
-@keyframes flipOut{from{transform:rotateX(0)}to{transform:rotateX(-90deg)}}
-@keyframes flipIn{from{transform:rotateX(90deg)}to{transform:rotateX(0)}}
-.fl--hot .fl__h i{color:var(--mari)}
-.fl--hot .fl__o i,.fl--hot .fl__n i{color:var(--mari)}
-.fl--moss .fl__h i,.fl--moss .fl__o i,.fl--moss .fl__n i{color:var(--moss)}
-.fl--dim .fl__h i,.fl--dim .fl__o i,.fl--dim .fl__n i{color:var(--f-ink-2)}
-
-/* ═══════════════════ 3 · SHELL ═══════════════════ */
-.shell{min-height:100dvh;display:flex;flex-direction:column;padding:0 var(--gut)}
-.rail{display:flex;align-items:center;gap:14px;padding:14px 0 12px;border-bottom:1px solid var(--hair);flex-wrap:wrap}
-.reg{display:flex;align-items:center;gap:9px;font-size:12.5px;letter-spacing:.1em}
-.reg svg{width:19px;height:19px}
-.reg b{font-weight:500;letter-spacing:.14em}
-.rail__sep{width:1px;height:18px;background:var(--hair-2)}
-.clockwrap{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--f-ink-3);letter-spacing:.08em}
-.clock{font-size:19px;display:flex;gap:2px;align-items:center}
-.clock .col{display:inline-flex;flex-direction:column;gap:2px;margin-top:2px}
-.clock .dotcol{display:flex;flex-direction:column;gap:4px;justify-content:center;padding:0 2px}
-.clock .dotcol span{width:3px;height:3px;border-radius:50%;background:var(--mari);display:block}
-.rail__right{margin-left:auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
-.tabs{overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;max-width:100%}
-.tabs::-webkit-scrollbar{display:none}
-@media (max-width:560px){.tabs button{padding:6px 9px;font-size:10.5px;letter-spacing:.1em}}
-
-.tabs{display:flex;gap:2px;background:var(--rail);border:1px solid var(--hair);border-radius:7px;padding:3px}
-.tabs button{
-  font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--f-ink-2);
-  padding:7px 12px;border-radius:5px;transition:background 160ms var(--ease-mech),color 160ms}
-.tabs button:hover{color:var(--f-ink);background:rgba(247,245,239,.05)}
-.tabs button[aria-selected="true"]{background:var(--mari);color:#141110;font-weight:500}
-
-.ghost{
-  font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--f-ink-2);
-  border:1px solid var(--hair-2);border-radius:6px;padding:8px 11px;
-  transition:background 160ms var(--ease-mech),color 160ms,border-color 160ms}
-.ghost:hover{color:var(--f-ink);background:rgba(247,245,239,.06);border-color:var(--hair-2)}
-.solid{background:var(--mari);color:#141110;font-weight:500;border-color:transparent}
-.solid:hover{background:#E8912F;color:#141110}
-
-/* ═══════════════════ 4 · THE BOARD ═══════════════════ */
-.boardwrap{flex:1;display:flex;flex-direction:column;justify-content:center;padding:clamp(14px,3vh,34px) 0}
-.board{
-  background:var(--board);border-radius:10px;padding:clamp(12px,2.2vw,22px);
-  box-shadow:inset 0 0 0 1px var(--hair),0 40px 80px -50px #000;
-}
-.bhead{display:flex;align-items:baseline;gap:14px;padding:2px 10px 12px;border-bottom:1px solid var(--hair);margin-bottom:4px}
-.bhead h1{font-size:12px;font-weight:500;letter-spacing:.24em;text-transform:uppercase;color:var(--f-ink);margin:0}
-.bhead .sub{font-size:11px;letter-spacing:.1em;color:var(--f-ink-3);text-transform:uppercase}
-.bhead .right{margin-left:auto;font-size:11px;color:var(--f-ink-3);letter-spacing:.1em}
-.bcols{display:grid;grid-template-columns:96px minmax(0,1fr) 132px 176px 122px;gap:12px;padding:8px 10px;
-       font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--f-ink-3)}
-.brow + .brow{border-top:1px solid rgba(247,245,239,.055)}
-.brow__in{
-  display:grid;grid-template-columns:96px minmax(0,1fr) 132px 176px 122px;gap:12px;align-items:center;
-  width:100%;text-align:left;padding:11px 10px;border-radius:7px;position:relative;
-  transition:background 200ms var(--ease-mech),transform 200ms var(--ease)}
-.brow__in::before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:2px;border-radius:2px;background:var(--mari);
-  transform:scaleY(.2);opacity:.45;transform-origin:center;transition:transform 240ms var(--ease),opacity 240ms}
-.brow__in:hover,.brow__in:focus-visible{background:#191614;transform:translateX(3px)}
-.brow__in:hover::before,.brow__in:focus-visible::before{transform:scaleY(1);opacity:1}
-.cellrow{display:inline-flex;gap:1.5px;align-items:center;white-space:nowrap}
-.brow__name{display:inline-flex;gap:1.5px;align-items:center}
-.brow__meta{display:block;font-size:10.5px;color:var(--f-ink-3);letter-spacing:.06em;margin-top:4px;font-family:var(--sans)}
-.st{display:inline-flex;align-items:center;gap:7px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
-    border:1px solid var(--hair-2);border-radius:999px;padding:4px 9px;color:var(--f-ink-2);justify-self:start}
-.st i{width:5px;height:5px;border-radius:50%;background:currentColor}
-.st--live{color:var(--moss);border-color:rgba(127,163,95,.4)}
-.st--dev{color:var(--mari);border-color:rgba(217,131,36,.4)}
-.st--ship{color:var(--f-ink-2)}
-.st--reb{color:var(--f-ink-3);border-color:var(--hair)}
-
-.bstat{display:flex;gap:10px;flex-wrap:wrap;padding:12px 10px 2px;border-top:1px solid var(--hair);margin-top:8px;font-size:11px;color:var(--f-ink-3);letter-spacing:.08em}
-.bstat b{color:var(--f-ink-2);font-weight:400}
-
-.arr{display:grid;grid-template-columns:96px minmax(0,1fr) 122px;gap:12px;padding:11px 10px;border-top:1px solid rgba(247,245,239,.055);align-items:baseline}
-.arr:first-child{border-top:0}
-.arr .k{font-size:10.5px;letter-spacing:.14em;color:var(--mari)}
-.arr .n{font-size:13.5px;color:var(--f-ink);font-family:var(--sans);font-weight:500}
-.arr .d{font-size:11px;color:var(--f-ink-3);font-family:var(--sans)}
-/* the standing line — the only prose on the board, and it never changes per tab */
-.aboutline{margin:0 0 14px;padding:11px 13px;border-left:2px solid var(--mari);background:rgba(217,131,36,.05);
-  font-family:var(--sans);font-size:12.5px;line-height:1.6;color:var(--f-ink-2);max-width:82ch}
-.aboutline strong{color:var(--f-ink);font-weight:600}
-
-/* the origin, on the Record tab — read out of #doc, so the words exist once */
-.origin{padding:16px 12px 18px;border-bottom:1px solid rgba(247,245,239,.055);max-width:84ch}
-.origin h4{margin:0 0 10px;font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--mari)}
-.origin p{margin:0 0 11px;font-family:var(--sans);font-size:13px;line-height:1.62;color:var(--f-ink-2)}
-.origin p:last-child{margin-bottom:0}
-.origin strong{color:var(--f-ink)}
-.origin a{color:var(--mari);border-bottom:1px solid rgba(217,131,36,.35)}
-.origin a:hover{border-bottom-color:var(--mari)}
-
-.hint{text-align:center;font-size:10.5px;letter-spacing:.12em;color:var(--f-ink-3);padding-top:12px}
-.scols{display:grid;grid-template-columns:210px minmax(0,1fr);gap:12px;padding:8px 10px;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--f-ink-3)}
-.srow{display:grid;grid-template-columns:210px minmax(0,1fr);gap:12px;padding:12px 10px;align-items:baseline}
-.srow + .srow{border-top:1px solid rgba(247,245,239,.055)}
-.sval{font-family:var(--sans);font-size:13.5px;line-height:1.58;color:var(--f-ink-2)}
-@media (max-width:640px){.scols{display:none}.srow{grid-template-columns:1fr;gap:6px}}
-.rail--foot{border-bottom:0;border-top:1px solid var(--hair);margin-top:auto;padding:12px 0 16px;gap:10px 16px;font-size:11.5px;color:var(--f-ink-3)}
-.rail--foot a{color:var(--f-ink-2);border-bottom:1px solid transparent;transition:color 160ms,border-color 160ms}
-.rail--foot a:hover{color:var(--f-ink);border-bottom-color:var(--mari)}
-.rail--foot .rail__right{margin-left:auto;font-size:10.5px;letter-spacing:.08em}
-.hint kbd{font-family:var(--mono);border:1px solid var(--hair-2);border-radius:3px;padding:1px 4px;font-size:10px}
-
-/* ═══════════════════ 5 · GATE (project view) ═══════════════════ */
-.gate{
-  position:fixed;inset:0;z-index:80;background:var(--paper);color:var(--ink);
-  overflow-y:auto;display:none;
-}
-.gate.is-on{display:block;animation:gateIn 420ms var(--ease) both}
-@keyframes gateIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-.gate.is-off{animation:gateOut 260ms var(--ease-mech) both}
-@keyframes gateOut{to{opacity:0;transform:translateY(10px)}}
-.gate__bar{position:sticky;top:0;background:rgba(247,245,239,.92);backdrop-filter:blur(8px);border-bottom:1px solid #E1DCCE;z-index:5}
-.gate__barin{max-width:1000px;margin:0 auto;padding:12px var(--gut);display:flex;align-items:center;gap:14px}
-.back{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);
-      border:1px solid #E1DCCE;border-radius:6px;padding:7px 11px;transition:background 160ms,color 160ms}
-.back:hover{background:#fff;color:var(--ink)}
-.gate__code{font-size:12px;letter-spacing:.14em;color:var(--rust)}
-.gate__barin .sp{margin-left:auto;display:flex;gap:8px}
-.gate__body{max-width:1000px;margin:0 auto;padding:clamp(22px,4vw,44px) var(--gut) 80px}
-
-.pass{
-  display:grid;grid-template-columns:minmax(0,1fr) 190px;border:1px solid #DCD6C6;border-radius:10px;
-  background:#FFFDF8;overflow:hidden;position:relative;box-shadow:0 20px 40px -34px rgba(23,22,20,.5)
-}
-@media (max-width:760px){.pass{grid-template-columns:1fr}}
-.pass__main{padding:clamp(18px,3vw,30px)}
-.pass__kicker{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-3)}
-.pass h2{font-family:var(--serif);font-weight:400;font-size:clamp(26px,4.4vw,44px);line-height:1.06;letter-spacing:-.02em;margin:10px 0 8px}
-.pass__tag{font-size:15px;color:var(--ink-2);max-width:56ch;margin:0}
-.pass__grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 26px;margin-top:22px;padding-top:18px;border-top:1px solid #EDE8DA}
-.pass__grid div{display:grid;gap:2px}
-.pass__grid dt,.pass__grid .k{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
-.pass__grid .v{font-size:14px;color:var(--ink)}
-.pass__stub{border-left:1px dashed #CFC8B6;padding:clamp(16px,2.4vw,26px);background:#F3F0E6;display:flex;flex-direction:column;gap:14px;justify-content:space-between}
-@media (max-width:760px){.pass__stub{border-left:0;border-top:1px dashed #CFC8B6}}
-.pass__stub .code{font-size:26px;letter-spacing:.06em}
-.pass__stub .st{align-self:flex-start;border-color:#D5CDB9;color:var(--ink-2)}
-.pass__stub .st--live{color:#4C6B33;border-color:#C3D3AE}
-.pass__stub .st--dev{color:#8A5416;border-color:#E3C79E}
-.barcode{display:flex;align-items:flex-end;gap:1.5px;height:52px}
-.barcode span{background:#171614;display:block}
-.pass__stub .meta{font-size:10.5px;color:var(--ink-3);letter-spacing:.1em}
-
-.wrap3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin-top:clamp(26px,4vw,40px)}
-@media (max-width:820px){.wrap3{grid-template-columns:1fr;gap:16px}}
-.wrap3 h3{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);margin:0 0 9px;font-weight:500}
-.wrap3 p{font-size:15px;line-height:1.62;color:var(--ink-2);margin:0}
-.wrap3 ul{margin:0;padding:0;list-style:none}
-.wrap3 li{position:relative;padding-left:15px;margin-bottom:7px;font-size:14.5px;line-height:1.55;color:var(--ink-2)}
-.wrap3 li::before{content:"";position:absolute;left:0;top:9px;width:6px;height:1px;background:var(--rust)}
-
-.retro{margin-top:30px;border:1px solid #E3C79E;background:#FBF3E6;border-radius:9px;padding:16px 18px}
-.retro h3{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#8A5416;margin:0 0 7px;font-weight:500}
-.retro p{font-family:var(--serif);font-size:17px;line-height:1.5;color:#4A3524;margin:0}
-
-.evlist{margin-top:26px;border-top:1px solid #EDE8DA;padding-top:16px}
-.evlist h3{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);margin:0 0 11px;font-weight:500}
-.evlist a{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink);border:1px solid #DCD6C6;background:#FFFDF8;
-  border-radius:6px;padding:8px 11px;margin:0 6px 6px 0;transition:transform 140ms var(--ease),border-color 140ms,box-shadow 140ms}
-.evlist a::before{content:"↗";color:var(--rust);font-size:11px}
-.evlist a:hover{transform:translateY(-1px);border-color:#C9C0A8;box-shadow:0 6px 14px -10px rgba(23,22,20,.5)}
-.gate__cta{margin-top:26px;padding-top:18px;border-top:1px solid #EDE8DA;display:flex;gap:9px;flex-wrap:wrap;align-items:center}
-.gate__cta a{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;border-radius:6px;padding:10px 14px;border:1px solid #DCD6C6;color:var(--ink);background:#FFFDF8;transition:transform 140ms var(--ease),border-color 140ms}
-.gate__cta a.go{background:#171614;color:#F7F5EF;border-color:transparent;font-weight:500}
-.gate__cta a.go:hover{background:#000}
-.gate__cta a:hover{transform:translateY(-1px);border-color:#C9C0A8}
-.gate__cta span{font-size:12.5px;color:var(--ink-3)}
-
-/* ═══════════════════ 6 · PLAIN DOCUMENT ═══════════════════ */
-/* The document: hidden while the board runs, and the whole site when it cannot
-   (no JS → the noscript rule; @media print → the print rules below). */
-.doc{display:none;max-width:820px;margin:0 auto;padding:clamp(24px,4vw,56px) var(--gut) 90px;font-family:var(--sans)}
-.doc h1{font-family:var(--serif);font-weight:400;font-size:clamp(30px,5vw,50px);line-height:1.06;letter-spacing:-.022em;margin:0 0 12px}
-.doc h2{font-family:var(--serif);font-weight:400;font-size:clamp(22px,3vw,30px);letter-spacing:-.014em;margin:44px 0 14px;padding-top:20px;border-top:1px solid #E1DCCE}
-.doc h3{font-family:var(--serif);font-weight:400;font-size:22px;margin:30px 0 8px;letter-spacing:-.012em}
-.doc h4{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-3);margin:18px 0 7px;font-weight:500}
-.doc p{font-size:15.5px;line-height:1.65;color:var(--ink-2);margin:0 0 13px}
-.doc li{font-size:15px;line-height:1.6;color:var(--ink-2);margin-bottom:6px}
-.doc dt{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
-.doc dd{margin:0 0 10px;font-size:15px;color:var(--ink-2)}
-.doc a{color:var(--ink);border-bottom:1px solid var(--rust)}
-
-/* ═══════════════════ 7 · STATES ═══════════════════ */
-.boot .fl__o,.boot .fl__n{animation:none!important}
-body[data-reduced] .fl__o,body[data-reduced] .fl__n{animation:none!important}
-body[data-reduced] *{transition-duration:.001ms!important}
-
-@media (prefers-reduced-motion:reduce){
-  .fl__o,.fl__n{animation:none!important}
-  .gate.is-on{animation:none}
-}
-
-@media (max-width:940px){
-  .bcols{display:none}
-  .aboutline{font-size:12px;padding:10px 11px;max-width:none}
-  .origin{padding:14px 11px 16px}
-  .brow__in{grid-template-columns:78px minmax(0,1fr) auto;row-gap:6px}
-  .brow__in > .btype,.brow__in > .bgate{display:none}
-  .arr{grid-template-columns:78px minmax(0,1fr)}
-  .arr .d{grid-column:2}
-}
-@media (max-width:520px){
-  :root{--cw:.58em}
-  .clockwrap{display:none}
-}
-
-/* toast */
-.toast{position:fixed;left:50%;bottom:26px;z-index:300;transform:translateX(-50%) translateY(12px);opacity:0;
-  background:#171614;color:#F7F5EF;border:1px solid var(--hair-2);border-radius:8px;padding:11px 16px;
-  font-size:13px;letter-spacing:.02em;pointer-events:none;transition:opacity 220ms var(--ease),transform 220ms var(--ease)}
-.toast.is-on{opacity:1;transform:translateX(-50%)}
-
-/* command palette */
-.cmd{position:fixed;inset:0;z-index:250;display:none;background:rgba(8,7,6,.74);backdrop-filter:blur(3px);
-  padding:min(11vh,96px) var(--gut) var(--gut)}
-.cmd.is-on{display:block;animation:gateIn 220ms var(--ease) both}
-.cmd__p{max-width:560px;margin:0 auto;background:#171614;border:1px solid var(--hair-2);border-radius:10px;
-  overflow:hidden;box-shadow:0 30px 70px -30px #000}
-.cmd__f{width:100%;background:transparent;border:0;border-bottom:1px solid var(--hair);color:var(--f-ink);
-  font-family:var(--mono);font-size:14px;padding:15px 16px;outline:none}
-.cmd__f::placeholder{color:var(--f-ink-3)}
-.cmd__l{max-height:54vh;overflow:auto;padding:6px}
-.cmd__i{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:10px 12px;border-radius:6px;
-  font-size:13.5px;color:var(--f-ink-2);cursor:pointer;transition:background 140ms,color 140ms}
-.cmd__i em{margin-left:auto;font-style:normal;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--f-ink-3)}
-.cmd__i:hover,.cmd__i.sel{background:rgba(247,245,239,.07);color:var(--f-ink)}
-.cmd__i.sel{box-shadow:inset 2px 0 0 var(--mari)}
-.cmd__e{padding:22px;margin:0;text-align:center;color:var(--f-ink-3);font-size:13px}
-.cmd__h{border-top:1px solid var(--hair);padding:8px 14px;display:flex;gap:14px;font-family:var(--mono);font-size:10px;color:var(--f-ink-3)}
-
-/* document actions — visible without JS, and in print */
-.doc__act{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin:0 0 22px}
-.doc__act button,.doc__act a{display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);font-size:12.5px;
-  border:1px solid #DCD6C6;background:#FFFDF8;color:#171614;border-radius:6px;padding:9px 13px;cursor:pointer;
-  transition:transform 140ms var(--ease),border-color 140ms}
-.doc__act button:hover,.doc__act a:hover{transform:translateY(-1px);border-color:#C9C0A8}
-.doc__act .go{background:#171614;color:#F7F5EF;border-color:transparent}
-
-@media print{
-  .shell,.gate__bar,.hint,.cmd,.toast,.doc__act{display:none!important}
-  body{background:#fff;color:#000}
-  body[data-gate="1"] .doc{display:none!important}
-  body[data-gate="1"] .gate.is-on{position:static;display:block!important;background:#fff;overflow:visible;animation:none}
-  body[data-gate="1"] .gate__body{padding:0;max-width:none}
-  body:not([data-gate="1"]) .doc{display:block!important;max-width:none}
-  .pass,.pass__stub{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  a[href^="http"]::after{content:" (" attr(href) ")";font-size:9px;color:#666}
-}
-</style>
-<noscript><style>
-  /* No JavaScript? The board cannot render its rows, so show the document instead.
-     Same markup, same styles, no separate page to maintain. */
-  .shell,.skip{display:none}
-  .doc{display:block}
-</style></noscript>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f1e9">
+  <meta name="description" content="Taksh Vadaliya is an AI application engineer building useful products across LLM systems, retrieval, voice interfaces, and computer vision.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Taksh Vadaliya — AI Application Engineer">
+  <meta property="og:description" content="I turn AI ideas into usable software: retrieval systems, voice interfaces, and computer-vision prototypes.">
+  <meta property="og:url" content="https://taksh-v.github.io/">
+  <meta name="twitter:card" content="summary">
+  <link rel="canonical" href="https://taksh-v.github.io/">
+  <link rel="alternate" type="application/pdf" href="./assets/taksh-vadaliya-resume.pdf" title="Taksh Vadaliya résumé">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='12' fill='%23191d1a'/%3E%3Cpath d='M12 15h24M12 24h17M12 33h11' stroke='%23e5f368' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Person","name":"Taksh Vadaliya","jobTitle":"AI Application Engineer","url":"https://taksh-v.github.io/","email":"mailto:vadaliyataksh06@gmail.com","address":{"@type":"PostalAddress","addressLocality":"Surat","addressRegion":"Gujarat","addressCountry":"IN"},"sameAs":["https://github.com/Taksh-v","https://www.linkedin.com/in/taksh-vadaliya-b363ab272","https://solidexposure.com"],"knowsAbout":["AI application engineering","retrieval-augmented generation","information retrieval","evaluation systems","voice AI","computer vision","Python","FastAPI"]}
+  </script>
+  <title>Taksh Vadaliya — AI Application Engineer</title>
+  <style>
+    :root{--paper:#f4f1e9;--paper2:#ebe7dc;--ink:#191d1a;--ink2:#3d4942;--muted:#727b73;--line:#d6d4c8;--acid:#e5f368;--lime:#c9dc4e;--blue:#90a9ff;--rust:#cc6c4e;--dark:#202722;--serif:Georgia,"Times New Roman",serif;--sans:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace;--max:1160px}
+    *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:88px}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased}a{color:inherit}a:focus-visible,button:focus-visible{outline:3px solid #637737;outline-offset:4px}.wrap{width:min(var(--max),calc(100% - 48px));margin-inline:auto}.skip{position:absolute;left:12px;top:-60px;background:var(--acid);padding:8px 12px;z-index:20}.skip:focus{top:12px}
+    .top{position:sticky;top:0;z-index:10;background:rgba(244,241,233,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}.nav{height:68px;display:flex;align-items:center;justify-content:space-between;gap:24px}.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:750;letter-spacing:-.03em}.brandmark{width:32px;height:32px;background:var(--ink);color:var(--acid);border-radius:9px;display:grid;place-items:center;font:700 12px var(--mono);letter-spacing:-.1em}.navlinks{display:flex;align-items:center;gap:24px}.navlinks a{text-decoration:none;color:var(--ink2);font-size:13px}.navlinks a:hover{color:var(--ink)}.navlinks .navcta{background:var(--ink);color:var(--paper);padding:9px 14px;border-radius:5px}.navlinks .navcta:hover{background:#303c34}.menu{display:none;border:1px solid var(--line);background:transparent;border-radius:5px;padding:8px 10px;color:var(--ink);font:12px var(--mono)}
+    .hero{position:relative;padding:78px 0 58px;overflow:hidden}.hero:before{content:"";position:absolute;right:-170px;top:-235px;width:580px;height:580px;border:1px solid rgba(25,29,26,.08);border-radius:50%;box-shadow:0 0 0 42px rgba(25,29,26,.025),0 0 0 84px rgba(25,29,26,.02),0 0 0 126px rgba(25,29,26,.015);pointer-events:none}.heroGrid{position:relative;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(290px,.75fr);gap:62px;align-items:center}.eyebrow{display:flex;align-items:center;gap:10px;color:var(--muted);font:11px var(--mono);letter-spacing:.12em;text-transform:uppercase}.eyebrow:before{content:"";width:23px;height:2px;background:var(--rust)}h1,h2,h3,p{margin-top:0}.hero h1{max-width:740px;margin:18px 0 22px;font:clamp(50px,7.6vw,92px)/.98 var(--serif);font-weight:400;letter-spacing:-.065em}.hero h1 span{position:relative;white-space:nowrap}.hero h1 span:after{content:"";position:absolute;left:2px;right:-5px;bottom:1px;height:8px;background:var(--acid);z-index:-1;transform:rotate(-1deg)}.lede{max-width:650px;color:var(--ink2);font-size:18px;line-height:1.65;margin-bottom:27px}.actions{display:flex;align-items:center;gap:11px;flex-wrap:wrap}.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:46px;padding:11px 16px;border:1px solid var(--ink);border-radius:5px;text-decoration:none;font-size:13px;font-weight:650;transition:transform .18s ease,background .18s ease}.btn:hover{transform:translateY(-2px)}.btn.primary{background:var(--ink);color:var(--paper)}.btn.primary:hover{background:#303c34}.btn.secondary{background:transparent}.btn.secondary:hover{background:var(--paper2)}.btn.arrow:after{content:"↗";font:16px var(--mono)}.availability{margin:21px 0 0;color:var(--muted);font-size:12px}.availability i{display:inline-block;width:8px;height:8px;margin-right:7px;border-radius:50%;background:#6c8b4e;box-shadow:0 0 0 4px rgba(108,139,78,.13)}
+    .systemCard{position:relative;background:var(--dark);color:var(--paper);padding:24px 23px 20px;border-radius:8px;box-shadow:10px 10px 0 var(--acid);isolation:isolate}.systemCard:before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(244,241,233,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(244,241,233,.05) 1px,transparent 1px);background-size:22px 22px;z-index:-1;mask-image:linear-gradient(135deg,#000,transparent 86%)}.cardTop{display:flex;justify-content:space-between;gap:20px;padding-bottom:18px;border-bottom:1px solid rgba(244,241,233,.17);font:10px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:#c0c9c1}.liveMark{color:var(--acid)}.liveMark:before{content:"";display:inline-block;width:6px;height:6px;margin:0 7px 1px 0;background:var(--acid);border-radius:50%}.diagram{padding:22px 0 18px;display:grid;grid-template-columns:1fr 25px 1fr 25px 1fr;align-items:center;gap:4px}.node{min-height:75px;padding:12px 10px;border:1px solid rgba(244,241,233,.25);border-radius:5px;background:rgba(255,255,255,.035)}.node small{display:block;color:#bbc5bc;font:9px var(--mono);letter-spacing:.1em;text-transform:uppercase;margin-bottom:9px}.node strong{font:13px/1.25 var(--sans);display:block}.node:nth-of-type(3){border-color:rgba(229,243,104,.65)}.connector{color:var(--acid);text-align:center;font:14px var(--mono)}.systemFoot{display:flex;justify-content:space-between;gap:14px;padding-top:15px;border-top:1px solid rgba(244,241,233,.17);color:#bac3bb;font:10px var(--mono)}.systemFoot b{color:var(--paper);font-weight:500}
+    .proof{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:rgba(235,231,220,.55)}.proofRow{display:grid;grid-template-columns:repeat(3,1fr);}.proofItem{min-height:82px;display:flex;align-items:center;gap:14px;padding:18px 24px;border-right:1px solid var(--line)}.proofItem:first-child{padding-left:0}.proofItem:last-child{border:0}.proofNo{color:var(--rust);font:11px var(--mono)}.proofItem strong{display:block;font-size:13px}.proofItem span{display:block;color:var(--muted);font-size:11px;margin-top:2px}
+    .section{padding:90px 0}.sectionHead{display:flex;justify-content:space-between;align-items:end;gap:28px;margin-bottom:30px}.sectionLabel{color:var(--rust);font:10px var(--mono);letter-spacing:.15em;text-transform:uppercase;margin-bottom:9px}.sectionHead h2{font:clamp(34px,4vw,53px)/1.06 var(--serif);font-weight:400;letter-spacing:-.045em;margin:0}.sectionHead p{max-width:440px;color:var(--muted);font-size:14px;margin:0}.projectGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.project{display:flex;flex-direction:column;min-height:370px;background:#fbf9f3;border:1px solid var(--line);border-radius:7px;overflow:hidden;transition:transform .2s ease,box-shadow .2s ease}.project:hover{transform:translateY(-3px);box-shadow:0 14px 35px rgba(25,29,26,.08)}.projectTop{min-height:171px;position:relative;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:22px 25px;background:#e7e4d9;border-bottom:1px solid var(--line);overflow:hidden}.project:nth-child(2) .projectTop{background:#e3e8dd}.project:nth-child(3) .projectTop{background:#e8e3d8}.project:nth-child(4) .projectTop{background:#e2e7e6}.project:nth-child(5) .projectTop{background:#ebe2db}.projectIdentity{position:relative;z-index:1}.projectIndex{display:block;color:var(--muted);font:10px var(--mono);letter-spacing:.13em;margin-bottom:9px}.projectTop h3{font:clamp(24px,3vw,33px)/1.05 var(--serif);letter-spacing:-.04em;font-weight:400;margin:0;max-width:340px}.projectVisual{position:relative;width:138px;height:94px;flex:0 0 138px}.visualLabel{position:absolute;left:0;top:0;color:var(--muted);font:8px var(--mono);letter-spacing:.12em;text-transform:uppercase}.voiceWave{position:absolute;left:6px;right:7px;top:35px;display:flex;align-items:center;justify-content:space-between;height:34px}.voiceWave i{width:3px;border-radius:4px;background:var(--rust);height:var(--h)}.orbit{position:absolute;inset:20px 15px 0;border:1px solid #88917d;border-radius:50%;transform:rotate(-23deg)}.orbit:before,.orbit:after{content:"";position:absolute;width:8px;height:8px;border-radius:50%;background:var(--rust);top:50%;left:-4px}.orbit:after{left:auto;right:-4px;background:#71894e}.orbitCore{position:absolute;left:50%;top:50%;width:26px;height:26px;transform:translate(-50%,-50%);border-radius:7px;background:var(--ink);color:var(--acid);display:grid;place-items:center;font:10px var(--mono)}.evalMarks{position:absolute;left:8px;right:0;top:28px;display:grid;grid-template-columns:repeat(4,1fr);gap:5px}.evalMarks span{height:52px;border:1px solid #a8a18f;border-radius:3px;position:relative}.evalMarks span:after{content:"";position:absolute;left:6px;right:6px;bottom:8px;height:var(--h);background:var(--rust);opacity:.85}.maskThumb{width:100%;height:82px;object-fit:cover;object-position:center;border:1px solid #c5c3b9;border-radius:3px;filter:saturate(.82)}.projectBody{padding:21px 23px 22px;display:flex;flex-direction:column;flex:1}.meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:13px}.status{display:inline-flex;align-items:center;gap:6px;font:9px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#536c42}.status:before{content:"";width:6px;height:6px;background:#6c8b4e;border-radius:50%}.status.prototype{color:#95613b}.status.prototype:before{background:#cc8d4e}.status.rebuilding{color:#8c5b4c}.status.rebuilding:before{background:var(--rust)}.stack{color:var(--muted);font:9px var(--mono);text-align:right}.projectBody h4{font-size:15px;margin:0 0 7px;letter-spacing:-.02em}.projectBody p{color:var(--ink2);font-size:13px;line-height:1.65;margin:0 0 16px}.projectLinks{display:flex;gap:15px;flex-wrap:wrap;margin-top:auto;padding-top:4px}.textLink{display:inline-flex;align-items:center;gap:5px;color:var(--ink);text-decoration:none;font-size:12px;font-weight:700;border-bottom:1px solid #9ba094;padding-bottom:2px}.textLink:hover{border-color:var(--rust);color:#774431}.archive{margin-top:18px;padding:19px 22px;display:flex;justify-content:space-between;align-items:center;gap:22px;border:1px solid var(--line);border-radius:7px;background:transparent}.archive h3{font:20px var(--serif);font-weight:400;margin:0 0 4px}.archive p{color:var(--muted);font-size:12px;margin:0}.archive .textLink{white-space:nowrap}
+    .approach{background:var(--dark);color:var(--paper);position:relative;overflow:hidden}.approach:after{content:"";position:absolute;right:-140px;bottom:-250px;width:470px;height:470px;border:1px solid rgba(229,243,104,.17);border-radius:50%;box-shadow:0 0 0 46px rgba(229,243,104,.035),0 0 0 92px rgba(229,243,104,.025);pointer-events:none}.approach .sectionLabel{color:var(--acid)}.approach .sectionHead p{color:#bbc4bb}.principles{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid rgba(244,241,233,.2);border-bottom:1px solid rgba(244,241,233,.2)}.principle{padding:24px 25px 26px 0;border-right:1px solid rgba(244,241,233,.2)}.principle+ .principle{padding-left:24px}.principle:last-child{border-right:0}.principle span{font:10px var(--mono);color:var(--acid)}.principle h3{margin:14px 0 7px;font:23px var(--serif);font-weight:400}.principle p{color:#bbc4bb;font-size:13px;line-height:1.65;margin:0;max-width:310px}
+    .aboutGrid{display:grid;grid-template-columns:.8fr 1.2fr;gap:80px;align-items:start}.aboutTitle{position:sticky;top:105px}.aboutTitle h2{font:clamp(34px,4vw,52px)/1.05 var(--serif);font-weight:400;letter-spacing:-.04em}.aboutTitle p{color:var(--muted);font:11px var(--mono);letter-spacing:.08em}.aboutCopy{max-width:690px}.aboutCopy>p{color:var(--ink2);font-size:16px;line-height:1.8}.aboutCopy .callout{margin:24px 0;padding:19px 21px;background:#e9e7d9;border-left:3px solid var(--rust);color:var(--ink);font:20px/1.45 var(--serif)}.experience{margin-top:32px;border-top:1px solid var(--line)}.experience article{display:grid;grid-template-columns:145px 1fr;gap:23px;padding:17px 0;border-bottom:1px solid var(--line)}.experience time{color:var(--muted);font:10px var(--mono);padding-top:4px}.experience h3{font-size:14px;margin:0 0 4px}.experience p{color:var(--muted);font-size:12px;margin:0}
+    .toolbox{background:var(--paper2)}.skillGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.skillGroup{padding:19px 18px;background:rgba(251,249,243,.75);border:1px solid var(--line);border-radius:6px}.skillGroup h3{font:10px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--rust);margin:0 0 12px}.skillGroup p{font-size:13px;line-height:1.85;color:var(--ink2);margin:0}
+    .contact{padding:79px 0 68px;background:var(--acid)}.contactGrid{display:flex;align-items:end;justify-content:space-between;gap:35px}.contact h2{max-width:670px;font:clamp(39px,5.4vw,67px)/1.02 var(--serif);font-weight:400;letter-spacing:-.055em;margin:0 0 13px}.contact p{color:#465038;font-size:14px;margin:0}.contact .actions{justify-content:flex-end}.contact .btn.primary{background:var(--ink);color:var(--paper);border-color:var(--ink)}.contact .btn.secondary{border-color:var(--ink)}.footer{padding:20px 0 25px;background:var(--dark);color:#c0c8bf}.footerRow{display:flex;justify-content:space-between;align-items:center;gap:20px}.footBrand{color:var(--paper);font-size:12px;font-weight:700}.footer p{margin:0;font:10px var(--mono)}.footLinks{display:flex;gap:17px}.footLinks a{color:#c0c8bf;text-decoration:none;font-size:11px}.footLinks a:hover{color:var(--acid)}
+    .sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    @media(max-width:900px){.heroGrid{gap:36px;grid-template-columns:minmax(0,1.15fr) minmax(270px,.85fr)}.hero{padding-top:62px}.skillGrid{grid-template-columns:repeat(2,1fr)}.aboutGrid{gap:42px}.projectTop{padding:18px}.projectVisual{width:115px;flex-basis:115px}}
+    @media(max-width:680px){.wrap{width:min(var(--max),calc(100% - 34px))}.nav{height:60px}.menu{display:inline-flex}.navlinks{display:none;position:absolute;top:59px;left:0;right:0;padding:14px 17px 18px;background:var(--paper);border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch;gap:0}.navlinks.open{display:flex}.navlinks a{padding:12px 2px;border-bottom:1px solid var(--line)}.navlinks .navcta{margin-top:10px;text-align:center;border:0;padding:12px}.hero{padding:51px 0 42px}.heroGrid{grid-template-columns:1fr;gap:36px}.hero h1{font-size:clamp(49px,14vw,74px)}.lede{font-size:16px}.systemCard{max-width:480px;box-shadow:7px 7px 0 var(--acid)}.proofRow{grid-template-columns:1fr}.proofItem,.proofItem:first-child{min-height:66px;padding:13px 0;border-right:0;border-bottom:1px solid var(--line)}.proofItem:last-child{border:0}.section{padding:65px 0}.sectionHead{display:block;margin-bottom:23px}.sectionHead p{margin-top:13px}.projectGrid{grid-template-columns:1fr}.project{min-height:0}.projectTop{min-height:145px}.projectTop h3{font-size:29px}.projectVisual{width:120px;flex-basis:120px}.archive{align-items:flex-start;flex-direction:column}.principles{grid-template-columns:1fr}.principle,.principle+.principle{padding:19px 0;border-right:0;border-bottom:1px solid rgba(244,241,233,.2)}.principle:last-child{border-bottom:0}.aboutGrid{grid-template-columns:1fr;gap:10px}.aboutTitle{position:static}.aboutTitle h2{margin-bottom:8px}.aboutTitle p{margin-bottom:20px}.experience article{grid-template-columns:104px 1fr;gap:14px}.skillGrid{grid-template-columns:1fr 1fr;gap:8px}.skillGroup{padding:15px 13px}.contact{padding:60px 0}.contactGrid{display:block}.contact .actions{justify-content:flex-start;margin-top:24px}.footerRow{align-items:flex-start;flex-direction:column}.footLinks{flex-wrap:wrap}}
+    @media(max-width:390px){.projectTop{gap:8px;padding:16px}.projectVisual{width:92px;flex-basis:92px}.diagram{grid-template-columns:1fr 15px 1fr 15px 1fr;gap:2px}.node{padding:10px 6px}.node strong{font-size:11px}.systemFoot{font-size:9px}.skillGrid{grid-template-columns:1fr}.experience article{grid-template-columns:1fr;gap:5px}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.project,.btn{transition:none}}
+    @media print{.top,.actions,.footer,.contact .btn{display:none!important}body{background:#fff}.hero,.section{padding:26px 0}.project{break-inside:avoid}.approach{background:#fff;color:#111}.approach .sectionHead p,.principle p{color:#444}}
+  </style>
 </head>
-
 <body>
-<a class="skip" href="#board">Skip to the board</a>
-
-<!-- ═══════════ THE INSTRUMENT ═══════════ -->
-<div class="shell" id="shell">
-  <header class="rail">
-    <span class="reg">
-      <svg viewBox="0 0 32 32" aria-hidden="true">
-        <rect width="32" height="32" rx="7" fill="#131211" stroke="rgba(247,245,239,.14)"/>
-        <g fill="#D98324"><rect x="7" y="10" width="18" height="2.4" rx="1"/><rect x="7" y="15" width="18" height="2.4" rx="1"/><rect x="7" y="20" width="11" height="2.4" rx="1"/></g>
-      </svg>
-      <b>TAKSH&nbsp;VADALIYA</b>
-    </span>
-    <span class="rail__sep" aria-hidden="true"></span>
-    <span class="clockwrap">
-      <span class="clock" id="clock" role="timer" aria-label="Current time in India"></span>
-      <span>IST</span>
-    </span>
-    <span class="rail__right">
-      <span class="tabs" role="tablist" aria-label="Board views">
-        <button role="tab" aria-selected="true" data-view-tab="dep">Departures</button>
-        <button role="tab" aria-selected="false" data-view-tab="arr">Arrivals</button>
-        <button role="tab" aria-selected="false" data-view-tab="rec">Record</button>
-        <button role="tab" aria-selected="false" data-view-tab="skills">Skills</button>
-      </span>
-      <a class="ghost" id="resumeBtn" href="./assets/taksh-vadaliya-resume.pdf" target="_blank" rel="noopener">Résumé</a>
-      <a class="ghost solid" href="mailto:vadaliyataksh06@gmail.com?subject=Portfolio%20enquiry">Email me</a>
-    </span>
-  </header>
-
-  <main class="boardwrap">
-    <div class="board" id="board">
-      <div class="bhead">
-        <h1 id="boardTitle">Departures</h1>
-        <span class="sub" id="boardSub">Five projects · status as of Oct 2026</span>
-        <span class="right" id="boardRight">SUR · IND</span>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="top">
+    <nav class="nav wrap" aria-label="Main navigation">
+      <a class="brand" href="#top" aria-label="Taksh Vadaliya, home"><span class="brandmark" aria-hidden="true">TV</span><span>Taksh Vadaliya</span></a>
+      <button class="menu" type="button" aria-expanded="false" aria-controls="navlinks">MENU +</button>
+      <div class="navlinks" id="navlinks">
+        <a href="#work">Work</a><a href="#approach">Approach</a><a href="#about">About</a><a href="#skills">Toolkit</a>
+        <a class="navcta" href="#contact">Let’s talk <span aria-hidden="true">↗</span></a>
       </div>
-      <p class="aboutline" id="aboutLine"></p>
-      <div id="boardBody"></div>
-      <div class="bstat" id="boardStat"></div>
-    </div>
-    <p class="hint">
-      <kbd>↑</kbd><kbd>↓</kbd> move · <kbd>⏎</kbd> open a pass · <kbd>esc</kbd> back · <kbd>⌘K</kbd> search
-    </p>
+    </nav>
+  </header>
+  <main id="main">
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="wrap heroGrid">
+        <div>
+          <p class="eyebrow">AI application engineer · Surat, India</p>
+          <h1 id="hero-title">I make <span>AI useful.</span></h1>
+          <p class="lede">I design and build software around AI—from retrieval and evaluation to voice interfaces and computer vision. I care about the full path from a promising model to a product someone can actually use.</p>
+          <div class="actions"><a class="btn primary arrow" href="#work">Explore selected work</a><a class="btn secondary" href="./assets/taksh-vadaliya-resume.pdf" target="_blank" rel="noopener">Résumé PDF</a></div>
+          <p class="availability"><i aria-hidden="true"></i>Open to AI application engineering roles · India / remote</p>
+        </div>
+        <aside class="systemCard" aria-label="My engineering focus: understand a signal, build a system around it, and deliver a usable product">
+          <div class="cardTop"><span>Working principle / 01</span><span class="liveMark">Build in progress</span></div>
+          <div class="diagram" aria-hidden="true">
+            <div class="node"><small>01 · Understand</small><strong>Real problem</strong></div><div class="connector">→</div>
+            <div class="node"><small>02 · Engineer</small><strong>Useful system</strong></div><div class="connector">→</div>
+            <div class="node"><small>03 · Deliver</small><strong>Working product</strong></div>
+          </div>
+          <div class="systemFoot"><span>Curiosity <b>+</b> evidence</span><span>Surat · IST</span></div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="proof" aria-label="What I bring">
+      <div class="wrap proofRow">
+        <div class="proofItem"><span class="proofNo">01</span><div><strong>Product-minded engineering</strong><span>From idea to deployed experience</span></div></div>
+        <div class="proofItem"><span class="proofNo">02</span><div><strong>AI systems, measured honestly</strong><span>Retrieval, evaluation, and iteration</span></div></div>
+        <div class="proofItem"><span class="proofNo">03</span><div><strong>Evidence over big claims</strong><span>Live products, code, and limitations</span></div></div>
+      </div>
+    </section>
+
+    <section class="section" id="work" aria-labelledby="work-title">
+      <div class="wrap">
+        <div class="sectionHead"><div><p class="sectionLabel">Selected work · 2025—26</p><h2 id="work-title">Built, tested, still building.</h2></div><p>Each project is labeled for what it is today. Open a product, inspect the code, or read how a prototype works.</p></div>
+        <div class="projectGrid">
+          <article class="project">
+            <div class="projectTop"><div class="projectIdentity"><span class="projectIndex">01 / LIVE PRODUCT</span><h3>yap — voice conversations</h3></div><div class="projectVisual" aria-hidden="true"><span class="visualLabel">Voice · turn-taking</span><div class="voiceWave"><i style="--h:10px"></i><i style="--h:19px"></i><i style="--h:29px"></i><i style="--h:15px"></i><i style="--h:34px"></i><i style="--h:22px"></i><i style="--h:12px"></i><i style="--h:26px"></i><i style="--h:17px"></i><i style="--h:31px"></i><i style="--h:12px"></i><i style="--h:20px"></i></div></div></div>
+            <div class="projectBody"><div class="meta"><span class="status">Live product</span><span class="stack">VOICE · PRODUCT</span></div><h4>Voice AI beyond the demo</h4><p>A real-time voice product built around interruption, multilingual conversation, user accounts, and credits. I led the product and engineering work from pipeline to launch.</p><div class="projectLinks"><a class="textLink" href="https://solidexposure.com" target="_blank" rel="noopener">Visit live product ↗</a><a class="textLink" href="https://solidexposure.com/business.html" target="_blank" rel="noopener">Business capabilities ↗</a></div></div>
+          </article>
+          <article class="project">
+            <div class="projectTop"><div class="projectIdentity"><span class="projectIndex">02 / IN DEVELOPMENT</span><h3>Assest — company knowledge system</h3></div><div class="projectVisual" aria-hidden="true"><span class="visualLabel">Knowledge graph</span><div class="orbit"></div><div class="orbitCore">AI</div></div></div>
+            <div class="projectBody"><div class="meta"><span class="status prototype">Prototype</span><span class="stack">RAG · HYBRID SEARCH</span></div><h4>Make changing knowledge queryable</h4><p>An agentic knowledge system concept combining ingestion, hybrid retrieval, semantic caching, and access checks. Built as a substantial prototype; still needs an easy public demo and external validation.</p><div class="projectLinks"><a class="textLink" href="https://github.com/Taksh-v/Assert" target="_blank" rel="noopener">Explore repository ↗</a><a class="textLink" href="https://web-kappa-eight-88.vercel.app/" target="_blank" rel="noopener">Open prototype ↗</a></div></div>
+          </article>
+          <article class="project">
+            <div class="projectTop"><div class="projectIdentity"><span class="projectIndex">03 / OPEN SOURCE</span><h3>Qual — evaluation-first RAG</h3></div><div class="projectVisual" aria-hidden="true"><span class="visualLabel">Quality gates</span><div class="evalMarks"><span style="--h:17px"></span><span style="--h:31px"></span><span style="--h:24px"></span><span style="--h:40px"></span></div></div></div>
+            <div class="projectBody"><div class="meta"><span class="status">Shipped · open source</span><span class="stack">RAG · EVALUATION</span></div><h4>Measure answer quality before trusting it</h4><p>A market-intelligence pipeline built with an evaluation rubric for groundedness, completeness, relevancy, and numeric-risk, plus data-quality gates before indexing.</p><div class="projectLinks"><a class="textLink" href="https://github.com/Taksh-v/Qual" target="_blank" rel="noopener">Explore repository ↗</a><a class="textLink" href="https://github.com/Taksh-v/Qual/blob/master/run_rag_eval.py" target="_blank" rel="noopener">See evaluation harness ↗</a></div></div>
+          </article>
+          <article class="project">
+            <div class="projectTop"><div class="projectIdentity"><span class="projectIndex">04 / COMPUTER VISION</span><h3>Body-aware shopping compatibility</h3></div><div class="projectVisual"><span class="sr">Segmentation mask preview</span><img class="maskThumb" src="./assets/body-profile-masks.png" alt="Nine segmentation masks identifying clothing and body regions" loading="lazy"></div></div>
+            <div class="projectBody"><div class="meta"><span class="status prototype">Research prototype</span><span class="stack">POSE · SEGMENTATION</span></div><h4>Explore body-profile signals for apparel</h4><p>A Google Colab pipeline using pose landmarks, human parsing, and image geometry. Its centimetre values are estimates; catalog matching and outfit ranking are not built yet.</p><div class="projectLinks"><a class="textLink" href="./projects/body-aware-shopping-compatibility.html">Read the case study ↗</a><a class="textLink" href="https://colab.research.google.com/drive/1RgQ3M7wpE1Lfq9xKLxJJ7y58URGxcqvB?usp=sharing" target="_blank" rel="noopener">Open Colab ↗</a></div></div>
+          </article>
+        </div>
+        <article class="archive"><div><span class="projectIndex">05 / SYSTEMS FUNDAMENTALS</span><h3>DDAS — duplicate detection in C</h3><p>A file-system tool under active rebuilding. The repository has experiments; build setup, tests, and benchmarks remain the next step.</p></div><a class="textLink" href="https://github.com/Taksh-v/The-DDAS-" target="_blank" rel="noopener">View repository ↗</a></article>
+      </div>
+    </section>
+
+    <section class="section approach" id="approach" aria-labelledby="approach-title">
+      <div class="wrap">
+        <div class="sectionHead"><div><p class="sectionLabel">How I work</p><h2 id="approach-title">Useful beats impressive-looking.</h2></div><p>I like making the reasoning inspectable: how data moves, where the system can fail, and what evidence says it works.</p></div>
+        <div class="principles">
+          <article class="principle"><span>01 / START WITH THE USER</span><h3>Find the job to be done.</h3><p>Translate a vague idea into a workflow, a user, and a concrete outcome before reaching for a model.</p></article>
+          <article class="principle"><span>02 / BUILD THE SYSTEM</span><h3>Connect the whole path.</h3><p>Models need retrieval, interfaces, data handling, evaluation, and operational choices around them.</p></article>
+          <article class="principle"><span>03 / SHOW THE EVIDENCE</span><h3>Say what is true now.</h3><p>Ship the useful slice, measure what can be measured, and label prototypes and unknowns clearly.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="about" aria-labelledby="about-title">
+      <div class="wrap aboutGrid">
+        <div class="aboutTitle"><p class="sectionLabel">A little context</p><h2 id="about-title">Builder by instinct. Engineer by practice.</h2><p>SURAT, GUJARAT · INDIA</p></div>
+        <div class="aboutCopy">
+          <p>I’m Taksh, an AI application engineer and founder from Surat. I started with systems work and kept moving up the stack: from file tools in C, to retrieval and agentic applications, to a public voice product. I enjoy turning technical ideas into something a person can actually try.</p>
+          <p>I’m currently looking for AI application engineering work where I can help design, build, and improve real products. I bring a product mindset, a willingness to work through the unglamorous details, and a habit of making limitations visible.</p>
+          <blockquote class="callout">“I want the demo to become a dependable tool—and I want the evidence to show the difference.”</blockquote>
+          <div class="experience" aria-label="Experience and education">
+            <article><time>2026 — NOW</time><div><h3>AI Algo Builder · Jainam Broking</h3><p>Research and systematic strategy work. Internal logic and code are not published.</p></div></article>
+            <article><time>2026 — NOW</time><div><h3>Founder · Assest</h3><p>Building an AI company-knowledge prototype; selected for GTU Ventures / Gujarat Fellowship, March 2026.</p></div></article>
+            <article><time>2026</time><div><h3>Founder &amp; engineer · yap / SolidExposure</h3><p>Took a voice-AI concept through product design, engineering, launch, and commercial exploration.</p></div></article>
+            <article><time>2023 — 2026</time><div><h3>B.Sc. Information Technology · GTU-ITR</h3><p>CGPA 8.5 / 10 · Surat, Gujarat.</p></div></article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section toolbox" id="skills" aria-labelledby="skills-title">
+      <div class="wrap">
+        <div class="sectionHead"><div><p class="sectionLabel">Tools &amp; practice</p><h2 id="skills-title">A toolkit, shown in context.</h2></div><p>These are the areas I’ve used to build the projects above. I don’t use percentage bars; the work is the evidence.</p></div>
+        <div class="skillGrid">
+          <article class="skillGroup"><h3>LLM applications</h3><p>RAG architecture · hybrid retrieval · embeddings · chunking · semantic caching · agent workflows</p></article>
+          <article class="skillGroup"><h3>Evaluation &amp; data</h3><p>Quality rubrics · data audits · citations · regression tests · retrieval checks</p></article>
+          <article class="skillGroup"><h3>Backend &amp; product</h3><p>Python · FastAPI · PostgreSQL · Qdrant · FAISS · API design · auth and billing</p></article>
+          <article class="skillGroup"><h3>Voice &amp; vision</h3><p>STT / LLM / TTS pipelines · turn-taking · RTMPose · human parsing · image geometry</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact" id="contact" aria-labelledby="contact-title">
+      <div class="wrap contactGrid"><div><p class="sectionLabel">Next step</p><h2 id="contact-title">Have a real problem to work on?</h2><p>I’m open to AI application engineering roles and thoughtful collaborations.</p></div><div class="actions"><a class="btn primary arrow" href="mailto:vadaliyataksh06@gmail.com?subject=AI%20Application%20Engineering">Email Taksh</a><a class="btn secondary" href="https://www.linkedin.com/in/taksh-vadaliya-b363ab272" target="_blank" rel="noopener">Connect on LinkedIn ↗</a></div></div>
+    </section>
   </main>
-
-  <footer class="rail rail--foot">
-    <a href="mailto:vadaliyataksh06@gmail.com">vadaliyataksh06@gmail.com</a>
-    <span class="rail__sep" aria-hidden="true"></span>
-    <a href="mailto:brandit@solidexposure.com?subject=Voice%20AI%20enquiry">business enquiries</a>
-    <a href="https://github.com/Taksh-v" target="_blank" rel="noopener">GitHub</a>
-    <a href="https://www.linkedin.com/in/taksh-vadaliya-b363ab272" target="_blank" rel="noopener">LinkedIn</a>
-    <a href="https://www.reddit.com/user/taxyonhisway/" target="_blank" rel="noopener">Reddit</a>
-    <a href="https://solidexposure.com" target="_blank" rel="noopener">solidexposure.com</a>
-    <button class="ghost" id="copyMail" type="button" style="font-size:10.5px;padding:5px 9px">Copy email</button>
-    <span class="rail__right"><span id="updated">Updated Oct 2026</span> · Open to AI engineering roles &amp; voice-AI work</span>
-  </footer>
-</div>
-
-<!-- ═══════════ THE GATE (project view) ═══════════ -->
-<div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gateTitle"></div>
-<div class="cmd" id="cmd" role="dialog" aria-modal="true" aria-label="Search this site"></div>
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
-<div class="sr" id="live" role="status" aria-live="polite"></div>
-
-<!-- ═══════════ THE DOCUMENT — single source of truth, always in the DOM ═══════════ -->
-<div class="doc" id="doc">
-  <div class="doc__act">
-    <a class="go" href="./assets/taksh-vadaliya-resume.pdf" target="_blank" rel="noopener">Download résumé (PDF)</a>
-    <a href="mailto:vadaliyataksh06@gmail.com">Email me</a>
-  </div>
-
-  <h1>Taksh Vadaliya</h1>
-  <p id="docIntro"><strong>AI engineer &amp; founder.</strong> Five projects in the open — real-time voice, agentic retrieval,
-    evaluation-first research, systems work in C and a body-aware shopping compatibility prototype — one running live
-    in production, and every claim on this page linked to its evidence.</p>
-  <p>
-    A live voice product, a retrieval engine with 167 test functions beside it, an evaluation-first
-    RAG pipeline, a duplicate-detection tool in C and a computer-vision body-profile prototype — built from Surat, India.
-    <a href="mailto:vadaliyataksh06@gmail.com">vadaliyataksh06@gmail.com</a> ·
-    <a href="https://github.com/Taksh-v">github.com/Taksh-v</a> ·
-    <a href="https://www.linkedin.com/in/taksh-vadaliya-b363ab272">LinkedIn</a>
-  </p>
-
-  <h2 id="docProjects">Projects</h2>
-
-  <!-- ── TKV-01 ─────────────────────────────────────────────────────────── -->
-  <article data-project data-code="TKV-01" data-status="live" data-type="Live product" data-gate="voice · FastAPI"
-           data-date="2026" data-route="IDEA → WEB">
-    <h3 class="p__name">yap — voice conversations</h3>
-    <p class="p__tag">Real-time, interruptible voice conversation in seven languages, with sign-in, credits and billing attached.</p>
-
-    <dl class="p__facts">
-      <dt>Status</dt><dd class="p__status">Live · public product</dd>
-      <dt>Role</dt><dd>Founder · designer · engineer</dd>
-      <dt>Scope</dt><dd>Conversation design, pipeline, backend, billing, launch</dd>
-      <dt>Languages</dt><dd>Hindi · English · Hinglish + four more</dd>
-      <dt>Metrics</dt><dd>7 languages · 4 personas · 2 free minutes then pay-as-you-go credits</dd>
-    </dl>
-
-    <h4>Why it exists</h4>
-    <p class="p__why">Most voice-AI work stops at a demo — an open mic, a scripted reply, no product around it. I wanted to know what changes when strangers use it and pay for it.</p>
-
-    <h4>What's actually real</h4>
-    <ul class="p__real">
-      <li>Four designed personas, each with its own voice and failure modes</li>
-      <li>You can talk over it — barge-in turn-taking, not push-to-talk</li>
-      <li>Language switches mid-sentence and it keeps up</li>
-      <li>Two free minutes, then pay-as-you-go credits</li>
-      <li>Conversations held in memory only, then discarded — no profile built across sessions</li>
-    </ul>
-
-    <h4>What it demonstrates</h4>
-    <p class="p__does">Building to production: auth, money, a privacy stance you can defend, and a safety floor that tells people where to get real help.</p>
-
-    <h4>What I'd do differently</h4>
-    <p class="p__retro">Instrument from release one. I can describe the pipeline in detail, but I can't yet show a latency number — and the number is the first thing a serious buyer asks for.</p>
-
-    <h4>Evidence</h4>
-    <ul class="p__ev">
-      <li><a href="https://solidexposure.com">solidexposure.com — the live product</a></li>
-      <li><a href="https://solidexposure.com/business.html">Business capabilities</a></li>
-    </ul>
-  </article>
-
-  <!-- ── TKV-02 ─────────────────────────────────────────────────────────── -->
-  <article data-project data-code="TKV-02" data-status="dev" data-type="Startup" data-gate="Qdrant · RRF · graph"
-           data-date="2026" data-route="SUR → DESIGN PARTNERS">
-    <h3 class="p__name">Assest — agentic company brain</h3>
-    <p class="p__tag">Fragmented company knowledge — Notion, Slack, Drive, uploads — turned into one queryable, version-aware interface.</p>
-
-    <dl class="p__facts">
-      <dt>Status</dt><dd class="p__status">In development · incubated prototype</dd>
-      <dt>Role</dt><dd>Founder · architecture · build</dd>
-      <dt>Stack</dt><dd>FastAPI backend + Next.js app · Postgres · Qdrant · graph</dd>
-      <dt>Stage</dt><dd>Incubated prototype moving toward design partners</dd>
-      <dt>Metrics</dt><dd>24,845 lines source · 7,996 lines tests · 167 test functions</dd>
-    </dl>
-
-    <h4>Why it exists</h4>
-    <p class="p__why">Retrieval usually forgets that organisations change. A policy superseded last quarter shouldn't be answering today's question — and the people who wrote it shouldn't have to re-explain it every week.</p>
-
-    <h4>What's actually real</h4>
-    <ul class="p__real">
-      <li>Rerunnable ingestion with PII scrubbing and adaptive chunking</li>
-      <li>Hybrid dense + sparse retrieval fused with reciprocal rank fusion, unit-tested</li>
-      <li>Multi-vector semantic cache for repeat questions</li>
-      <li>ACL gates that run before search, not after</li>
-      <li>Connector workers with a dead-letter queue, so failures park instead of vanishing</li>
-    </ul>
-
-    <h4>What it demonstrates</h4>
-    <p class="p__does">Systems thinking at scale — near 25,000 lines of source with 8,000 lines of tests beside it, diagnostic scripts, and a repository you can actually navigate.</p>
-
-    <h4>What I'd do differently</h4>
-    <p class="p__retro">Schema-first, from day one. Migration debt ate days I didn't have — and I'd have shipped the guest demo before the internal polish, because a login wall is not a demo.</p>
-
-    <h4>Evidence</h4>
-    <ul class="p__ev">
-      <li><a href="https://github.com/Taksh-v/Assert">Repository</a></li>
-      <li><a href="https://github.com/Taksh-v/Assert/blob/main/backend/retrieval/fusion.py">fusion.py — reciprocal rank fusion</a></li>
-      <li><a href="https://github.com/Taksh-v/Assert/blob/main/backend/tests/test_retrieval_fusion_and_security.py">fusion + security tests</a></li>
-      <li><a href="https://github.com/Taksh-v/Assert/blob/main/backend/query/query_service.py">query pipeline</a></li>
-      <li><a href="https://github.com/Taksh-v/Assert/blob/main/scripts/doctor.py">diagnostic scripts</a></li>
-      <li><a href="https://web-kappa-eight-88.vercel.app/">Demo (seeded sign-in)</a></li>
-    </ul>
-  </article>
-
-  <!-- ── TKV-03 ─────────────────────────────────────────────────────────── -->
-  <article data-project data-code="TKV-03" data-status="ship" data-type="Open source" data-gate="FAISS · evals · Python"
-           data-date="2026" data-route="HYPOTHESIS → RUBRIC">
-    <h3 class="p__name">Qual — evaluation-first RAG</h3>
-    <p class="p__tag">A market-intelligence pipeline that scores its own answers before it lets you trust them.</p>
-
-    <dl class="p__facts">
-      <dt>Status</dt><dd class="p__status">Shipped · open source</dd>
-      <dt>Role</dt><dd>Design · build · evaluation</dd>
-      <dt>Retrieval</dt><dd>FAISS · hybrid lexical + vector (Qdrant migration outstanding)</dd>
-      <dt>Data</dt><dd>Live market feeds + RSS ingestion</dd>
-      <dt>Metrics</dt><dd>7,779 lines source · 4 evaluation metrics · 20 intelligence modules</dd>
-    </dl>
-
-    <h4>Why it exists</h4>
-    <p class="p__why">I kept seeing impressive RAG demos with no way to know whether the answers were grounded. So the measuring stick came first: define quality, then build toward it.</p>
-
-    <h4>What's actually real</h4>
-    <ul class="p__real">
-      <li>A four-metric rubric: groundedness, completeness, relevancy, numeric-hallucination risk</li>
-      <li>Answers must cite sources; unsupported claims score lower</li>
-      <li>Quality gates and data audits before anything is indexed</li>
-      <li>Query rewriting, question classification and model routing</li>
-      <li>A macro layer with regime detection, sector mapping and cross-asset analysis</li>
-    </ul>
-
-    <h4>What it demonstrates</h4>
-    <p class="p__does">The instinct most junior engineers are missing: measurement as an engineering discipline rather than a retrospective slide.</p>
-
-    <h4>What I'd do differently</h4>
-    <p class="p__retro">Publish the evaluation report from the first run. The harness existed before the number did — and the number is the thing people actually want to see.</p>
-
-    <h4>Evidence</h4>
-    <ul class="p__ev">
-      <li><a href="https://github.com/Taksh-v/Qual">Repository</a></li>
-      <li><a href="https://github.com/Taksh-v/Qual/blob/master/run_rag_eval.py">run_rag_eval.py — the harness</a></li>
-      <li><a href="https://github.com/Taksh-v/Qual/blob/master/intelligence/data_quality.py">data_quality.py — the gates</a></li>
-    </ul>
-  </article>
-
-  <!-- ── TKV-04 ─────────────────────────────────────────────────────────── -->
-  <article data-project data-code="TKV-04" data-status="reb" data-type="Systems" data-gate="C · file I/O"
-           data-date="2025" data-route="SCRIPTING → SILICON">
-    <h3 class="p__name">DDAS — duplicate detection in C</h3>
-    <p class="p__tag">Duplicate detection across deeply nested storage trees, written against the raw file API.</p>
-
-    <dl class="p__facts">
-      <dt>Status</dt><dd class="p__status">Rebuilding · not finished, labelled honestly</dd>
-      <dt>Language</dt><dd>C — no runtime, no garbage collector</dd>
-      <dt>Method</dt><dd>Custom hashing and a dedup index</dd>
-      <dt>Extras</dt><dd>Watch mode that catches files still being downloaded</dd>
-      <dt>Metrics</dt><dd>~3,200 lines of C across 8 iterations</dd>
-    </dl>
-
-    <h4>Why it exists</h4>
-    <p class="p__why">To find out what my Python habits were hiding. File descriptors, buffers and hash collisions — the layer that stays invisible until it breaks.</p>
-
-    <h4>What's actually real</h4>
-    <ul class="p__real">
-      <li>~3,200 lines of C walking arbitrarily deep directory trees</li>
-      <li>A hash index built for deduplication rather than shelling out to a diff tool</li>
-      <li>Explicit descriptor and buffer management over long I/O loops</li>
-      <li>A watch mode that spots a file arriving and points at the existing copy</li>
-    </ul>
-
-    <h4>What it demonstrates</h4>
-    <p class="p__does">Range. Most AI portfolios can't show a single line of systems code — this is where the fundamentals live.</p>
-
-    <h4>Honest note</h4>
-    <p class="p__retro">It currently looks like eight experiments (1.c … new4_DDAS.c) with no build file, no tests and no benchmarks. "Rebuilding" is the accurate label — one file and a benchmark table are the next commit.</p>
-
-    <h4>Evidence</h4>
-    <ul class="p__ev">
-      <li><a href="https://github.com/Taksh-v/The-DDAS-">Repository</a></li>
-    </ul>
-  </article>
-
-  <!-- ── TKV-05 ─────────────────────────────────────────────────────────── -->
-  <article data-project data-code="TKV-05" data-status="dev" data-type="Research prototype" data-gate="RTMPose · Colab"
-           data-date="2026" data-route="IMAGE → PROFILE">
-    <h3 class="p__name">Body-aware shopping compatibility</h3>
-    <p class="p__tag">A Colab computer-vision prototype exploring body-profile signals for a future catalog-based outfit recommendation system.</p>
-
-    <dl class="p__facts">
-      <dt>Status</dt><dd class="p__status">Research prototype · not live</dd>
-      <dt>Role</dt><dd>System design · computer-vision prototype</dd>
-      <dt>Stack</dt><dd>Python · RTMPose · rtmlib · ONNX Runtime GPU · FASHN Human Parser · Google Colab</dd>
-      <dt>Current scope</dt><dd>Pose landmarks, segmentation masks, body geometry and a provisional profile</dd>
-      <dt>Next layer</dt><dd>Structured product catalog, compatibility scoring and outfit ranking</dd>
-    </dl>
-
-    <h4>Why it exists</h4>
-    <p class="p__why">Shopping recommendations often filter products without representing the person wearing them. The larger goal is to connect real garments with body structure, occasion, location, weather, budget and user preferences.</p>
-
-    <h4>What's actually real</h4>
-    <ul class="p__real">
-      <li>RTMPose detects and normalizes 17 COCO body landmarks</li>
-      <li>FASHN parsing produces body and clothing-region masks; pose landmarks support arm exclusion and torso-width analysis</li>
-      <li>The notebook calculates image-based shoulder, waist and hip widths, proportions and a provisional body-shape label</li>
-      <li>A saved example emits a structured profile with quality warnings; its dimensions are image-derived estimates scaled using entered height</li>
-      <li>Face-region color analysis is experimental and flagged for low confidence in the saved run</li>
-    </ul>
-
-    <h4>What it demonstrates</h4>
-    <p class="p__does">A GPU-backed Colab pipeline that combines pretrained pose estimation, human parsing, geometry calculations and structured profile output.</p>
-
-    <h4>What I'd do differently</h4>
-    <p class="p__retro">Validate against reference measurements across consented, varied images before presenting centimetres as measurements. Then build the catalog and evaluate ranked recommendations against a baseline.</p>
-
-    <h4>Evidence</h4>
-    <ul class="p__ev">
-      <li><a href="./projects/body-aware-shopping-compatibility.html">Structured project page and prototype screenshots</a></li>
-      <li><a href="https://colab.research.google.com/drive/1RgQ3M7wpE1Lfq9xKLxJJ7y58URGxcqvB?usp=sharing">Open the shared Google Colab notebook</a></li>
-    </ul>
-  </article>
-
-  <h2 id="docArrivals">Arrivals — in flight</h2>
-  <ul>
-    <li><strong>Delta strategy research</strong> — systematic trading logic inside a regulated brokerage. Not publishable.</li>
-    <li><strong>Custom voice deployments</strong> — the same pipeline as yap, built to a client's workflow and language mix.</li>
-    <li><strong>Three written teardowns</strong> — voice latency budget · RRF with a semantic cache · DPDP consent as software.</li>
-    <li><strong>Assest design partners</strong> — looking for teams with real knowledge sprawl and a reason to fix it.</li>
-  </ul>
-
-  <h2 id="docRecord">Record</h2>
-
-  <!-- The origin. Rendered verbatim onto the Record tab, so it is written once. -->
-  <div id="docOrigin">
-    <h4>Where this started</h4>
-    <p>DDAS came first — a duplicate-file detector I wrote for a hackathon, then kept rebuilding until detection
-      got faster and it ran on any machine, not just mine. Before AI I was on Linux: shell, Kali's toolset, taking
-      things apart to see how they worked. Harvard/edX CS50 came in 2025 out of pure curiosity — I simply wanted to
-      learn Python properly.</p>
-    <p>Reading about ChatGPT pointed that instinct somewhere larger: if a script can automate a chore, can a system
-      read market data and predict something? I spent the next year building RAG systems and fine-tuning models.
-      Then I wanted to know what was actually happening underneath, so I took a <strong>Microsoft AI/ML bootcamp</strong>
-      and learned neural networks and transformer architecture properly instead of treating the models as a black box.
-      The market question never went away — it is why there is an evaluation-first pipeline on this board, and why my
-      day job is strategy research inside a broking firm.</p>
-    <p>Assest pulled the rest together. While building an agentic company brain I worked through Y Combinator's
-      startup programmes on my own — Startup School, the Request for Startups, how the batches actually work — and
-      the idea that gave Assest its whole shape came from <strong>Garry Tan's company-brain concept</strong>. Credit
-      where it is due; the building is the part that is mine, and it is
-      <a href="https://github.com/Taksh-v/Assert" target="_blank" rel="noopener">open on GitHub</a>.</p>
-    <p>That reading left me with one conviction: <strong>what makes a system authentic is proof of work and
-      visibility.</strong> Most teams do the opposite — they keep everything under the hood until launch, waiting for
-      a perfect product. I think that is backwards.</p>
-    <p>So this page publishes the work as it actually is. DDAS, the first thing I ever built, is the one currently
-      marked <em>Rebuilding</em>. Every claim links to the code or the live thing. A résumé lists what I have done —
-      it cannot hold why any of it exists, or the part that turns an idea into a product with customers on the other
-      side of it. That is what this tab is for.</p>
-  </div>
-
-  <dl>
-    <dt>2026 — present · Founder, Assest</dt>
-    <dd>Founded Assest as an independent AI startup; selected for the <strong>GTU Ventures / Gujarat Fellowship</strong> (March 2026) and advanced the prototype to design-partner stage.</dd>
-    <dt>2026 — present · AI Algo Builder, Jainam Broking</dt>
-    <dd>Building the “Delta” trading algorithm — historical market data, news signals and candlestick patterns compiled into systematic trading logic. The research and code stay inside the firm.</dd>
-    <dt>2026 · Founder &amp; engineer, yap (SolidExposure)</dt>
-    <dd>Took a voice-AI idea to a live public product — conversation design, latency work, backend, deployment — plus the entire commercial motion from discovery and outreach to pricing.</dd>
-    <dt>2025 · Team lead, Devang Mehta Hackathon</dt>
-    <dd>Led the build track: designed, engineered and demoed a complete end-to-end platform inside the time limit.</dd>
-    <dt>2024 · Smart India Hackathon, state round</dt>
-    <dd>Qualified for the state round of the ministry-backed national innovation event.</dd>
-    <dt>2025 · Programmes &amp; courses</dt>
-    <dd>Harvard/edX CS50 (Python), 2025 — taken out of pure curiosity to learn Python properly · Microsoft AI/ML bootcamp — neural networks and transformer architecture.</dd>
-    <dt>2023 — 2026 · B.Sc. Information Technology, GTU-ITR · CGPA 8.5/10</dt>
-    <dd>Certifications: Anthropic Claude 101 · Mastercard Cybersecurity · Cisco Endpoint Security.</dd>
-  </dl>
-  <p><strong>Also on the record:</strong> Winde — a multi-tenant assistant for CA &amp; law firms with Postgres row-level security and 53 tests. CaaS — a DPDP/KYC/RBI/SEBI compliance platform with nine governance blueprints.</p>
-
-  <h2 id="docSkills">Skills</h2>
-  <dl>
-    <dt>AI &amp; retrieval</dt><dd>RAG architecture · hybrid vector + lexical retrieval · reciprocal rank fusion · embeddings and chunking strategy · semantic caching · agent orchestration and memory · evaluation harnesses and quality gates</dd>
-    <dt>Backend</dt><dd>Python · FastAPI · REST and async services · LangChain · PostgreSQL including row-level security · Qdrant · FAISS · Supabase</dd>
-    <dt>Voice</dt><dd>Real-time STT → LLM → TTS pipelines · turn-taking and barge-in · multilingual conversation design · API and webhook integrations</dd>
-    <dt>Front end</dt><dd>TypeScript · Next.js · React · Tailwind · Drizzle ORM · deploying to Vercel and GitHub Pages</dd>
-    <dt>Systems</dt><dd>C — file I/O, hashing, memory and descriptor management · debugging long-running processes</dd>
-    <dt>Commercial</dt><dd>Customer discovery · outbound and lead generation · technical demos · offer and pricing design · closing and post-sale support</dd>
-    <dt>Languages</dt><dd>English · Hindi · Gujarati</dd>
-  </dl>
-
-  <h2 id="docWriting">Writing — three drafts</h2>
-  <ul>
-    <li><strong>The latency budget of a real-time voice agent</strong> — where the milliseconds actually go, and which hop to attack first.</li>
-    <li><strong>RRF plus a semantic cache: hybrid retrieval that stays fast</strong> — why fused rankings beat either retriever alone.</li>
-    <li><strong>DPDP consent is an engineering problem</strong> — consent and breach workflows modelled as state machines, not PDFs.</li>
-  </ul>
-
-  <h2 id="docContact">Contact</h2>
-  <p>
-    <a href="mailto:vadaliyataksh06@gmail.com">vadaliyataksh06@gmail.com</a> ·
-    <a href="mailto:brandit@solidexposure.com?subject=Voice%20AI%20enquiry">business enquiries</a> ·
-    <a href="https://github.com/Taksh-v">GitHub</a> ·
-    <a href="https://www.linkedin.com/in/taksh-vadaliya-b363ab272">LinkedIn</a> ·
-    <a href="https://www.reddit.com/user/taxyonhisway/">Reddit</a> ·
-    <a href="./assets/taksh-vadaliya-resume.pdf" target="_blank" rel="noopener">Résumé (PDF)</a>
-  </p>
-  <p>Surat, Gujarat, India · IST (UTC+5:30)
-  </p>
-  <p>Surat, Gujarat, India · IST (UTC+5:30) · Built by hand — one file, no framework, no tracking.</p>
-</div>
-
-<script>
-(function () {
-  "use strict";
-  var mq = window.matchMedia ? window.matchMedia("(prefers-reduced-motion: reduce)") : null;
-  var reduce = !!(mq && mq.matches);
-  var root = document.documentElement;
-  var $ = function (s, c) { return (c || document).querySelector(s); };
-  var $$ = function (s, c) { return [].slice.call((c || document).querySelectorAll(s)); };
-
-  /* ══════════ 1 · FLAP ENGINE ══════════
-     flipTo(cell, char, delay) — replaces the two static halves, animates an old
-     top half out and a new bottom half in, then settles on the final glyph. */
-  var GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789:-→/";
-
-  function makeCell(ch, delay, cls) {
-    var s = document.createElement("span");
-    s.className = "fl" + (cls ? " " + cls : "");
-    s.style.setProperty("--d", delay + "ms");
-    s.innerHTML =
-      '<span class="fl__h fl__h--t"><i>' + ch + '</i></span>' +
-      '<span class="fl__h fl__h--b"><i>' + ch + '</i></span>';
-    s.dataset.ch = ch;
-    return s;
-  }
-
-  function flipTo(cell, ch, delay) {
-    if (reduce || cell.dataset.ch === ch) {
-      if (cell.dataset.ch !== ch) {
-        cell.innerHTML = '<span class="fl__h fl__h--t"><i>' + ch + '</i></span><span class="fl__h fl__h--b"><i>' + ch + '</i></span>';
-        cell.dataset.ch = ch;
-      }
-      return;
-    }
-    var old = cell.dataset.ch;
-    // settle: top = new (revealed as the old top falls), bottom = OLD until covered
-    cell.innerHTML =
-      '<span class="fl__h fl__h--t"><i>' + ch + '</i></span>' +
-      '<span class="fl__h fl__h--b"><i>' + old + '</i></span>' +
-      '<span class="fl__o" style="--d:' + delay + 'ms"><i>' + old + '</i></span>' +
-      '<span class="fl__n" style="--d:' + delay + 'ms"><i>' + ch + '</i></span>';
-    cell.dataset.ch = ch;
-    window.setTimeout(function () {
-      if (cell.dataset.ch !== ch) return;
-      cell.innerHTML =
-        '<span class="fl__h fl__h--t"><i>' + ch + '</i></span>' +
-        '<span class="fl__h fl__h--b"><i>' + ch + '</i></span>';
-    }, 620 + delay);
-  }
-
-  /* renders a string of flap cells into a container, character by character */
-  function flapLine(el, text, base, cls) {
-    el.textContent = "";
-    var frag = document.createDocumentFragment();
-    for (var i = 0; i < text.length; i++) {
-      var ch = text.charAt(i);
-      if (ch === " ") { frag.appendChild(document.createTextNode(" ")); continue; }
-      frag.appendChild(makeCell(reduce ? ch : "", 0, cls));
-      // seed with a random glyph so the first paint looks like a settling board
-      var cell = frag.lastChild;
-      cell.dataset.ch = reduce ? ch : GLYPHS.charAt(Math.floor(Math.random() * GLYPHS.length));
-      cell.querySelector(".fl__h--t i").textContent = cell.dataset.ch;
-      cell.querySelector(".fl__h--b i").textContent = cell.dataset.ch;
-      cell.dataset.target = ch;
-    }
-    el.appendChild(frag);
-    // then flip each cell to its target with a left-to-right stagger
-    var cells = $$(".fl", el), n = 0;
-    cells.forEach(function (cell) {
-      var ch = cell.dataset.target;
-      flipTo(cell, ch, base + (n++) * 26);
-    });
-  }
-
-  /* ══════════ 2 · READ THE DOCUMENT → BUILD THE BOARD ══════════ */
-  function txt(parent, sel) { var el = parent.querySelector(sel); return el ? el.textContent.trim() : ""; }
-
-  var projects = $$("[data-project]").map(function (el) {
-    return {
-      el: el,
-      code: el.dataset.code,
-      status: el.dataset.status,
-      type: el.dataset.type,
-      gate: el.dataset.gate,
-      date: el.dataset.date,
-      route: el.dataset.route,
-      name: txt(el, ".p__name"),
-      tag: txt(el, ".p__tag"),
-      parts: {
-        why: txt(el, ".p__why"), real: txt(el, ".p__real"), does: txt(el, ".p__does"),
-        retro: txt(el, ".p__retro"), status: txt(el, ".p__status"),
-        facts: $$("dt", el.querySelector(".p__facts")).map(function (dt, i) {
-          var dd = dt.nextElementSibling;
-          return { k: dt.textContent.trim(), v: dd ? dd.textContent.trim() : "" };
-        }),
-        ev: $$(".p__ev a", el).map(function (a) { return { h: a.getAttribute("href"), t: a.textContent.trim() }; })
-      }
-    };
-  });
-
-  var STATUS_LABEL = { live: "Live", dev: "In dev", ship: "Shipped", reb: "Rebuilding" };
-  var STATUS_CLASS = { live: "st--live", dev: "st--dev", ship: "st--ship", reb: "st--reb" };
-  var STATUS_COLOR = { live: "fl--moss", dev: "fl--hot", ship: "fl--dim", reb: "fl--dim" };
-
-  var boardBody = $("#boardBody");
-  var rows = [];
-
-  function renderBoard() {
-    boardBody.innerHTML = "";
-    rows = [];
-
-    /* column header */
-    var cols = document.createElement("div");
-    cols.className = "bcols";
-    cols.setAttribute("aria-hidden", "true");
-    cols.innerHTML = "<span>Flight</span><span>Project</span><span>Type</span><span>Gate</span><span>Status</span>";
-    boardBody.appendChild(cols);
-
-    projects.forEach(function (p, i) {
-      var row = document.createElement("div");
-      row.className = "brow";
-      row.innerHTML =
-        '<button class="brow__in" type="button" aria-label="Open ' + p.code + ': ' + p.name + '">' +
-          '<span class="cellrow" data-f="code" aria-hidden="true"></span>' +
-          '<span><span class="brow__name" data-f="name" aria-hidden="true"></span>' +
-            '<span class="brow__meta" data-f="tag"></span></span>' +
-          '<span class="cellrow btype" data-f="type" aria-hidden="true"></span>' +
-          '<span class="cellrow bgate" data-f="gate" aria-hidden="true"></span>' +
-          '<span class="st ' + STATUS_CLASS[p.status] + '"><i aria-hidden="true"></i>' + STATUS_LABEL[p.status] + '</span>' +
-        "</button>";
-      boardBody.appendChild(row);
-
-      var base = i * 190;
-      flapLine($("[data-f=code]", row), p.code, base, STATUS_COLOR[p.status]);
-      flapLine($("[data-f=name]", row), p.name.toUpperCase(), base + 60, "");
-      flapLine($("[data-f=type]", row), p.type.toUpperCase(), base + 120, "fl--dim");
-      flapLine($("[data-f=gate]", row), p.gate.toUpperCase(), base + 180, "fl--dim");
-
-      var btn = $(".brow__in", row);
-      btn.addEventListener("click", function () { openGate(i); });
-      rows.push(btn);
-    });
-
-    $("#boardStat").innerHTML =
-      "<span>5 projects</span><span><b>1</b> live</span><span><b>~55k</b> lines of my own code</span><span>updated <b>Oct 2026</b></span><span>Surat · IST</span>";
-  }
-
-  function renderArrivals() {
-    var data = [
-      ["A-01 · approaching", "Delta strategy research", "Systematic trading logic inside a regulated brokerage. Not publishable."],
-      ["A-02 · scoping", "Custom voice deployments", "The same pipeline as yap, built to a client's workflow and language mix."],
-      ["A-03 · drafting", "Three written teardowns", "Voice latency budget · RRF with a cache · DPDP consent as software."],
-      ["A-04 · onboarding", "Assest design partners", "Teams with real knowledge sprawl and a reason to fix it."]
-    ];
-    boardBody.innerHTML = "";
-    data.forEach(function (d, i) {
-      var el = document.createElement("div");
-      el.className = "arr";
-      el.innerHTML = '<span class="k" data-f="k" aria-hidden="true"></span><span class="n">' + d[1] + '</span><span class="d">' + d[2] + "</span>";
-      boardBody.appendChild(el);
-      flapLine($("[data-f=k]", el), d[0].toUpperCase().replace("·", "-"), i * 150, "fl--hot");
-    });
-    $("#boardStat").innerHTML = "<span>Nothing lands quietly — arrivals are announced as they approach</span>";
-  }
-
-  function renderRecord() {
-    var data = [
-      ["2026 —", "Founder · Assest", "Independent AI startup — selected for GTU Ventures / Gujarat Fellowship (March 2026), now at design-partner stage."],
-      ["2026 —", "AI Algo Builder · Jainam Broking", "Building the “Delta” trading algorithm — market data, news signals and candlestick patterns compiled into systematic trading logic."],
-      ["2026", "Founder & engineer · yap", "Idea to live public product, including the whole commercial motion."],
-      ["2025 — 26", "Programmes & courses", "Harvard/edX CS50 Python (2025) · Microsoft AI/ML bootcamp — neural networks and transformer architecture."],
-      ["2025", "Team lead · Devang Mehta Hackathon", "Designed, engineered and demoed an end-to-end platform in the time limit."],
-      ["2024", "Smart India Hackathon — state round", "Qualified for the state round of the national innovation event."],
-      ["2023 — 26", "B.Sc. IT · GTU-ITR · CGPA 8.5", "Certifications: Anthropic Claude 101 · Mastercard Cybersecurity · Cisco Endpoint Security."]
-    ];
-    boardBody.innerHTML = "";
-
-    /* the origin is written once, in #doc, and rendered here */
-    var originSrc = $("#docOrigin");
-    if (originSrc) {
-      var box = document.createElement("div");
-      box.className = "origin";
-      box.innerHTML = originSrc.innerHTML;
-      boardBody.appendChild(box);
-    }
-
-    data.forEach(function (d, i) {
-      var el = document.createElement("div");
-      el.className = "arr";
-      el.innerHTML = '<span class="k" data-f="k"></span><span class="n">' + d[1] + '</span><span class="d">' + d[2] + "</span>";
-      boardBody.appendChild(el);
-      flapLine($("[data-f=k]", el), d[0].toUpperCase(), i * 130, "fl--hot");
-    });
-    $("#boardStat").innerHTML = "<span>Employment · programmes · education — every claim links to the code or the live thing</span>";
-  }
-
-  function renderSkills() {
-    var dl = $("#docSkills").nextElementSibling;
-    var pairs = $$("dt", dl).map(function (dt) {
-      var dd = dt.nextElementSibling;
-      return { k: dt.textContent.trim(), v: dd ? dd.textContent.trim() : "" };
-    });
-    boardBody.innerHTML = "";
-    var cols = document.createElement("div");
-    cols.className = "scols";
-    cols.setAttribute("aria-hidden", "true");
-    cols.innerHTML = "<span>Area</span><span>What I actually work with</span>";
-    boardBody.appendChild(cols);
-    pairs.forEach(function (pair, i) {
-      var row = document.createElement("div");
-      row.className = "srow";
-      row.innerHTML = '<span class="cellrow" aria-hidden="true"></span><span class="sval">' + pair.v + "</span>";
-      boardBody.appendChild(row);
-      flapLine($(".cellrow", row), pair.k.toUpperCase(), i * 110, "fl--hot");
-    });
-    $("#boardStat").innerHTML = "<span>Every line here is something I've shipped with — not something I've read about</span>";
-  }
-
-  /* ══════════ 3 · TABS ══════════ */
-  var tabCopy = {
-    dep:    ["Departures", "Five projects · status as of Oct 2026"],
-    arr:    ["Arrivals",   "What is in flight right now"],
-    rec:    ["Record",     "Where the work came from"],
-    skills: ["Skills",     "No percentages — just what I've shipped with"]
-  };
-  function showTab(v, push) {
-    if (!tabCopy[v]) v = "dep";
-    $$("[data-view-tab]").forEach(function (x) {
-      x.setAttribute("aria-selected", String(x.dataset.viewTab === v));
-    });
-    $("#boardTitle").textContent = tabCopy[v][0];
-    $("#boardSub").textContent = tabCopy[v][1];
-    ({ dep: renderBoard, arr: renderArrivals, rec: renderRecord, skills: renderSkills }[v])();
-    if (push) setUrl({ tab: v === "dep" ? null : v }, false);
-    announce(tabCopy[v][0] + " view");
-  }
-  $$("[data-view-tab]").forEach(function (b) {
-    b.addEventListener("click", function () { showTab(b.dataset.viewTab, true); });
-  });
-
-  /* ══════════ 4 · URL ⇄ STATE ══════════ */
-  var basePath = location.pathname;
-  function setUrl(state, replace) {
-    var params = new URLSearchParams(location.search);
-    Object.keys(state).forEach(function (k) {
-      if (state[k] === null) params.delete(k); else params.set(k, state[k]);
-    });
-    var q = params.toString();
-    var url = basePath + (q ? "?" + q : "");
-    try { (replace ? history.replaceState : history.pushState).call(history, null, "", url); }
-    catch (err) { /* file:// or sandboxed preview — history is unavailable, carry on */ }
-  }
-  function announce(msg) { var l = $("#live"); if (l) l.textContent = msg; }
-  function toast(msg) {
-    var t = $("#toast"); if (!t) return;
-    t.textContent = msg; t.classList.add("is-on");
-    window.clearTimeout(t._t);
-    t._t = window.setTimeout(function () { t.classList.remove("is-on"); }, 2200);
-  }
-  var MAIL = "vadaliyataksh06@gmail.com";
-  function copyText(str, msg) {
-    var done = function () { toast(msg); };
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(str).then(done, function () { legacyCopy(str, msg); });
-    } else { legacyCopy(str, msg); }
-  }
-  function legacyCopy(str, msg) {
-    var ta = document.createElement("textarea");
-    ta.value = str; ta.setAttribute("readonly", "");
-    ta.style.cssText = "position:absolute;left:-9999px;top:0";
-    document.body.appendChild(ta); ta.select();
-    try { document.execCommand("copy"); toast(msg); }
-    catch (e) { toast("Copy didn't work — the address is " + str); }
-    document.body.removeChild(ta);
-  }
-
-  /* ══════════ 5 · THE GATE (project pass) ══════════ */
-  var gate = $("#gate"), escEl = null, pushedGate = false;
-
-  function gateOpen() { return gate.classList.contains("is-on"); }
-
-  function bars(seed) {
-    var out = "";
-    for (var i = 0; i < 34; i++) {
-      var v = seed.charCodeAt(i % seed.length) * (i + 7);
-      out += '<span style="width:' + (1 + (v % 3)) + 'px;height:' + (34 + ((v * 7) % 18)) + 'px"></span>';
-    }
-    return out;
-  }
-  function indexOfCode(code) {
-    for (var i = 0; i < projects.length; i++) if (projects[i].code === code) return i;
-    return -1;
-  }
-
-  function openGate(i, fromUrl) {
-    var p = projects[i], q = p.parts;
-    var wasOpen = gateOpen();   // opening a second pass from inside one must not stack history
-
-    gate.innerHTML =
-      '<div class="gate__bar"><div class="gate__barin">' +
-        '<button class="back" id="gateBack" type="button">← All departures</button>' +
-        '<span class="gate__code">' + p.code + ' · ' + STATUS_LABEL[p.status].toUpperCase() + '</span>' +
-        '<span class="sp">' +
-          '<button class="back" id="gateShare" type="button">Share</button>' +
-          '<button class="back" id="gatePrint" type="button">Print pass</button>' +
-        '</span>' +
-      '</div></div>' +
-      '<div class="gate__body">' +
-        '<div class="pass">' +
-          '<div class="pass__main">' +
-            '<p class="pass__kicker">Boarding pass · ' + p.date + ' · ' + p.route + '</p>' +
-            '<h2 id="gateTitle">' + p.name + '</h2>' +
-            '<p class="pass__tag">' + p.tag + '</p>' +
-            '<div class="pass__grid">' +
-              q.facts.map(function (f) {
-                return '<div><span class="k">' + f.k + '</span><span class="v">' + f.v + '</span></div>';
-              }).join("") +
-            '</div>' +
-          '</div>' +
-          '<div class="pass__stub">' +
-            '<div><div class="code">' + p.code + '</div><div class="meta">' + p.type.toUpperCase() + '</div></div>' +
-            '<span class="st ' + STATUS_CLASS[p.status] + '"><i aria-hidden="true"></i>' + STATUS_LABEL[p.status] + '</span>' +
-            '<div class="barcode" aria-hidden="true">' + bars(p.code + p.type) + '</div>' +
-            '<div class="meta">TAKSH · VADALIYA<br>SUR → WEB · ' + p.gate.toUpperCase() + '</div>' +
-          '</div>' +
-        '</div>' +
-        '<div class="wrap3">' +
-          '<div><h3>Why it exists</h3><p>' + q.why + '</p></div>' +
-          '<div><h3>What\'s actually real</h3><ul>' +
-            $$("li", p.el.querySelector(".p__real")).map(function (li) { return "<li>" + li.textContent + "</li>"; }).join("") +
-          '</ul></div>' +
-          '<div><h3>What it demonstrates</h3><p>' + q.does + '</p></div>' +
-        '</div>' +
-        (q.retro ? '<div class="retro"><h3>' + (p.status === "reb" ? "Honest note" : "What I\'d do differently") +
-                   '</h3><p>' + q.retro + '</p></div>' : "") +
-        (q.ev.length ? '<div class="evlist"><h3>Evidence</h3>' +
-            q.ev.map(function (a) { return '<a href="' + a.h + '" target="_blank" rel="noopener">' + a.t + '</a>'; }).join("") +
-          '</div>' : "") +
-        '<div class="gate__cta">' +
-          '<a class="go" href="mailto:' + MAIL + '?subject=' + encodeURIComponent(p.code + " — " + p.name) +
-            '">Email me about ' + p.code + ' →</a>' +
-          '<a href="https://www.linkedin.com/in/taksh-vadaliya-b363ab272" target="_blank" rel="noopener">LinkedIn</a>' +
-          '<span>or press esc to go back to the board</span>' +
-        '</div>' +
-      '</div>';
-
-    gate.classList.remove("is-off");
-    gate.classList.add("is-on");
-    gate.scrollTop = 0;
-    document.body.style.overflow = "hidden";
-    document.body.dataset.gate = "1";
-    escEl = document.activeElement;
-
-    $("#gateBack").addEventListener("click", function () { closeGate(false); });
-    $("#gateShare").addEventListener("click", function () {
-      var url = location.href.split("?")[0] + "?p=" + p.code;
-      if (navigator.share) {
-        navigator.share({ title: p.code + " · " + p.name, text: p.tag, url: url }).catch(function () {});
-      } else {
-        copyText(url, "Link to " + p.code + " copied");
-      }
-    });
-    $("#gatePrint").addEventListener("click", function () { window.print(); });
-
-    if (!fromUrl) { setUrl({ p: p.code }, wasOpen); pushedGate = !wasOpen; }
-    $("#gateBack").focus();
-    announce("Opened " + p.code + ", " + p.name);
-  }
-
-  function closeGate(fromUrl) {
-    if (!gateOpen()) return;
-    if (!fromUrl && pushedGate) {          // let the Back button do the popping
-      pushedGate = false;
-      try { history.back(); return; } catch (err) {}
-    }
-    gate.classList.add("is-off");
-    window.setTimeout(function () {
-      gate.classList.remove("is-on", "is-off");
-      gate.innerHTML = "";
-      document.body.style.overflow = "";
-      delete document.body.dataset.gate;
-      if (escEl && escEl.focus) escEl.focus();
-      announce("Back to the board");
-    }, 240);
-    if (fromUrl) setUrl({ p: null }, true);
-  }
-
-  /* focus trap so Tab can't wander into the board behind the pass */
-  gate.addEventListener("keydown", function (e) {
-    if (e.key !== "Tab") return;
-    var f = $$('a[href], button:not([disabled])', gate).filter(function (el) { return el.offsetParent !== null; });
-    if (!f.length) return;
-    var first = f[0], last = f[f.length - 1];
-    if (e.shiftKey && document.activeElement === first) { last.focus(); e.preventDefault(); }
-    else if (!e.shiftKey && document.activeElement === last) { first.focus(); e.preventDefault(); }
-  });
-
-  /* ══════════ 6 · COMMAND PALETTE (⌘K) ══════════ */
-  var cmd = $("#cmd"), cmdField = null, cmdList = null, cmdSel = 0, cmdItems = [], cmdShown = [];
-
-  function paletteItems() {
-    var out = [];
-    projects.forEach(function (p, i) {
-      out.push({ t: p.code + " · " + p.name, k: "pass", run: function () { openGate(i, false); } });
-    });
-    [["dep", "Departures"], ["arr", "Arrivals"], ["rec", "Record"], ["skills", "Skills"]].forEach(function (t) {
-      out.push({ t: t[1] + " — board view", k: "tab", run: function () { showTab(t[0], true); } });
-    });
-    out.push({ t: "Open my résumé (PDF)", k: "cv", run: function () { window.open("./assets/taksh-vadaliya-resume.pdf", "_blank", "noopener"); } });
-    out.push({ t: "Print this page", k: "action", run: function () { window.print(); } });
-    out.push({ t: "Copy my email address", k: "action", run: function () { copyText(MAIL, "Email copied"); } });
-    out.push({ t: "Email me", k: "action", run: function () { location.href = "mailto:" + MAIL; } });
-    out.push({ t: "Business enquiries — brandit@solidexposure.com", k: "action", run: function () { copyText("brandit@solidexposure.com", "Business email copied"); } });
-    [
-      ["yap — the live voice product", "https://solidexposure.com"],
-      ["Voice AI for business", "https://solidexposure.com/business.html"],
-      ["GitHub — Taksh-v", "https://github.com/Taksh-v"],
-      ["LinkedIn", "https://www.linkedin.com/in/taksh-vadaliya-b363ab272"],
-      ["Reddit — u/taxyonhisway", "https://www.reddit.com/user/taxyonhisway/"]
-    ].forEach(function (l) {
-      out.push({ t: l[0], k: "link", run: function () { window.open(l[1], "_blank", "noopener"); } });
-    });
-    return out;
-  }
-
-  function cmdRender() {
-    if (!cmdShown.length) { cmdList.innerHTML = '<p class="cmd__e">Nothing matches that.</p>'; return; }
-    cmdList.innerHTML = cmdShown.map(function (it, i) {
-      return '<button class="cmd__i' + (i === cmdSel ? " sel" : "") + '" type="button" data-i="' + i + '">' +
-             "<span>" + it.t + "</span><em>" + it.k + "</em></button>";
-    }).join("");
-    $$(".cmd__i", cmdList).forEach(function (b) {
-      b.addEventListener("click", function () { cmdRun(cmdShown[+b.dataset.i]); });
-    });
-  }
-  function cmdRun(it) { cmdClose(); if (it && it.run) it.run(); }
-  function paletteOpen() { return cmd.classList.contains("is-on"); }
-  function cmdOpenFn() {
-    cmdItems = paletteItems();
-    cmd.innerHTML =
-      '<div class="cmd__p">' +
-        '<input class="cmd__f" id="cmdField" type="text" placeholder="Jump to a pass, a view or a link…" autocomplete="off" spellcheck="false" />' +
-        '<div class="cmd__l" id="cmdList"></div>' +
-        '<div class="cmd__h"><span>↑↓ navigate</span><span>⏎ open</span><span>esc close</span></div>' +
-      '</div>';
-    cmdField = $("#cmdField"); cmdList = $("#cmdList");
-    cmdShown = cmdItems.slice(); cmdSel = 0;
-    cmdRender();
-    cmd.classList.add("is-on");
-    cmdField.focus();
-    cmdField.addEventListener("input", function () {
-      var q = cmdField.value.toLowerCase().trim();
-      cmdShown = cmdItems.filter(function (it) { return it.t.toLowerCase().indexOf(q) > -1; });
-      cmdSel = 0; cmdRender();
-    });
-    cmdField.addEventListener("keydown", function (e) {
-      if (e.key === "ArrowDown") { e.preventDefault(); cmdSel = (cmdSel + 1) % Math.max(cmdShown.length, 1); cmdRender(); }
-      else if (e.key === "ArrowUp") { e.preventDefault(); cmdSel = (cmdSel - 1 + Math.max(cmdShown.length, 1)) % Math.max(cmdShown.length, 1); cmdRender(); }
-      else if (e.key === "Enter") { e.preventDefault(); cmdRun(cmdShown[cmdSel]); }
-      else if (e.key === "Escape") { e.preventDefault(); cmdClose(); }
-    });
-  }
-  function cmdClose() { cmd.classList.remove("is-on"); cmd.innerHTML = ""; }
-  cmd.addEventListener("click", function (e) { if (e.target === cmd) cmdClose(); });
-
-  /* ══════════ 7 · LIVE SPLIT-FLAP CLOCK (IST) ══════════ */
-  var clock = $("#clock"), clockBuilt = false, lastTime = "";
-  function buildClock(hh, mm, ss) {
-    clock.innerHTML = "";
-    var group = function (str, delay) {
-      var wrap = document.createElement("span");
-      wrap.className = "cellrow";
-      wrap.setAttribute("aria-hidden", "true");
-      clock.appendChild(wrap);
-      flapLine(wrap, str, delay, "fl--hot");
-    };
-    var dots = function () {
-      var d = document.createElement("span");
-      d.className = "dotcol"; d.setAttribute("aria-hidden", "true");
-      d.innerHTML = "<span></span><span></span>";
-      clock.appendChild(d);
-    };
-    group(hh, 0); dots(); group(mm, 60); dots(); group(ss, 120);
-  }
-  function tick() {
-    var s = new Date().toLocaleTimeString("en-GB", { timeZone: "Asia/Kolkata", hour12: false });
-    if (!clockBuilt) { buildClock(s.slice(0, 2), s.slice(3, 5), s.slice(6, 8)); clockBuilt = true; lastTime = s; return; }
-    if (s === lastTime) return;
-    lastTime = s;
-    var groups = $$(".cellrow", clock).filter(function (g) { return g.querySelector(".fl"); });
-    var parts = [s.slice(0, 2), s.slice(3, 5), s.slice(6, 8)];
-    groups.forEach(function (g, gi) {
-      $$(".fl", g).forEach(function (cell, ci) {
-        var ch = parts[gi].charAt(ci) || "";
-        if (ch && ch !== cell.dataset.ch) flipTo(cell, ch, ci * 30);
-      });
-    });
-    clock.setAttribute("aria-label", "Time in India: " + s);
-  }
-
-  /* ══════════ 8 · ACTIONS ══════════ */
-  var resumeBtn = $("#resumeBtn");
-  if (resumeBtn) resumeBtn.addEventListener("click", function (e) {
-    announce("Opening résumé PDF");
-    if (window.self === window.top) return;          // a real page: the browser opens the tab
-    // Embedded (in-app preview, iframe): a brand-new tab is blocked, so the click would look
-    // dead. Try the popup once, then fall back to navigating in place.
-    e.preventDefault();
-    var href = resumeBtn.getAttribute("href"), w = null;
-    try { w = window.open(href, "_blank", "noopener"); } catch (err) { w = null; }
-    if (w) return;
-    toast("This preview blocks new tabs — opening the résumé here instead.");
-    window.location.href = href;
-  });
-
-  var copyMailBtn = $("#copyMail");
-  if (copyMailBtn) copyMailBtn.addEventListener("click", function () { copyText(MAIL, "Email copied — " + MAIL); });
-
-  function stampUpdated() {
-    var el = $("#updated"); if (!el) return;
-    var d = new Date(document.lastModified);
-    if (!isNaN(d.getTime()) && d.getFullYear() > 2000) {
-      el.textContent = "Updated " + d.toLocaleDateString("en-GB", { month: "short", year: "numeric" });
-    }
-  }
-
-  /* ══════════ 9 · KEYBOARD ══════════ */
-  var rowBtns = [];
-  function refreshRows() { rowBtns = $$(".brow__in"); }
-  var cursor = -1;
-
-  document.addEventListener("keydown", function (e) {
-    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
-      e.preventDefault(); paletteOpen() ? cmdClose() : cmdOpenFn(); return;
-    }
-    if (paletteOpen()) return;
-    var t = (e.target.tagName || "").toLowerCase();
-    if (t === "input" || t === "textarea") return;
-
-    if (e.key === "Escape") {
-      if (gateOpen()) { closeGate(false); e.preventDefault(); }
-      return;
-    }
-    if (gateOpen()) return;
-
-    refreshRows();
-    if (!rowBtns.length) return;
-    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
-      var idx = rowBtns.indexOf(document.activeElement);
-      if (idx > -1) cursor = idx;
-      cursor = e.key === "ArrowDown" ? (cursor + 1) % rowBtns.length : (cursor - 1 + rowBtns.length) % rowBtns.length;
-      rowBtns[cursor].focus(); e.preventDefault();
-    } else if (e.key === "Enter" && rowBtns.indexOf(document.activeElement) > -1) {
-      openGate(rowBtns.indexOf(document.activeElement), false); e.preventDefault();
-    }
-  });
-
-  /* ══════════ 10 · BACK BUTTON / DEEP LINKS / BOOT ══════════ */
-  window.addEventListener("popstate", function () {
-    var params = new URLSearchParams(location.search);
-    var tab = params.get("tab");
-    if (tab && tabCopy[tab]) showTab(tab, false);
-    var code = params.get("p");
-    var i = code ? indexOfCode(code) : -1;
-    if (i > -1) openGate(i, true);
-    else if (gateOpen()) closeGate(true);
-  });
-
-  var params = new URLSearchParams(location.search);
-  if (reduce) document.body.setAttribute("data-reduced", "");
-  var aboutSrc = $("#docIntro"), aboutOut = $("#aboutLine");
-  if (aboutSrc && aboutOut) aboutOut.innerHTML = aboutSrc.innerHTML;
-  showTab(params.get("tab") && tabCopy[params.get("tab")] ? params.get("tab") : "dep", false);
-  var bootCode = params.get("p");
-  var bootIdx = bootCode ? indexOfCode(bootCode) : -1;
-  if (bootIdx > -1) openGate(bootIdx, true);
-
-  tick();
-  window.setInterval(tick, 1000);
-  stampUpdated();
-  document.body.classList.remove("boot");
-})();
-</script>
+  <footer class="footer"><div class="wrap footerRow"><span class="footBrand">Taksh Vadaliya · AI Application Engineer</span><p>Surat, India · Built with care, no tracking.</p><div class="footLinks"><a href="https://github.com/Taksh-v" target="_blank" rel="noopener">GitHub</a><a href="https://www.linkedin.com/in/taksh-vadaliya-b363ab272" target="_blank" rel="noopener">LinkedIn</a><a href="mailto:vadaliyataksh06@gmail.com">Email</a><a href="./assets/taksh-vadaliya-resume.pdf" target="_blank" rel="noopener">Résumé</a></div></div></footer>
+  <script>
+    (function(){var button=document.querySelector('.menu');var links=document.querySelector('.navlinks');if(!button||!links)return;button.addEventListener('click',function(){var open=button.getAttribute('aria-expanded')!=='true';button.setAttribute('aria-expanded',String(open));links.classList.toggle('open',open);button.textContent=open?'CLOSE −':'MENU +'});links.addEventListener('click',function(event){if(event.target.closest('a')){button.setAttribute('aria-expanded','false');links.classList.remove('open');button.textContent='MENU +'}});})();
+  </script>
 </body>
 </html>
