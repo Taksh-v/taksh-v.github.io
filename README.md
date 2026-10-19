@@ -9,7 +9,7 @@ A static, responsive portfolio for AI application engineering roles. The visual 
 - `404.html` — branded not-found page.
 - `sitemap.xml` and `robots.txt` — search-engine discovery.
 
-The site has no build step, framework, analytics, or external font dependency. Project art is CSS and inline markup; the body-profile mask image is the supplied notebook visualization. The résumé remains at `assets/taksh-vadaliya-resume.pdf` on the site.
+The site has no build step, framework, analytics, or external font dependency. Project art is CSS and inline markup; the body-profile mask image is the supplied notebook visualization. The résumé at `assets/taksh-vadaliya-resume.pdf` is a one-page, role-focused version aligned with the site.
 
 ## Local checks
 
@@ -17,7 +17,7 @@ The site has no build step, framework, analytics, or external font dependency. P
 node test/smoke.test.js
 ```
 
-The smoke test uses only Node's built-in assertion library. It checks key copy, sections, metadata, project status labels, the case-study page and its reference image, the sitemap, and the 404 page. Before publishing, inspect the site at desktop and phone widths and click the product, repository, Colab, résumé, and contact links.
+The smoke test uses only Node's built-in assertion library. It checks key copy, sections, metadata, project status labels, the case-study page and its reference image, the sitemap, the 404 page, and the linked résumé PDF. Before publishing, inspect the site at desktop and phone widths and click the product, repository, Colab, résumé, and contact links.
 
 ## Editing notes
 
