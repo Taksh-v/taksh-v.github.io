@@ -29,6 +29,7 @@ has(home, /04 \/ SYSTEMS FUNDAMENTALS/, 'DDAS keeps its TKV-04 order');
 has(home, /measurements are estimates|centimetre values are estimates|centimeter values are estimates/i, 'prototype measurement caveat');
 has(home, /prefers-reduced-motion/, 'reduced-motion support');
 has(home, /aria-expanded="false"/, 'mobile menu has accessible state');
+has(home, /\.js-ready \.navlinks\{display:none/, 'mobile navigation remains visible when JavaScript is unavailable');
 has(home, /@type":"Person"/, 'Person structured metadata');
 exists(casePath, 'project case study exists');
 exists(path.join(root, 'assets/body-profile-masks.png'), 'mask-only reference image exists');
