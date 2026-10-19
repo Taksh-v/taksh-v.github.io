@@ -24,12 +24,15 @@ for (const id of ['work', 'approach', 'about', 'skills', 'contact']) has(home, n
 for (const project of ['yap — voice conversations', 'Assest — company knowledge system', 'Qual — evaluation-first RAG', 'Body-aware shopping compatibility', 'DDAS — duplicate detection in C']) has(home, new RegExp(project.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')), 'project represented: ' + project);
 has(home, /Live product/, 'live project is labeled');
 has(home, /Research prototype/, 'prototype is labeled');
+has(home, /05 \/ COMPUTER VISION/, 'body-aware prototype keeps its TKV-05 order');
+has(home, /04 \/ SYSTEMS FUNDAMENTALS/, 'DDAS keeps its TKV-04 order');
 has(home, /measurements are estimates|centimetre values are estimates|centimeter values are estimates/i, 'prototype measurement caveat');
 has(home, /prefers-reduced-motion/, 'reduced-motion support');
 has(home, /aria-expanded="false"/, 'mobile menu has accessible state');
 has(home, /@type":"Person"/, 'Person structured metadata');
 exists(casePath, 'project case study exists');
 exists(path.join(root, 'assets/body-profile-masks.png'), 'mask-only reference image exists');
+has(casePage, /PROJECT 05/, 'case study keeps the matching project number');
 has(casePage, /Open the shared notebook/, 'project page links to Colab');
 has(casePage, /not a live recommendation product/i, 'project page states current status');
 has(casePage, /scaled using entered height/, 'project page explains scale limitation');
