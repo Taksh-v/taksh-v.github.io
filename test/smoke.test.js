@@ -57,7 +57,7 @@ has(sitemap,/projects\/qual-market-analysis\.html/,'Qual page in sitemap');
 has(notFound,/This page went off route/,'branded 404 remains');
 for (const [page,label] of [[cv,'Body-aware page'],[qual,'Qual page']]) {
   has(page,/class="projectPage(?: visionPage)?"/,'cinematic project design on '+label);
-  has(page,/href="\.\.\/assets\/project-system\.css"/,'shared design system on '+label);
+  has(page,/href="\.\.\/assets\/project-system\.css\?v=2"/,'shared design system on '+label);
   has(page,/class="skip" href="#main"/,'skip navigation on '+label);
   has(page,/aria-label="Main navigation"/,'global navigation on '+label);
   has(page,/aria-controls="project-nav"/,'accessible mobile menu on '+label);
