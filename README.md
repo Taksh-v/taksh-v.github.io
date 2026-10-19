@@ -6,6 +6,8 @@ A static, responsive portfolio for AI application engineering roles. The visual 
 
 - `index.html` — role, selected projects, engineering approach, experience, toolkit, and contact.
 - `projects/body-aware-shopping-compatibility.html` — a standalone case study for the Colab computer-vision prototype. It separates the long-term shopping idea from the notebook's actual scope and limitations.
+- `projects/qual-market-analysis.html` — an evidence-bounded case study for Qual, with the data and answer evaluation flow and a reproducibility roadmap.
+- `index.html` — includes an interactive, keyboard-operable system trace for voice, knowledge, and vision work plus inline case files for yap and Assest.
 - `404.html` — branded not-found page.
 - `sitemap.xml` and `robots.txt` — search-engine discovery.
 
